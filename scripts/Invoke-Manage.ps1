@@ -7,9 +7,9 @@ $project_root = Split-Path $PSScriptRoot
 $already_activated = . $PSScriptRoot\Ensure-Venv.ps1
 
 $python = Join-Path $project_root "venv\Scripts\python.exe"
-$web_dir = Join-Path $project_root "web"
+$backend_dir = Join-Path $project_root "back"
 
-Push-Location $web_dir
+Push-Location $backend_dir
 & $python manage.py $args
 Pop-Location
 

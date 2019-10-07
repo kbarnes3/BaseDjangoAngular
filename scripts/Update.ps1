@@ -20,7 +20,7 @@ if ($venv_version -ne $installed_version) {
 
 . $PSScriptRoot\Bootstrap.ps1 -Verbose:$Verbose
 
-$local_db = Join-Path $project_root "web\newdjangosite.db"
+$local_db = Join-Path $project_root "back\newdjangosite.db"
 if (Test-Path $local_db) {
     Write-Status "Performing database migrations"
     . $PSScriptRoot\Invoke-Manage.ps1 migrate

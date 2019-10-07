@@ -22,7 +22,7 @@ if (Test-Path $venv) {
     Remove-Item -Recurse -Force -Path $venv
 }
 
-$local_db = Join-Path $project_root "web\newdjangosite.db"
+$local_db = Join-Path $project_root "back\newdjangosite.db"
 if (Test-Path $local_db) {
     Write-Status "Removing $local_db"
     Remove-Item -Path $local_db
