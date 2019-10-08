@@ -30,6 +30,17 @@ Write-Status "Updating requirements"
 & pip install -r (Join-Path $project_root "requirements.txt") $quiet
 Write-Status "Updating dev-requirements"
 & pip install -r (Join-Path $project_root "dev-requirements.txt") $quiet
+Write-Status "Updating npm"
+. $PSScriptRoot\Invoke-Npm install -g npm $quiet
+Write-Status "Updating Angular CLI"
+. $PSScriptRoot\Invoke-Npm install -g @angular/cli $quiet
+Write-Status "Updating requirements"
+. $PSScriptRoot\Invoke-Npm install $quiet
+
+if ($Global:console_functions) {
+    # Define or update the console scripts if we want them
+    . $PSScriptRoot\Console-Scripts.ps1
+}
 
 Pop-Location
 
