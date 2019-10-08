@@ -16,7 +16,7 @@ if ($Async) {
     Start-Process $python -ArgumentList $args
 }
 else {
-    & $python manage.py $args
+    & $python $args
 }
 Pop-Location
 
