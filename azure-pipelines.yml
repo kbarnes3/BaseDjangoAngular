@@ -1,0 +1,68 @@
+# Python Django
+# Test a Django project on multiple versions of Python.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/python
+trigger:
+- master
+
+pool:
+  vmImage: 'Ubuntu 16.04'
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: 3.6
+    architecture: 'x64'
+  displayName: 'Use Python 3.6'
+
+- task: NodeTool@0
+  inputs:
+    versionSpec: '10.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    python -m pip install --upgrade pip
+    pip install -r requirements.txt
+    pip install -r test-requirements.txt
+  displayName: 'Install prerequisites'
+
+- script: |
+    cd back
+    pytest --junitxml=junit/test-results.xml
+  condition: succeededOrFailed()
+  displayName: 'Run tests'
+
+- task: PublishTestResults@2
+  condition: succeededOrFailed()
+  inputs:
+    testResultsFiles: "**/test-*.xml"
+    testRunTitle: 'Python $(PYTHON_VERSION)'
+
+- script: |
+    cd front
+    npm install -g npm
+    npm install -g @angular/cli
+    npm ci
+  displayName: 'Install required packages (npm install)'
+
+- script: |
+    cd front
+    npm run-script build
+  displayName: 'Compile frontend app (npm run-script build)'
+
+- script: |
+    cd front
+    npm run-script test-headless
+  displayName: 'Run tests (ng test)'
+
+- task: PublishTestResults@2
+  condition: succeededOrFailed()
+  inputs:
+    testRunner: JUnit
+    testResultsFiles: '**/TESTS.xml'
+
+- script: |
+    cd front
+    ng lint
+  displayName: 'Run linting (ng lint)'
+
