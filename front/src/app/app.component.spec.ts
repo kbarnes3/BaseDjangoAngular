@@ -23,13 +23,13 @@ describe('AppComponent', () => {
   it(`should have as title 'front'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('front');
+    expect(app.title).toEqual('NewDjangoSite');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('front app is running!');
+    expect(compiled.querySelector('.navbar-brand').textContent).toContain('NewDjangoSite');
   });
 });
