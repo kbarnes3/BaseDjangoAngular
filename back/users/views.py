@@ -1,4 +1,5 @@
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
 
 from users.forms import UserCreationForm
@@ -22,4 +23,10 @@ def create_user_account(request):
 
 
 def logged_in_api(request):
-    pass
+    results = {'logged_in': False}
+    if request.user.is_authenticated:
+        results['logged_in'] = True
+        results['given_name'] = request.user.given_name
+        results['surname'] = request.user.surname
+
+    return JsonResponse(results)
