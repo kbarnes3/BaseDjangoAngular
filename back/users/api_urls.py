@@ -3,5 +3,5 @@ from users.views import logged_in_api
 
 
 urlpatterns = [
-    path('logged_in/', logged_in_api),
+    path('logged_in/', logged_in_api, name='logged_in_api'),
 ]
