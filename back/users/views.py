@@ -19,3 +19,7 @@ def create_user_account(request):
         form = UserCreationForm()
 
     return render(request, 'users/create_user_account.html', {'form': form})
+
+
+def logged_in_api(request):
+    pass
