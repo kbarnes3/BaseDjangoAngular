@@ -12,8 +12,8 @@ from users.models import User
 
 
 class LoggedInApi(TestCase):
-    LOGGED_IN_KEY = 'logged_in'
-    GIVEN_NAME_KEY = 'given_name'
+    LOGGED_IN_KEY = 'loggedIn'
+    GIVEN_NAME_KEY = 'givenName'
     SURNAME_KEY = 'surname'
     EXAMPLE_EMAIL = 'foo@example.com'
     EXAMPLE_PASSWORD = 'Complex1234'

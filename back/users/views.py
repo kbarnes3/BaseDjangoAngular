@@ -23,10 +23,10 @@ def create_user_account(request):
 
 
 def logged_in_api(request):
-    results = {'logged_in': False}
+    results = {'loggedIn': False}
     if request.user.is_authenticated:
-        results['logged_in'] = True
-        results['given_name'] = request.user.given_name
+        results['loggedIn'] = True
+        results['givenName'] = request.user.given_name
         results['surname'] = request.user.surname
 
     return JsonResponse(results)
