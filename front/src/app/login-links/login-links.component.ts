@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LoginStatusService } from '../login-status.service';
 
 @Component({
   selector: 'app-login-links',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginLinksComponent implements OnInit {
 
-  constructor() { }
+  constructor(private statusService: LoginStatusService) { }
 
   ngOnInit() {
   }
