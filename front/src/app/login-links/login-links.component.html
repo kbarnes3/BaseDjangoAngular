@@ -1,1 +1,9 @@
-<p>login-links works!</p>
+<div *ngIf="this.status === null">
+    <div class="loading"></div>
+</div>
+<div *ngIf="this.status && this.status.loggedIn === false">
+    <div class="loggedOut"></div>
+</div>
+<div *ngIf="this.status && this.status.loggedIn === true">
+    <div class="loggedIn">{{ this.status.givenName }}</div>
+</div>

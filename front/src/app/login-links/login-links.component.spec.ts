@@ -55,4 +55,40 @@ describe('LoginLinksComponent', () => {
     fixture.detectChanges();
     expect(service.getLoggedInStatusCalls).toBe(1);
   });
+
+  it('should display loading content while waiting for results', () => {
+    service.returnStatus = false;
+    fixture.detectChanges();
+    const compiled = fixture.debugElement.nativeElement;
+    expect(compiled.querySelector('.loading')).toBeTruthy();
+    expect(compiled.querySelector('.loggedOut')).toBeFalsy();
+    expect(compiled.querySelector('.loggedIn')).toBeFalsy();
+  });
+
+  it('should display logged out content when logged out', () => {
+    service.status = {
+      loggedIn: false
+    };
+    service.returnStatus = true;
+    fixture.detectChanges();
+    const compiled = fixture.debugElement.nativeElement;
+    expect(compiled.querySelector('.loggedOut')).toBeTruthy();
+    expect(compiled.querySelector('.loading')).toBeFalsy();
+    expect(compiled.querySelector('.loggedIn')).toBeFalsy();
+  });
+
+  it('should display logged in content when logged in', () => {
+    const givenName: string = 'John';
+    service.status = {
+      loggedIn: true,
+      givenName: givenName,
+      surname: 'Doe'
+    };
+    service.returnStatus = true;
+    fixture.detectChanges();
+    const compiled = fixture.debugElement.nativeElement;
+    expect(compiled.querySelector('.loggedIn').textContent).toContain(givenName);
+    expect(compiled.querySelector('.loading')).toBeFalsy();
+    expect(compiled.querySelector('.loggedOut')).toBeFalsy();
+  });
 });
