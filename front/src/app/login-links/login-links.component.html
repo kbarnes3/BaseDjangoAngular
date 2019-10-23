@@ -1,9 +1,33 @@
-<div *ngIf="this.status === null">
-    <div class="loading"></div>
-</div>
-<div *ngIf="this.status && this.status.loggedIn === false">
-    <div class="loggedOut"></div>
-</div>
-<div *ngIf="this.status && this.status.loggedIn === true">
-    <div class="loggedIn">{{ this.status.givenName }}</div>
-</div>
+<!-- Fixed navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="/">NewDjangoSite</a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-collapse collapse" id="navbarSupportedContent">
+      <ng-container *ngIf="this.status === null">
+        <div class="loading"></div>
+      </ng-container>
+      <ng-container *ngIf="this.status && this.status.loggedIn === true">
+        <div class="navbar-nav flex-row d-block d-lg-flex">
+          <a class="nav-item nav-link" href="/">Another page</a>
+        </div>
+        <div class="navbar-nav flex-row ml-lg-auto d-block d-lg-flex">
+          <a class="nav-item nav-link" href="/account/password_change/">Change Password</a>
+          <a class="nav-item nav-link" href="/account/logout/"><span class="d-none d-lg-block">Logout</span><span class="d-lg-none loggedIn">Logout {{ this.status.givenName }}</span></a>
+        </div>
+        </ng-container>
+        <ng-container *ngIf="this.status && this.status.loggedIn === false">
+          <div class="navbar-nav flex-row ml-lg-auto d-block d-lg-flex loggedOut">
+            <a class="nav-item nav-link" href="/account/login/">Login</a>
+            <a class="nav-item nav-link" href="/account/signup/">Sign up</a>
+          </div>
+        </ng-container>
+    </div><!--/.nav-collapse -->
+    <ng-container *ngIf="this.status && this.status.loggedIn === true">
+      <span class="nav-text d-none d-lg-block">Hello {{ this.status.givenName }}!</span>
+    </ng-container>
+  </div>
+</nav>

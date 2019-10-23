@@ -35,10 +35,4 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('NewDjangoSite');
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('.navbar-brand').textContent).toContain('NewDjangoSite');
-  });
 });

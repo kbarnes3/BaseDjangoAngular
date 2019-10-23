@@ -3,6 +3,7 @@ import {async, ComponentFixture, getTestBed, TestBed} from '@angular/core/testin
 import { LoginLinksComponent } from './login-links.component';
 import {LoginStatus, LoginStatusService} from '../login-status.service';
 import {NEVER, Observable, of} from 'rxjs';
+import {AppComponent} from '../app.component';
 
 class MockLoginStatusService {
   status: LoginStatus;
@@ -49,6 +50,12 @@ describe('LoginLinksComponent', () => {
   it('should create', () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
+  });
+
+  it('should render title', () => {
+    fixture.detectChanges();
+    const compiled = fixture.debugElement.nativeElement;
+    expect(compiled.querySelector('.navbar-brand').textContent).toContain('NewDjangoSite');
   });
 
   it('should call LoginStatusService.getLoggedInService', () => {
