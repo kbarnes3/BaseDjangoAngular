@@ -1,11 +1,6 @@
 from django import forms
-from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.password_validation import validate_password
-from django.contrib.auth.tokens import default_token_generator
-from django.contrib.sites.shortcuts import get_current_site
-from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_encode
 from users.models import User
 
 
@@ -18,7 +13,7 @@ class EmailPasswordResetForm(PasswordResetForm):
         resetting their password.
 
         """
-        active_users = get_user_model()._default_manager.filter(
+        active_users = User.objects.filter(
             primary_email__iexact=email)
         return (u for u in active_users if u.has_usable_password())
 
@@ -36,9 +31,7 @@ class UserCreationForm(forms.ModelForm):
     def clean_password1(self):
         # Check that the password meets the required complexity checks
         password = self.cleaned_data.get("password1")
-        validation = validate_password(password)
-        if validation is not None:
-            raise validation
+        validate_password(password)
         return password
 
     def clean_password2(self):
