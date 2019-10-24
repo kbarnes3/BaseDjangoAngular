@@ -34,12 +34,12 @@
                     {% else %}
                         <div class="navbar-nav flex-row ml-lg-auto d-block d-lg-flex">
                             <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
-                            <a class="nav-item nav-link" href="/users/signup">Sign up</a>
+                            <a class="nav-item nav-link" href="/account/signup">Sign up</a>
                         </div>
                     {% endif %}
                 </div><!--/.nav-collapse -->
                 {% if user.is_authenticated %}
-                    <span class="nav-text d-none d-lg-block">Hello {{ user.get_short_name }}!</span>
+                    <span class="nav-text d-none d-lg-block text-light">Hello {{ user.get_short_name }}!</span>
                 {% endif %}
             </div>
         </nav>
@@ -53,7 +53,7 @@
                 <p>&copy; 2019 DjangoSiteOwner</p>
             </div>
         </footer>
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="/static/common/js/bootstrap.bundle.min.js"></script>
         {%  block includes %}
         {% endblock %}

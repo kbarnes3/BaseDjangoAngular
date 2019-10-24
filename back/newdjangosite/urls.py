@@ -20,8 +20,10 @@ from common.views import hello_world
 
 urlpatterns = [
     path('', hello_world, name='landing_page'),
-    path('users/', include('users.urls')),
+    path('account/', include('users.urls')),
 
     path('admin/', admin.site.urls),
+
+    path('api/account/', include('users.api_urls'))
 ]
 
