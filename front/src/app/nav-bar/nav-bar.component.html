@@ -8,7 +8,9 @@
     </button>
     <div class="navbar-collapse collapse" [ngbCollapse]="isCollapsed" id="navbarSupportedContent">
       <ng-container *ngIf="this.status === null">
-        <div class="loading"></div>
+        <div class="spinner-border text-light loading navbar-nav flex-row ml-lg-auto d-block d-lg-flex" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
       </ng-container>
       <ng-container *ngIf="this.status && this.status.loggedIn === true">
         <div class="navbar-nav flex-row d-block d-lg-flex">
@@ -27,7 +29,7 @@
         </ng-container>
     </div><!--/.nav-collapse -->
     <ng-container *ngIf="this.status && this.status.loggedIn === true">
-      <span class="nav-text d-none d-lg-block">Hello {{ this.status.givenName }}!</span>
+      <span class="nav-text d-none d-lg-block text-light">Hello {{ this.status.givenName }}!</span>
     </ng-container>
   </div>
 </nav>
