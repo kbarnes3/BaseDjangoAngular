@@ -1,6 +1,6 @@
 import {async, ComponentFixture, getTestBed, TestBed} from '@angular/core/testing';
 
-import { LoginLinksComponent } from './login-links.component';
+import { NavBarComponent } from './nav-bar.component';
 import {LoginStatus, LoginStatusService} from '../login-status.service';
 import {NEVER, Observable, of} from 'rxjs';
 import {AppComponent} from '../app.component';
@@ -24,15 +24,15 @@ class MockLoginStatusService {
   }
 }
 
-describe('LoginLinksComponent', () => {
+describe('NavBarComponent', () => {
   let injector: TestBed;
-  let component: LoginLinksComponent;
-  let fixture: ComponentFixture<LoginLinksComponent>;
+  let component: NavBarComponent;
+  let fixture: ComponentFixture<NavBarComponent>;
   let service: MockLoginStatusService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LoginLinksComponent ],
+      declarations: [ NavBarComponent ],
       providers: [
         { provide: LoginStatusService, useClass: MockLoginStatusService }
       ]
@@ -42,7 +42,7 @@ describe('LoginLinksComponent', () => {
 
   beforeEach(() => {
     injector = getTestBed();
-    fixture = TestBed.createComponent(LoginLinksComponent);
+    fixture = TestBed.createComponent(NavBarComponent);
     service = injector.get(LoginStatusService);
     component = fixture.componentInstance;
   });

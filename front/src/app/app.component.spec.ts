@@ -4,10 +4,10 @@ import { AppComponent } from './app.component';
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-login-links',
-  template: '<p>Login Links</p>'
+  selector: 'app-nav-bar',
+  template: '<p>Nav Bar</p>'
 })
-class MockLoginLinksComponent {
+class MockNavBarComponent {
 }
 
 describe('AppComponent', () => {
@@ -18,7 +18,7 @@ describe('AppComponent', () => {
       ],
       declarations: [
         AppComponent,
-        MockLoginLinksComponent
+        MockNavBarComponent
       ],
     }).compileComponents();
   }));

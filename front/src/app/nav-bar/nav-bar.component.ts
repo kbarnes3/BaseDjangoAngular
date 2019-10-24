@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import {LoginStatus, LoginStatusService} from '../login-status.service';
 
 @Component({
-  selector: 'app-login-links',
-  templateUrl: './login-links.component.html',
-  styleUrls: ['./login-links.component.scss']
+  selector: 'app-nav-bar',
+  templateUrl: './nav-bar.component.html',
+  styleUrls: ['./nav-bar.component.scss']
 })
-export class LoginLinksComponent implements OnInit {
+export class NavBarComponent implements OnInit {
   private status: LoginStatus;
 
   constructor(private statusService: LoginStatusService) { }
