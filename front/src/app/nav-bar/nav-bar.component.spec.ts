@@ -1,9 +1,9 @@
-import {async, ComponentFixture, getTestBed, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, getTestBed, TestBed } from '@angular/core/testing';
+import { NEVER, Observable, of } from 'rxjs';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { NavBarComponent } from './nav-bar.component';
-import {LoginStatus, LoginStatusService} from '../login-status.service';
-import {NEVER, Observable, of} from 'rxjs';
-import {AppComponent} from '../app.component';
+import { LoginStatus, LoginStatusService } from '../login-status.service';
 
 class MockLoginStatusService {
   status: LoginStatus;
@@ -33,6 +33,7 @@ describe('NavBarComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ NavBarComponent ],
+      imports: [NgbModule],
       providers: [
         { provide: LoginStatusService, useClass: MockLoginStatusService }
       ]
@@ -88,7 +89,7 @@ describe('NavBarComponent', () => {
     const givenName: string = 'John';
     service.status = {
       loggedIn: true,
-      givenName: givenName,
+      givenName,
       surname: 'Doe'
     };
     service.returnStatus = true;
