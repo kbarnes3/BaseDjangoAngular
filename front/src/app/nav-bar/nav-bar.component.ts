@@ -7,11 +7,13 @@ import {LoginStatus, LoginStatusService} from '../login-status.service';
   styleUrls: ['./nav-bar.component.scss']
 })
 export class NavBarComponent implements OnInit {
+  private isCollapsed: boolean;
   private status: LoginStatus;
 
   constructor(private statusService: LoginStatusService) { }
 
   ngOnInit() {
+    this.isCollapsed = true;
     this.status = null;
     this.statusService.getLoggedInStatus()
         .subscribe((status: LoginStatus) => {

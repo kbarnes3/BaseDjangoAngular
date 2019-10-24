@@ -3,10 +3,10 @@
   <div class="container">
     <a class="navbar-brand" href="/">NewDjangoSite</a>
 
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="navbarSupportedContent" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="navbar-collapse collapse" id="navbarSupportedContent">
+    <div class="navbar-collapse collapse" [ngbCollapse]="isCollapsed" id="navbarSupportedContent">
       <ng-container *ngIf="this.status === null">
         <div class="loading"></div>
       </ng-container>
