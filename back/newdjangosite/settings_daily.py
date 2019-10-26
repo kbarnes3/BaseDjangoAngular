@@ -1,15 +1,15 @@
-from .settings_base import *
+from .settings_base import *  #pylint: disable=unused-wildcard-import, wildcard-import
 
 DEBUG = False
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'newdjangosite_daily',                    # Or path to database file if using sqlite3.
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'newdjangosite_daily',
         'USER': 'newdjangosite_daily_user',
         'PASSWORD': 'passwordgoeshere',
-        'HOST': 'localhost',             # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                      # Set to empty string for default.
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
@@ -19,4 +19,3 @@ EMAIL_SUBJECT_PREFIX = '[newdjangosite-daily] '
 ALLOWED_HOSTS = ['daily.yourdomain.tld']
 
 STATIC_ROOT = '/var/www/newdjangosite-daily/static'
-

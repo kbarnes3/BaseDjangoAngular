@@ -26,4 +26,3 @@ urlpatterns = [
 
     path('api/account/', include('users.api_urls'))
 ]
-
