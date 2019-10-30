@@ -1,12 +1,12 @@
-from .settings_base import *
+from .settings_base import *  #pylint: disable=unused-wildcard-import, wildcard-import
 
-#Settings for running a local development server using runserver
+# Settings for running a local development server using runserver
 
 DEBUG = True
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'newdjangosite.db',             # Or path to database file if using sqlite3.
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'newdjangosite.db',
     }
 }
