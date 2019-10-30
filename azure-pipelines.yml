@@ -39,6 +39,11 @@ steps:
     testRunTitle: 'Python $(PYTHON_VERSION)'
 
 - script: |
+    pylint back
+  condition: succeededOrFailed()
+  displayName: 'Run linting (pylint back)'
+
+- script: |
     cd front
     npm install -g npm
     npm install -g @angular/cli
