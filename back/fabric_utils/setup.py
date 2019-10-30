@@ -2,6 +2,14 @@ from importlib import import_module
 from fabric.api import env
 from fabric.api import cd, run, settings, sudo
 from fabric.contrib.files import append, comment, exists
+
+import plush.fabric_commands
+from plush.fabric_commands.git import clone
+from plush.fabric_commands.permissions import make_directory, set_permissions_file
+from plush.fabric_commands.ssh_key import create_key
+from plush.oauth_flow import verify_access_token
+from plush.repo_keys import add_repo_key
+
 from .deploy import AllowedException, checkout_branch, deploy, get_repo_dir, WEBADMIN_GROUP
 
 env.use_ssh_config = True
@@ -10,16 +18,19 @@ REPO_FULL_NAME = 'GitHubUser/GitHubRepo'
 
 
 def setup_user(user, no_sudo_passwd='', public_key_file=''):
-    from plush.fabric_commands import prepare_user
-
-    messages = prepare_user(user, WEBADMIN_GROUP, add_sudo=True, no_sudo_passwd=bool(no_sudo_passwd))
+    messages = plush.fabric_commands.prepare_user(
+        user,
+        WEBADMIN_GROUP,
+        add_sudo=True,
+        no_sudo_passwd=bool(no_sudo_passwd))
     add_authorized_key(user, public_key_file)
 
     if not exists('/usr/bin/createuser'):
         _install_packages(['postgresql'])
 
-    matching_user_count = sudo("psql postgres -tAc \"SELECT 1 FROM pg_roles WHERE rolname='{0}'\"".format(user),
-                               user='postgres')
+    matching_user_count = sudo(
+        "psql postgres -tAc \"SELECT 1 FROM pg_roles WHERE rolname='{0}'\"".format(user),
+        user='postgres')
     if '1' not in matching_user_count:
         sudo('createuser -s {0}'.format(user), user='postgres')
 
@@ -30,7 +41,6 @@ def setup_user(user, no_sudo_passwd='', public_key_file=''):
 
 
 def add_authorized_key(user, public_key_file):
-    import plush.fabric_commands
     if public_key_file:
         with open(public_key_file, 'r') as public_key:
             public_key_contents = public_key.read()
@@ -50,8 +60,6 @@ def disable_ssh_passwords():
 
 
 def setup_server(setup_wins=''):
-    from plush.fabric_commands.permissions import make_directory
-
     sudo('add-apt-repository universe')
     sudo('apt-get update')
 
@@ -107,6 +115,7 @@ def _setup_wins():
     append(resolved_config, 'Domains=localdomain', use_sudo=True)
     sudo('service systemd-resolved restart')
 
+
 def setup_deployment(config, branch=''):
     django_settings = import_module('newdjangosite.settings_{0}'.format(config))
     db_settings = django_settings.DATABASES['default']
@@ -118,7 +127,12 @@ def setup_deployment(config, branch=''):
     database_created = False
     with settings(abort_exception=AllowedException):
         try:
-            run('createdb --encoding=UTF8 --locale=en_US.UTF-8 --owner=postgres --template=template0 {0}'.format(db_name))
+            run(
+                ('createdb '
+                 '--encoding=UTF8 '
+                 '--locale=en_US.UTF-8 '
+                 '--owner=postgres '
+                 '--template=template0 {0}').format(db_name))
             database_created = True
         except AllowedException:
             pass
@@ -129,7 +143,9 @@ def setup_deployment(config, branch=''):
         except AllowedException:
             pass
 
-    run('psql -d postgres -c \"ALTER ROLE {0} WITH ENCRYPTED PASSWORD \'{1}\';\"'.format(db_user, db_password))
+    run('psql -d postgres -c \"ALTER ROLE {0} WITH ENCRYPTED PASSWORD \'{1}\';\"'.format(
+        db_user,
+        db_password))
 
     _setup_repo(repo_dir)
     checkout_branch(repo_dir, config, branch)
@@ -144,12 +160,10 @@ def setup_deployment(config, branch=''):
         uwsgi_service = '/etc/systemd/system/uwsgi-app@.service'
 
         if not exists(uwsgi_socket):
-            from plush.fabric_commands.permissions import set_permissions_file
             sudo('cp uwsgi-app@.socket {0}'.format(uwsgi_socket))
             set_permissions_file(uwsgi_socket, 'root', 'root', '644')
 
         if not exists(uwsgi_service):
-            from plush.fabric_commands.permissions import set_permissions_file
             sudo('cp uwsgi-app@.service {0}'.format(uwsgi_service))
             set_permissions_file(uwsgi_service, 'root', 'root', '644')
 
@@ -161,19 +175,11 @@ def setup_deployment(config, branch=''):
 
 
 def _setup_repo(repo_dir):
-    from plush.fabric_commands.permissions import make_directory
-
     make_directory(WEBADMIN_GROUP, repo_dir)
 
     if not exists('{0}/.git'.format(repo_dir)):
-        from plush.fabric_commands.git import clone
-        from plush.fabric_commands.ssh_key import create_key
-        from plush.oauth_flow import verify_access_token
-        from plush.repo_keys import add_repo_key
-
         if not verify_access_token():
             raise Exception('Unable to access GitHub account')
         create_key(REPO_FULL_NAME, WEBADMIN_GROUP)
         add_repo_key(REPO_FULL_NAME)
         clone(REPO_FULL_NAME, repo_dir)
-

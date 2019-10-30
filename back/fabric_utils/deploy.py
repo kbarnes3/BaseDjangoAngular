@@ -1,7 +1,7 @@
 from fabric.api import cd, run, sudo
-from plush.fabric_commands.permissions import set_permissions_directory
+from plush.fabric_commands.permissions import set_permissions_directory, set_permissions_file
 
-configurations = {
+CONFIGURATIONS = {
     'daily': {
         'branch': 'master',
         'ssl': False,
@@ -33,7 +33,7 @@ def get_repo_dir(config):
 
 
 def deploy(config, branch=''):
-    configuration = configurations[config]
+    configuration = CONFIGURATIONS[config]
     if not branch:
         branch = configuration['branch']
     use_ssl = configuration['ssl']
@@ -67,7 +67,7 @@ def _compile_source(config, repo_dir, web_dir, virtualenv_python):
         run('venv/bin/pip install --quiet --requirement=requirements.txt')
 
     with cd(web_dir):
-        sudo('find . -iname "*.pyc" -exec rm {} \;')
+        sudo('find . -iname "*.pyc" -delete')
         sudo('{0} -m compileall .'.format(virtualenv_python))
         sudo('{0} manage_{1}.py collectstatic --noinput'.format(virtualenv_python, config))
 
@@ -115,14 +115,13 @@ def _run_tests(config, web_dir, virtualenv_python):
 
 def checkout_branch(repo_dir, config, branch=None):
     if not branch:
-        configuration = configurations[config]
+        configuration = CONFIGURATIONS[config]
         branch = configuration['branch']
 
     _update_source(repo_dir, branch)
 
 
 def deploy_global_config(config):
-    from plush.fabric_commands.permissions import set_permissions_file
     repo_dir = get_repo_dir(config)
     global_dir = '{0}/config/ubuntu-18.04/global'.format(repo_dir)
     nginx_conf = '/etc/nginx/nginx.conf'
@@ -143,7 +142,7 @@ def deploy_global_config(config):
 
 
 def shutdown(config, branch=''):
-    configuration = configurations[config]
+    configuration = CONFIGURATIONS[config]
     if not branch:
         branch = configuration['branch']
     use_ssl = configuration['ssl']
