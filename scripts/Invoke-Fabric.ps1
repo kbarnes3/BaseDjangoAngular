@@ -7,9 +7,8 @@ $project_root = Split-Path $PSScriptRoot
 $already_activated = . $PSScriptRoot\Ensure-Venv.ps1
 
 $fabric = Join-Path $project_root "venv\Scripts\fab.exe"
-$backend_dir = Join-Path $project_root "back"
 
-Push-Location $backend_dir
+Push-Location $project_root
 & $fabric $args
 Pop-Location
 
