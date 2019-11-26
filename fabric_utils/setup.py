@@ -1,38 +1,37 @@
 from importlib import import_module
-from fabric.api import env
-from fabric.api import cd, run, settings, sudo
-from fabric.contrib.files import append, comment, exists
 
+from fabric import Task
+from patchwork.files import exists
 import plush.fabric_commands
 from plush.fabric_commands.git import clone
-from plush.fabric_commands.permissions import make_directory, set_permissions_file
+from plush.fabric_commands.permissions import set_permissions_file
 from plush.fabric_commands.ssh_key import create_key
 from plush.oauth_flow import verify_access_token
 from plush.repo_keys import add_repo_key
 
 from .deploy import AllowedException, checkout_branch, deploy, get_repo_dir, WEBADMIN_GROUP
 
-env.use_ssh_config = True
-
 REPO_FULL_NAME = 'GitHubUser/GitHubRepo'
 
 
-def setup_user(user, no_sudo_passwd='', public_key_file=''):
+@Task
+def setup_user(conn, user, no_sudo_passwd=False, public_key_file=None):
     messages = plush.fabric_commands.prepare_user(
+        conn,
         user,
         WEBADMIN_GROUP,
         add_sudo=True,
-        no_sudo_passwd=bool(no_sudo_passwd))
-    add_authorized_key(user, public_key_file)
+        no_sudo_passwd=no_sudo_passwd)
+    add_authorized_key(conn, user, public_key_file)
 
-    if not exists('/usr/bin/createuser'):
-        _install_packages(['postgresql'])
+    if not exists(conn, '/usr/bin/createuser'):
+        plush.fabric_commands.install_packages(conn, ['postgresql'])
 
-    matching_user_count = sudo(
+    matching_user_count = conn.sudo(
         "psql postgres -tAc \"SELECT 1 FROM pg_roles WHERE rolname='{0}'\"".format(user),
-        user='postgres')
+        user='postgres').stdout
     if '1' not in matching_user_count:
-        sudo('createuser -s {0}'.format(user), user='postgres')
+        conn.sudo('createuser -s {0}'.format(user), user='postgres')
 
     if messages:
         print("========================================")
@@ -40,14 +39,16 @@ def setup_user(user, no_sudo_passwd='', public_key_file=''):
         print("========================================")
 
 
-def add_authorized_key(user, public_key_file):
+@Task
+def add_authorized_key(conn, user, public_key_file):
     if public_key_file:
         with open(public_key_file, 'r') as public_key:
             public_key_contents = public_key.read()
-        plush.fabric_commands.add_authorized_key(user, public_key_contents)
+        plush.fabric_commands.add_authorized_key(conn, user, public_key_contents)
 
 
-def disable_ssh_passwords():
+@Task
+def disable_ssh_passwords(conn):
     sshd_config = '/etc/ssh/sshd_config'
     comment(sshd_config, '^ *PasswordAuthentication', use_sudo=True)
     append(sshd_config, 'PasswordAuthentication no', use_sudo=True)
@@ -59,6 +60,7 @@ def disable_ssh_passwords():
     print("========================================")
 
 
+@Task
 def setup_server(setup_wins=''):
     sudo('add-apt-repository universe')
     sudo('apt-get update')
@@ -94,11 +96,6 @@ def setup_server(setup_wins=''):
     if exists(default_site):
         sudo('rm {0}'.format(default_site))
     sudo('/etc/init.d/nginx start')
-
-
-def _install_packages(packages):
-    for package in packages:
-        sudo('apt-get install --yes {0}'.format(package))
 
 
 def _setup_wins():

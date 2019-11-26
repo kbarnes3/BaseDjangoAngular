@@ -1,4 +1,5 @@
 Fabric==2.5.0
+patchwork==1.0.1
 plush-fabric==0.5.1
 pylint==2.4.3
 pylint-django==2.0.11

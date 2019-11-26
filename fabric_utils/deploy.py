@@ -1,5 +1,5 @@
-from fabric.api import cd, run, sudo
-from plush.fabric_commands.permissions import set_permissions_directory, set_permissions_file
+from fabric import Task
+from plush.fabric_commands.permissions import set_permissions_file
 
 CONFIGURATIONS = {
     'daily': {
@@ -32,7 +32,8 @@ def get_repo_dir(config):
     return '{0}/newdjangosite-{1}'.format(PYTHON_DIR, config)
 
 
-def deploy(config, branch=''):
+@Task
+def deploy(conn, config, branch=None):
     configuration = CONFIGURATIONS[config]
     if not branch:
         branch = configuration['branch']

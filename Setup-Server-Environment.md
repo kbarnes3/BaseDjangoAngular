@@ -5,7 +5,7 @@ These directions will set up a new server.
 They are the same directions for setting up a test server stack or a full production environment.
 For consistency, the only OS supported for a server is Ubuntu Server 18.04.
 Most server operations should be done through Fabric, which is already installed if you followed the steps in Setup-Dev-Environment.md.
-Fabric can be run by running ```fab``` in a virtualenv while in the \web directory.
+Fabric can be run by running ```fab``` in a virtualenv while in the root directory.
 To simplify this, \scripts\Invoke-Fabric.ps1 or the ```Invoke-Fabric``` function can be used from PowerShell.
 
 Prep for Fabric
@@ -29,8 +29,17 @@ Setup user account for deploying
 These steps will prepare your user account to be used to successfully deploy and update a NewDjangoSite deployment to your server. These steps can be used to create a new user or modify an existing user.
 
 1. Make sure you run all the following commands in a PowerShell prompt set up by following Setup-Dev-Environment.md
-1. The Fabric command ```setup_user``` is used to configure a new or existing user account. It takes a series of required and optional parameters. Run one of the below commands to setup a user account.  
-    1. The first parameter is ```$linux_user$```. ```$linux_user$``` is either an existing user account or the name of the user you want to create. This account will be prepped to deploy and update NewDjangoSite sites, which includes being granted sudo access. The simplest form of the ```setup_user``` command is ```fab setup_user:$linux_user$```.  
+1. All Fabric commands take a few common parameters to describe how to connect to the server.  
+    1. First is `--host` with takes a value that looks like `$user$@$hostname$`. For our purposes `$user` must be an existing account with sudo access. You set up at least one account like this when installing the OS, and more can be setup later using the `setup-user` command. `$hostname$` is anything that will resolve to your server's IP address.
+    1. `--prompt-for-login-password` is required if you are using a password to log in to the server.
+    1. `--prompt-for-sudo-password` is required if you will get prompted for a password when using the `sudo` command. This is true by default in Ubuntu, but the `setup-user` command can modify this.  
+    1. `--prompt-for-passphrase` prompts for a SSH key phrase if your private key requires a passphrase (and you aren't using an SSH agent).
+1. The Fabric command ```setup-user``` is used to configure a new or existing user account. It takes a series of required and optional parameters. Run one of the below commands to setup a user account.  
+    1. The first parameter is ```$user$```. ```$user$``` is either an existing Linux user account or the name of the user you want to create. This account will be prepped to deploy and update NewDjangoSite sites, which includes being granted sudo access. The first time you use this command, it might look like:  
+    ```fab --hosts $user$@$a.b.c.d$ setup-user $user$ --prompt-for-login-password --prompt-for-sudo-password```  
+    Where both `$user$` values are the sudo account you set up when installing Ubuntu.
+    Alternatively, there is a PowerShell wrapper for this script. An equivalent is:  
+    ```Fabric-SetupUser -Hosts "$user$@$a.b.c.d$" -User $user$ -PromptForLoginPassword -PromptForSudoPassword```
     1. The second parameter is ```no_sudo_passwd``` which indicates you don't want to be challenged with a password when running sudo logged in as ```$linux_user$```. This is recommended if you plan on logging in using a public/private key pair. If this parameter is provided, any value other than an empty string will be interpreted as true. This parameter defaults to '' if not provided. Specifying this parameter will resemble this:  
     ```fab "setup_user:$linux_user$,no_sudo_passwd=true"```  
     Note that PowerShell requires everything from "setup_user" onward to be in quotes due to the comma.
