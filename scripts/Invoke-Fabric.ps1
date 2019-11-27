@@ -113,6 +113,24 @@ Set-Item function:global:Fabric-DisableSshPasswords {
     Invoke-Fabric $Hosts -PromptForPassphrase:$PromptForPassphrase -PromptForLoginPassword:$PromptForLoginPassword -PromptForSudoPassword:$PromptForSudoPassword $disableSshPasswordArgs
 } -Force
 
+Set-Item function:global:Fabric-SetupServer {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$Hosts,
+        [Parameter(Mandatory=$true)]
+        [switch]$SetupWins,
+        [switch]$PromptForPassphrase,
+        [switch]$PromptForLoginPassword,
+        [switch]$PromptForSudoPassword
+    )
+    $setupServerArgs = @("setup-server")
+    if ($NoSudoPasswd) {
+        $setupServerArgs += "--setup-wins"
+    }
+
+    Invoke-Fabric $Hosts -PromptForPassphrase:$PromptForPassphrase -PromptForLoginPassword:$PromptForLoginPassword -PromptForSudoPassword:$PromptForSudoPassword $setupServerArgs
+} -Force
+
 Set-Item function:global:Fabric-Deploy {
     param(
         [Parameter(Mandatory=$true)]

@@ -1,7 +1,8 @@
 from importlib import import_module
 
 from fabric import Task
-from patchwork.files import exists
+from fabric.connection import Connection
+from patchwork.files import directory, exists
 import plush.fabric_commands
 from plush.fabric_commands.git import clone
 from plush.fabric_commands.permissions import set_permissions_file
@@ -61,9 +62,11 @@ def disable_ssh_passwords(conn):
 
 
 @Task
-def setup_server(setup_wins=''):
-    sudo('add-apt-repository universe')
-    sudo('apt-get update')
+def setup_server(conn, setup_wins=False):
+    conn.sudo('add-apt-repository universe')
+    conn.sudo('apt-get update')
+
+    _setup_node(conn)
 
     base_packages = [
         'git',
@@ -75,42 +78,47 @@ def setup_server(setup_wins=''):
         'uwsgi-plugin-python3',
     ]
 
-    _install_packages(base_packages)
+    plush.fabric_commands.install_packages(conn, base_packages)
 
     if setup_wins:
-        _setup_wins()
+        _setup_wins(conn)
 
-    sudo('mkdir -p /etc/nginx/ssl')
-    make_directory(WEBADMIN_GROUP, '/var/www')
-    make_directory(WEBADMIN_GROUP, '/var/www/python')
+    conn.sudo('mkdir -p /etc/nginx/ssl')
+    directory(conn, '/var/www', group=WEBADMIN_GROUP, sudo=True)
+    directory(conn, '/var/www/python', group=WEBADMIN_GROUP, sudo=True)
 
-    with settings(abort_exception=AllowedException):
-        try:
-            run('createuser -s root')
-        except AllowedException:
-            pass
+    matching_user_count = conn.run(
+        "psql postgres -tAc \"SELECT 1 FROM pg_roles WHERE rolname='root'\"").stdout
+    if '1' not in matching_user_count:
+        conn.run('createuser -s root')
 
-    make_directory('root', '/var/uwsgi', '777')
+    directory(conn, '/var/uwsgi', user='root', group='root', mode='777', sudo=True)
 
     default_site = '/etc/nginx/sites-enabled/default'
-    if exists(default_site):
-        sudo('rm {0}'.format(default_site))
-    sudo('/etc/init.d/nginx start')
+    if exists(conn, default_site):
+        conn.sudo('rm {0}'.format(default_site))
+    conn.sudo('/etc/init.d/nginx start')
 
 
-def _setup_wins():
+def _setup_node(conn: Connection):
+    conn.sudo('curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -', pty=True)
+    conn.sudo('apt-get update')
+    plush.fabric_commands.install_packages(conn, ['nodejs'])
+
+
+def _setup_wins(conn: Connection):
     wins_packages = [
         'samba',
         'smbclient',
         'winbind',
     ]
 
-    _install_packages(wins_packages)
+    plush.fabric_commands.install_packages(conn, wins_packages)
     sudo('sed -i s/\'hosts:.*/hosts:          files dns wins/\' /etc/nsswitch.conf')
     resolved_config = '/etc/systemd/resolved.conf'
-    comment(resolved_config, '^ *Domains', use_sudo=True)
-    append(resolved_config, 'Domains=localdomain', use_sudo=True)
-    sudo('service systemd-resolved restart')
+    conn.sudo("sed -i '/^ *Domains/d' {0}".format(resolved_config))
+    conn.sudo('echo "Domains=localdomain" | sudo tee -a {0}'.format(resolved_config), pty=True)
+    conn.sudo('service systemd-resolved restart')
 
 
 def setup_deployment(config, branch=''):
