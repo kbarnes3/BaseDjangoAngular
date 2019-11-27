@@ -67,7 +67,7 @@ or:
 
 Setup deployment
 ----------------
-These steps will get a specific deployment of NewDjangoSite running on a server that's been setup using the above directions. Any server can run one or more of the available deployments (prod, staging, daily, dev). See the ```web/newdjangosite/settings*.py``` files for the differences between the deployments. These steps can be repeated once for each desired deployments.
+These steps will get a specific deployment of NewDjangoSite running on a server that's been setup using the above directions. Any server can run one or more of the available deployments (prod, staging, daily, dev). See the `back/newdjangosite/settings*.py` files for the differences between the deployments. These steps can be repeated once for each desired deployments.
 
 1. Consider updating the database username and password found in ```web/newdjangosite/settings_$deployment$.py``` file. If you update it, commit and push your changes before continuing. Note that the Fabric script won't work with passwords containing shell escape characters.
 1. Run ```auth``` and follow the prompts in the browser, logging into GitHub with an account that can set deploy keys on this repo.

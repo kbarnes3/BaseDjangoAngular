@@ -1,4 +1,5 @@
 from importlib import import_module
+from typing import Optional
 
 from fabric import Task
 from fabric.connection import Connection
@@ -10,7 +11,8 @@ from plush.fabric_commands.ssh_key import create_key
 from plush.oauth_flow import verify_access_token
 from plush.repo_keys import add_repo_key
 
-from .deploy import AllowedException, checkout_branch, deploy, get_repo_dir, WEBADMIN_GROUP
+from .deploy import checkout_branch, deploy, get_secret_repo_branch, get_secret_repo_dir
+from .deploy import get_secret_repo_name, get_repo_dir, WEBADMIN_GROUP
 
 REPO_FULL_NAME = 'GitHubUser/GitHubRepo'
 
@@ -121,7 +123,7 @@ def _setup_wins(conn: Connection):
     conn.sudo('service systemd-resolved restart')
 
 
-def setup_deployment(config, branch=''):
+def setup_deployment(conn, config, branch=None, secret_branch=None):
     django_settings = import_module('newdjangosite.settings_{0}'.format(config))
     db_settings = django_settings.DATABASES['default']
     db_name = db_settings['NAME']
@@ -129,62 +131,74 @@ def setup_deployment(config, branch=''):
     db_password = db_settings['PASSWORD']
     repo_dir = get_repo_dir(config)
 
-    database_created = False
-    with settings(abort_exception=AllowedException):
-        try:
-            run(
-                ('createdb '
-                 '--encoding=UTF8 '
-                 '--locale=en_US.UTF-8 '
-                 '--owner=postgres '
-                 '--template=template0 {0}').format(db_name))
-            database_created = True
-        except AllowedException:
-            pass
+    # database_created = False
+    database_exists_count = conn.run(
+        "psql postgres -tAc \"SELECT 1 FROM pg_catalog.pg_database WHERE datname='{0}'\"".format(db_name)).stdout
+    if '1' not in database_exists_count:
+        conn.run(
+            ('createdb '
+             '--encoding=UTF8 '
+             '--locale=en_US.UTF-8 '
+             '--owner=postgres '
+             '--template=template0 {0}').format(db_name))
+        # database_created = True
 
-    with settings(abort_exception=AllowedException):
-        try:
-            run('createuser -d -R -S {0}'.format(db_user))
-        except AllowedException:
-            pass
+    matching_user_count = conn.run(
+        "psql postgres -tAc \"SELECT 1 FROM pg_roles WHERE rolname='{0}'\"".format(db_user)).stdout
+    if '1' not in matching_user_count:
+        conn.run('createuser -s {0}}'.format(db_user))
 
-    run('psql -d postgres -c \"ALTER ROLE {0} WITH ENCRYPTED PASSWORD \'{1}\';\"'.format(
+    conn.run('psql -d postgres -c \"ALTER ROLE {0} WITH ENCRYPTED PASSWORD \'{1}\';\"'.format(
         db_user,
         db_password))
 
-    _setup_repo(repo_dir)
-    checkout_branch(repo_dir, config, branch)
+    _setup_main_repo(conn, repo_dir, config, branch)
+    _setup_secret_repo(conn, config, secret_branch)
 
-    with cd(repo_dir):
+    with conn.cd(repo_dir):
         if not exists('venv'):
-            run('python3 -m venv --system-site-packages venv')
+            conn.run('python3 -m venv --system-site-packages venv')
 
     global_dir = '{0}/config/ubuntu-18.04/global'.format(repo_dir)
-    with cd(global_dir):
+    with conn.cd(global_dir):
         uwsgi_socket = '/etc/systemd/system/uwsgi-app@.socket'
         uwsgi_service = '/etc/systemd/system/uwsgi-app@.service'
 
-        if not exists(uwsgi_socket):
-            sudo('cp uwsgi-app@.socket {0}'.format(uwsgi_socket))
-            set_permissions_file(uwsgi_socket, 'root', 'root', '644')
+        if not exists(conn, uwsgi_socket):
+            conn.sudo('cp uwsgi-app@.socket {0}'.format(uwsgi_socket))
+            set_permissions_file(conn, uwsgi_socket, 'root', 'root', '644')
 
         if not exists(uwsgi_service):
-            sudo('cp uwsgi-app@.service {0}'.format(uwsgi_service))
-            set_permissions_file(uwsgi_service, 'root', 'root', '644')
+            conn.sudo('cp uwsgi-app@.service {0}'.format(uwsgi_service))
+            set_permissions_file(conn, uwsgi_service, 'root', 'root', '644')
 
-    deploy(config, branch)
+    deploy(conn, config, branch, secret_branch)
 
-    if database_created:
-        with cd(repo_dir):
-            run('venv/bin/python web/manage_{0}.py createsuperuser'.format(config))
+    # if database_created:
+        # with cd(repo_dir):
+            # run('venv/bin/python web/manage_{0}.py createsuperuser'.format(config))
 
 
-def _setup_repo(repo_dir):
-    make_directory(WEBADMIN_GROUP, repo_dir)
+def _setup_main_repo(conn: Connection, repo_dir: str, config: str, branch: Optional[str] = None):
+    _setup_repo(conn, repo_dir, REPO_FULL_NAME)
+    checkout_branch(conn, repo_dir, config, branch)
 
-    if not exists('{0}/.git'.format(repo_dir)):
+
+def _setup_secret_repo(conn: Connection, config: str, secret_branch_override: Optional[str] = None):
+    secret_repo_dir = get_secret_repo_dir(config)
+    secret_repo_name = get_secret_repo_name(config)
+    secret_branch = get_secret_repo_branch(config, secret_branch_override)
+
+    _setup_repo(conn, secret_repo_dir, secret_repo_name)
+    checkout_branch(conn, secret_repo_dir, config, secret_branch)
+
+
+def _setup_repo(conn: Connection, repo_dir: str, repo_name: str):
+    directory(conn, repo_dir, group=WEBADMIN_GROUP, sudo=True)
+
+    if not exists(conn, '{0}/.git'.format(repo_dir)):
         if not verify_access_token():
-            raise Exception('Unable to access GitHub account')
-        create_key(REPO_FULL_NAME, WEBADMIN_GROUP)
-        add_repo_key(REPO_FULL_NAME)
-        clone(REPO_FULL_NAME, repo_dir)
+            raise Exception("Unable to access GitHub account. Run 'auth' to fix this")
+        create_key(conn, repo_name, WEBADMIN_GROUP)
+        add_repo_key(conn, repo_name)
+        clone(conn, repo_name, repo_dir, skip_strict_key_checking=True)
