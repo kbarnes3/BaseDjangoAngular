@@ -50,8 +50,8 @@ def add_authorized_key(conn, user, public_key_file):
 @Task
 def disable_ssh_passwords(conn):
     sshd_config = '/etc/ssh/sshd_config'
-    comment(sshd_config, '^ *PasswordAuthentication', use_sudo=True)
-    append(sshd_config, 'PasswordAuthentication no', use_sudo=True)
+    conn.sudo("sed -i '/^ *PasswordAuthentication/d' {0}".format(sshd_config))
+    conn.sudo('echo "PasswordAuthentication no" | sudo tee -a {0}'.format(sshd_config), pty=True)
     print("========================================")
     print("Password authentication disabled for SSH.")
     print("Restart the SSH daemon by logging into the console and running:")

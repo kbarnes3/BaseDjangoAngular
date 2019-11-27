@@ -101,6 +101,18 @@ Set-Item function:global:Fabric-AddAuthorizedKey {
     Invoke-Fabric $Hosts -PromptForPassphrase:$PromptForPassphrase -PromptForLoginPassword:$PromptForLoginPassword -PromptForSudoPassword:$PromptForSudoPassword $addAuthorizedKeyArgs
 } -Force
 
+Set-Item function:global:Fabric-DisableSshPasswords {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$Hosts,
+        [switch]$PromptForPassphrase,
+        [switch]$PromptForLoginPassword,
+        [switch]$PromptForSudoPassword
+    )
+    $disableSshPasswordArgs = @("disable-ssh-passwords")
+    Invoke-Fabric $Hosts -PromptForPassphrase:$PromptForPassphrase -PromptForLoginPassword:$PromptForLoginPassword -PromptForSudoPassword:$PromptForSudoPassword $disableSshPasswordArgs
+} -Force
+
 Set-Item function:global:Fabric-Deploy {
     param(
         [Parameter(Mandatory=$true)]
