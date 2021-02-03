@@ -44,7 +44,7 @@ describe('NavBarComponent', () => {
   beforeEach(() => {
     injector = getTestBed();
     fixture = TestBed.createComponent(NavBarComponent);
-    service = injector.get(LoginStatusService);
+    service = injector.inject(LoginStatusService) as any as MockLoginStatusService;
     component = fixture.componentInstance;
   });
 

@@ -15,8 +15,8 @@ describe('LoginStatusService', () => {
     });
 
     injector = getTestBed();
-    service = injector.get(LoginStatusService);
-    httpMock = injector.get(HttpTestingController);
+    service = injector.inject(LoginStatusService);
+    httpMock = injector.inject(HttpTestingController);
   });
 
   afterEach(() => {
