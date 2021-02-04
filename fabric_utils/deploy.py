@@ -135,10 +135,10 @@ def _reload_web(conn: Connection, config: str, nginx_dir: str, ssl: bool, ssl_di
 
     if ssl:
         with conn.cd(ssl_dir):
-        conn.sudo('cp {0}.yourdomain.tld.* /etc/nginx/ssl'.format(config))
-        conn.sudo('chown root /etc/nginx/ssl/{0}.yourdomain.tld.*'.format(config))
-        conn.sudo('chgrp root /etc/nginx/ssl/{0}.yourdomain.tld.*'.format(config))
-        conn.sudo('chmod 644 /etc/nginx/ssl/{0}.yourdomain.tld.*'.format(config))
+            conn.sudo('cp {0}.yourdomain.tld.* /etc/nginx/ssl'.format(config))
+            conn.sudo('chown root /etc/nginx/ssl/{0}.yourdomain.tld.*'.format(config))
+            conn.sudo('chgrp root /etc/nginx/ssl/{0}.yourdomain.tld.*'.format(config))
+            conn.sudo('chmod 644 /etc/nginx/ssl/{0}.yourdomain.tld.*'.format(config))
 
     conn.sudo('/etc/init.d/nginx reload')
 
