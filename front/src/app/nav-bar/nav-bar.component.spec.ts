@@ -1,4 +1,4 @@
-import { async, ComponentFixture, getTestBed, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, getTestBed, TestBed } from '@angular/core/testing';
 import { NEVER, Observable, of } from 'rxjs';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -30,7 +30,7 @@ describe('NavBarComponent', () => {
   let fixture: ComponentFixture<NavBarComponent>;
   let service: MockLoginStatusService;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ NavBarComponent ],
       imports: [NgbModule],
@@ -44,7 +44,7 @@ describe('NavBarComponent', () => {
   beforeEach(() => {
     injector = getTestBed();
     fixture = TestBed.createComponent(NavBarComponent);
-    service = injector.get(LoginStatusService);
+    service = injector.inject(LoginStatusService) as any as MockLoginStatusService;
     component = fixture.componentInstance;
   });
 
