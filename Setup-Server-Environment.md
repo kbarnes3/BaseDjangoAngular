@@ -36,14 +36,14 @@ These steps will prepare your user account to be used to successfully deploy and
     1. `--prompt-for-passphrase` prompts for a SSH key phrase if your private key requires a passphrase (and you aren't using an SSH agent).
 1. The Fabric command ```setup-user``` is used to configure a new or existing user account. It takes a series of required and optional parameters. Run one of the below commands to setup a user account.  
     1. The first parameter is ```$linux_user$```. ```$linux_user$``` is either an existing Linux user account or the name of the user you want to create. This account will be prepped to deploy and update NewDjangoSite sites, which includes being granted sudo access. 
-    1. The second parameter is `--no-sudo-passwd` which indicates you don't want to be challenged with a password when running sudo logged in as `$user$`. This is recommended if you plan on logging in using a public/private key pair. If this parameter is provided, any value other than an empty string will be interpreted as true. 
+    1. The second parameter is `--disable-sudo-passwd` which indicates you don't want to be challenged with a password when running sudo logged in as `$user$`. This is recommended if you plan on logging in using a public/private key pair. If this parameter is provided, any value other than an empty string will be interpreted as true. 
     Note that PowerShell requires everything from "setup_user" onward to be in quotes due to the comma.
-    1. The third parameter is `--public-key-file`. This parameter specifies a file on disk that contains a public key that should be used for authentication of SSH instead of the user password. This parameter should probably be used in conjunction with `--no-sudo-passwd` if you don't want to have to specify a password as soon as Fabric runs a command with sudo.
+    1. The third parameter is `--set-public-key-file`. This parameter specifies a file on disk that contains a public key that should be used for authentication of SSH instead of the user password. This parameter should probably be used in conjunction with `--no-sudo-passwd` if you don't want to have to specify a password as soon as Fabric runs a command with sudo.
     1. The first time you use this command, it might look like:  
-    `fab --hosts $user$@$a.b.c.d$ setup-user $user$ --no-sudo-passwd --public-key-file C:\Users\You\.ssh\id_rsa.pub --prompt-for-login-password --prompt-for-sudo-password`  
+    `fab --hosts $user$@$a.b.c.d$ setup-user $user$ --disable-sudo-passwd --set-public-key-file C:\Users\You\.ssh\id_rsa.pub --prompt-for-login-password --prompt-for-sudo-password`  
     Where both `$user$` values are the sudo account you set up when installing Ubuntu.
     Alternatively, there is a PowerShell wrapper for this script. An equivalent is:  
-    `Fabric-SetupUser -Hosts "$user$@$a.b.c.d$" -User $user$ -NoSudoPasswd -PublicKeyFile C:\Users\You\.ssh\id_rsa.pub -PromptForLoginPassword -PromptForSudoPassword`
+    `Fabric-SetupUser -Hosts "$user$@$a.b.c.d$" -User $user$ -DisableSudoPasswd -SetPublicKeyFile C:\Users\You\.ssh\id_rsa.pub -PromptForLoginPassword -PromptForSudoPassword`
 1. More public keys can be added with the command:  
 `fab --hosts $user$@$a.b.c.d$ add-authorized-key $linux_user$ C:\Users\You\.ssh\id_rsa.pub`  
 or via PowerShell with:  

@@ -18,14 +18,14 @@ REPO_FULL_NAME = 'GitHubUser/GitHubRepo'
 
 
 @Task
-def setup_user(conn, user, no_sudo_passwd=False, public_key_file=None):
+def setup_user(conn, user, disable_sudo_passwd=False, set_public_key_file=None):
     messages = plush.fabric_commands.prepare_user(
         conn,
         user,
         WEBADMIN_GROUP,
         add_sudo=True,
-        no_sudo_passwd=no_sudo_passwd)
-    add_authorized_key(conn, user, public_key_file)
+        no_sudo_passwd=disable_sudo_passwd)
+    add_authorized_key(conn, user, set_public_key_file)
 
     if not exists(conn, '/usr/bin/createuser'):
         plush.fabric_commands.install_packages(conn, ['postgresql'])
@@ -43,9 +43,9 @@ def setup_user(conn, user, no_sudo_passwd=False, public_key_file=None):
 
 
 @Task
-def add_authorized_key(conn, user, public_key_file):
-    if public_key_file:
-        with open(public_key_file, 'r') as public_key:
+def add_authorized_key(conn, user, set_public_key_file):
+    if set_public_key_file:
+        with open(set_public_key_file, 'r') as public_key:
             public_key_contents = public_key.read()
         plush.fabric_commands.add_authorized_key(conn, user, public_key_contents)
 

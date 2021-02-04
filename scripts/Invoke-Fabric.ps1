@@ -60,8 +60,8 @@ Set-Item function:global:Fabric-SetupUser {
         [string]$Hosts,
         [Parameter(Mandatory=$true)]
         [string]$User,
-        [string]$PublicKeyFile,
-        [switch]$NoSudoPasswd,
+        [string]$SetPublicKeyFile,
+        [switch]$DisableSudoPasswd,
         [switch]$PromptForPassphrase,
         [switch]$PromptForLoginPassword,
         [switch]$PromptForSudoPassword
@@ -69,12 +69,12 @@ Set-Item function:global:Fabric-SetupUser {
     $setupUserArgs = @("setup-user")
     $setupUserArgs += "--user"
     $setupUserArgs += $User
-    if ($PublicKeyFile) {
-        $setupUserArgs += "--public-key-file"
-        $setupUserArgs += $PublicKeyFile
+    if ($SetPublicKeyFile) {
+        $setupUserArgs += "--set-public-key-file"
+        $setupUserArgs += $SetPublicKeyFile
     }
-    if ($NoSudoPasswd) {
-        $setupUserArgs += "--no-sudo-passwd"
+    if ($DisableSudoPasswd) {
+        $setupUserArgs += "--disable-sudo-passwd"
     }
 
     Invoke-Fabric $Hosts -PromptForPassphrase:$PromptForPassphrase -PromptForLoginPassword:$PromptForLoginPassword -PromptForSudoPassword:$PromptForSudoPassword $setupUserArgs
