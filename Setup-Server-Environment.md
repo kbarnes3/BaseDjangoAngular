@@ -47,12 +47,12 @@ These steps will prepare your user account to be used to successfully deploy and
 1. More public keys can be added with the command:  
 `fab --hosts $user$@$a.b.c.d$ add-authorized-key $linux_user$ C:\Users\You\.ssh\id_rsa.pub`  
 or via PowerShell with:  
-`Fabric-AddAuthorizedKey -Hosts $user$@$a.b.c.d$ -User $linux_user$ -PublicKeyFile C:\Users\You\.ssh\id_rsa.pub`
+`Fabric-AddAuthorizedKey -Hosts $user$@$a.b.c.d$ -User $linux_user$ -SetPublicKeyFile C:\Users\You\.ssh\id_rsa.pub`
 1. Repeat these steps for any additional users. Note that if ```$linux_user$``` does not exist, it will be created with a password disabled. If public key authentication is not going to be used for this account, you'll need to log in and set a password manually.
 1. If public key authentication is going to be used exclusively for remote access, you can disable password based authentication by running:  
 `fab disable-ssh-passwords --hosts $user$@$a.b.c.d$`  
 or via PowerShell with:  
-`Fabric-DisableSshPasswords -Hosts $user$@$a.b.c.d$`
+`Fabric-DisableSshPasswords -Hosts $user$@$a.b.c.d$`  
 and following the directions printed.
 
 Setup global server environment
