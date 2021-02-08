@@ -6,28 +6,28 @@ from plush.fabric_commands.permissions import set_permissions_file
 
 CONFIGURATIONS = {
     'daily': {
-        'branch': 'master',
+        'branch': 'trunk',
         'ssl': True,
         'secret_repo_name': 'kbarnes3/BaseDjangoAngularSecrets',
-        'secret_repo_branch': 'master',
+        'secret_repo_branch': 'trunk',
     },
     'dev': {
-        'branch': 'master',
+        'branch': 'trunk',
         'ssl': True,
         'secret_repo_name': 'kbarnes3/BaseDjangoAngularSecrets',
-        'secret_repo_branch': 'master',
+        'secret_repo_branch': 'trunk',
     },
     'prod': {
         'branch': 'prod',
         'ssl': True,
         'secret_repo_name': 'kbarnes3/BaseDjangoAngularSecrets',
-        'secret_repo_branch': 'master',
+        'secret_repo_branch': 'trunk',
     },
     'staging': {
         'branch': 'prod',
         'ssl': True,
         'secret_repo_name': 'kbarnes3/BaseDjangoAngularSecrets',
-        'secret_repo_branch': 'master',
+        'secret_repo_branch': 'trunk',
     },
 }
 
@@ -89,10 +89,10 @@ def deploy(conn, config, branch=None, secret_branch=None):
 
 
 def _update_source(conn: Connection, repo_dir: str, branch: str):
-    directory(conn, repo_dir, group=WEBADMIN_GROUP, mode='ug+w')
+    directory(conn, repo_dir, group=WEBADMIN_GROUP, mode='ug+w', sudo=True)
     with conn.cd(repo_dir):
-        conn.sudo('git fetch origin')
-        conn.sudo('git reset --hard origin/{0}'.format(branch))
+        conn.run('sudo git fetch origin')
+        conn.run('sudo git reset --hard origin/{0}'.format(branch))
 
 
 def _compile_source(conn: Connection, config: str, repo_dir: str, web_dir: str, virtualenv_python: str):

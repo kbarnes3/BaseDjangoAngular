@@ -14,7 +14,7 @@ from plush.repo_keys import add_repo_key
 from .deploy import checkout_branch, deploy, get_secret_repo_branch, get_secret_repo_dir
 from .deploy import get_secret_repo_name, get_repo_dir, WEBADMIN_GROUP
 
-REPO_FULL_NAME = 'GitHubUser/GitHubRepo'
+REPO_FULL_NAME = 'kbarnes3/BaseDjangoAngular'
 
 
 @Task
@@ -123,8 +123,9 @@ def _setup_wins(conn: Connection):
     conn.sudo('service systemd-resolved restart')
 
 
+@Task
 def setup_deployment(conn, config, branch=None, secret_branch=None):
-    django_settings = import_module('newdjangosite.settings_{0}'.format(config))
+    django_settings = import_module('back.newdjangosite.settings_{0}'.format(config))
     db_settings = django_settings.DATABASES['default']
     db_name = db_settings['NAME']
     db_user = db_settings['USER']
@@ -146,7 +147,7 @@ def setup_deployment(conn, config, branch=None, secret_branch=None):
     matching_user_count = conn.run(
         "psql postgres -tAc \"SELECT 1 FROM pg_roles WHERE rolname='{0}'\"".format(db_user)).stdout
     if '1' not in matching_user_count:
-        conn.run('createuser -s {0}}'.format(db_user))
+        conn.run('createuser -s {0}'.format(db_user))
 
     conn.run('psql -d postgres -c \"ALTER ROLE {0} WITH ENCRYPTED PASSWORD \'{1}\';\"'.format(
         db_user,
