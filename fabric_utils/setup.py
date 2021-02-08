@@ -116,7 +116,7 @@ def _setup_wins(conn: Connection):
     ]
 
     plush.fabric_commands.install_packages(conn, wins_packages)
-    sudo('sed -i s/\'hosts:.*/hosts:          files dns wins/\' /etc/nsswitch.conf')
+    conn.sudo('sed -i s/\'hosts:.*/hosts:          files dns wins/\' /etc/nsswitch.conf')
     resolved_config = '/etc/systemd/resolved.conf'
     conn.sudo("sed -i '/^ *Domains/d' {0}".format(resolved_config))
     conn.sudo('echo "Domains=localdomain" | sudo tee -a {0}'.format(resolved_config), pty=True)

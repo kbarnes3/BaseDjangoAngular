@@ -124,7 +124,7 @@ Set-Item function:global:Fabric-SetupServer {
         [switch]$PromptForSudoPassword
     )
     $setupServerArgs = @("setup-server")
-    if ($NoSudoPasswd) {
+    if ($SetupWins) {
         $setupServerArgs += "--setup-wins"
     }
 
