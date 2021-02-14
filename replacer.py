@@ -5,7 +5,7 @@ from os.path import join, splitext
 PLACEHOLDER_VARIABLE = 'newdjangosite'
 PLACEHOLDER_TITLE = 'NewDjangoSite'
 PLACEHOLDER_DOMAIN = 'yourdomain.tld'
-PLACEHOLDER_GITHUB_REPO = 'GitHubUser/GitHubRepo'
+PLACEHOLDER_GITHUB_REPO = 'kbarnes3/BaseDjangoAngular'
 PLACEHOLDER_OWNER = 'DjangoSiteOwner'
 PLACEHOLDER_EMAIL = 'djangositeemail@example.com'
 

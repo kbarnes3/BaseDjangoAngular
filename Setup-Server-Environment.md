@@ -5,7 +5,7 @@ These directions will set up a new server.
 They are the same directions for setting up a test server stack or a full production environment.
 For consistency, the only OS supported for a server is Ubuntu Server 18.04.
 Most server operations should be done through Fabric, which is already installed if you followed the steps in Setup-Dev-Environment.md.
-Fabric can be run by running ```fab``` in a virtualenv while in the \web directory.
+Fabric can be run by running ```fab``` in a virtualenv while in the root directory.
 To simplify this, \scripts\Invoke-Fabric.ps1 or the ```Invoke-Fabric``` function can be used from PowerShell.
 
 Prep for Fabric
@@ -29,31 +29,45 @@ Setup user account for deploying
 These steps will prepare your user account to be used to successfully deploy and update a NewDjangoSite deployment to your server. These steps can be used to create a new user or modify an existing user.
 
 1. Make sure you run all the following commands in a PowerShell prompt set up by following Setup-Dev-Environment.md
-1. The Fabric command ```setup_user``` is used to configure a new or existing user account. It takes a series of required and optional parameters. Run one of the below commands to setup a user account.  
-    1. The first parameter is ```$linux_user$```. ```$linux_user$``` is either an existing user account or the name of the user you want to create. This account will be prepped to deploy and update NewDjangoSite sites, which includes being granted sudo access. The simplest form of the ```setup_user``` command is ```fab setup_user:$linux_user$```.  
-    1. The second parameter is ```no_sudo_passwd``` which indicates you don't want to be challenged with a password when running sudo logged in as ```$linux_user$```. This is recommended if you plan on logging in using a public/private key pair. If this parameter is provided, any value other than an empty string will be interpreted as true. This parameter defaults to '' if not provided. Specifying this parameter will resemble this:  
-    ```fab "setup_user:$linux_user$,no_sudo_passwd=true"```  
+1. All Fabric commands take a few common parameters to describe how to connect to the server.  
+    1. First is `--host` with takes a value that looks like `$user$@$hostname$`. For our purposes `$user` must be an existing account with sudo access. You set up at least one account like this when installing the OS, and more can be setup later using the `setup-user` command. `$hostname$` is anything that will resolve to your server's IP address.
+    1. `--prompt-for-login-password` is required if you are using a password to log in to the server.
+    1. `--prompt-for-sudo-password` is required if you will get prompted for a password when using the `sudo` command. This is true by default in Ubuntu, but the `setup-user` command can modify this.  
+    1. `--prompt-for-passphrase` prompts for a SSH key phrase if your private key requires a passphrase (and you aren't using an SSH agent).
+1. The Fabric command ```setup-user``` is used to configure a new or existing user account. It takes a series of required and optional parameters. Run one of the below commands to setup a user account.  
+    1. The first parameter is ```$linux_user$```. ```$linux_user$``` is either an existing Linux user account or the name of the user you want to create. This account will be prepped to deploy and update NewDjangoSite sites, which includes being granted sudo access. 
+    1. The second parameter is `--disable-sudo-passwd` which indicates you don't want to be challenged with a password when running sudo logged in as `$user$`. This is recommended if you plan on logging in using a public/private key pair. If this parameter is provided, any value other than an empty string will be interpreted as true. 
     Note that PowerShell requires everything from "setup_user" onward to be in quotes due to the comma.
-    1. The third parameter is ```public_key_file```. This parameter specifies a file on disk that contains a public key that should be used for authentication of SSH instead of the user password. This parameter should probably be used in conjunction with ```no_sudo_passwd``` if you don't want to have to specify a password as soon as Fabric runs a command with sudo. Specifying this parameter will resemble this:  
-    ```fab "setup_user:$linux_user$,no_sudo_passwd=true,public_key_file=C:\Users\You\.ssh\id_rsa.pub"```  
-    Note that PowerShell requires everything from "setup_user" onward to be in quotes due to the commas.
-1. When prompted by Fabric to enter a hostname, the username you provide must already exist and have sudo access. This may or may not be the same as the ```$linux_user$``` provided above.
+    1. The third parameter is `--set-public-key-file`. This parameter specifies a file on disk that contains a public key that should be used for authentication of SSH instead of the user password. This parameter should probably be used in conjunction with `--no-sudo-passwd` if you don't want to have to specify a password as soon as Fabric runs a command with sudo.
+    1. The first time you use this command, it might look like:  
+    `fab --hosts $user$@$a.b.c.d$ setup-user $user$ --disable-sudo-passwd --set-public-key-file C:\Users\You\.ssh\id_rsa.pub --prompt-for-login-password --prompt-for-sudo-password`  
+    Where both `$user$` values are the sudo account you set up when installing Ubuntu.
+    Alternatively, there is a PowerShell wrapper for this script. An equivalent is:  
+    `Fabric-SetupUser -Hosts "$user$@$a.b.c.d$" -User $user$ -DisableSudoPasswd -SetPublicKeyFile C:\Users\You\.ssh\id_rsa.pub -PromptForLoginPassword -PromptForSudoPassword`
 1. More public keys can be added with the command:  
-```fab "add_authorized_key:$linux_user,C:\Users\You\.ssh\id_rsa.pub"```
+`fab --hosts $user$@$a.b.c.d$ add-authorized-key $linux_user$ C:\Users\You\.ssh\id_rsa.pub`  
+or via PowerShell with:  
+`Fabric-AddAuthorizedKey -Hosts $user$@$a.b.c.d$ -User $linux_user$ -SetPublicKeyFile C:\Users\You\.ssh\id_rsa.pub`
 1. Repeat these steps for any additional users. Note that if ```$linux_user$``` does not exist, it will be created with a password disabled. If public key authentication is not going to be used for this account, you'll need to log in and set a password manually.
 1. If public key authentication is going to be used exclusively for remote access, you can disable password based authentication by running:  
-```fab disable_ssh_passwords```  
+`fab disable-ssh-passwords --hosts $user$@$a.b.c.d$`  
+or via PowerShell with:  
+`Fabric-DisableSshPasswords -Hosts $user$@$a.b.c.d$`  
 and following the directions printed.
 
 Setup global server environment
 -------------------------------
-These steps will install system wide packages and make other global changes that will impact all deployments on this server. These steps only need to be run once.
+These steps will install system wide packages and make other global changes that will impact all deployments on this server. These steps only need to be run once per server.
 
-1. Run ```fab setup_server``` or ```fab "setup_server:setup_wins=True"```. This script will install a variety of packages with apt-get, make various directories, and properly secure these directories. Adding the ```setup_wins``` parameter will configure the server to broadcast its name via the WINS protocol. This lets you refer to the server by the value in ```/etc/hostname``` from a Windows computer on the same subnet. Consider adding ```setup_wins``` if this server is on the same subnet as Windows computers that will interact with it.
+1. Run:  
+`fab --hosts $user$@$a.b.c.d$ setup-server`  
+or:  
+`fab --hosts $user$@$a.b.c.d$ setup-server --setup-wins`  
+(a PowerShell wrapper is available with `Fabric-SetupServer`). This script will install a variety of packages with apt-get, make various directories, and properly secure these directories. Adding the `--setup-wins` (or `-SetupWins` in PowerShell) parameter will configure the server to broadcast its name via the WINS protocol. This lets you refer to the server by the value in ```/etc/hostname``` from a Windows computer on the same subnet. Consider adding ```--setup-wins``` if this server is on the same subnet as Windows computers that will interact with it.
 
 Setup deployment
 ----------------
-These steps will get a specific deployment of NewDjangoSite running on a server that's been setup using the above directions. Any server can run one or more of the available deployments (prod, staging, daily, dev). See the ```web/newdjangosite/settings*.py``` files for the differences between the deployments. These steps can be repeated once for each desired deployments.
+These steps will get a specific deployment of NewDjangoSite running on a server that's been setup using the above directions. Any server can run one or more of the available deployments (prod, staging, daily, dev). See the `back/newdjangosite/settings*.py` files for the differences between the deployments. These steps can be repeated once for each desired deployments.
 
 1. Consider updating the database username and password found in ```web/newdjangosite/settings_$deployment$.py``` file. If you update it, commit and push your changes before continuing. Note that the Fabric script won't work with passwords containing shell escape characters.
 1. Run ```auth``` and follow the prompts in the browser, logging into GitHub with an account that can set deploy keys on this repo.

@@ -1,6 +1,4 @@
-Set-Item function:global:Invoke-Fabric {
-    . $PSScriptRoot\Invoke-Fabric.ps1 @args
-} -Force
+. $PSScriptRoot\Invoke-Fabric.ps1
 
 Set-Item function:global:Invoke-Manage {
     param([switch]$Async)
