@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { versionInfo } from './version-info';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'NewDjangoSite';
+  gitVersion: string = versionInfo.hash;
 }
