@@ -31,11 +31,11 @@ Write-Status "Updating requirements"
 Write-Status "Updating dev-requirements"
 & pip install -r (Join-Path $project_root "dev-requirements.txt") $quiet
 Write-Status "Updating npm"
-. $PSScriptRoot\Invoke-Npm install -g "npm@6" $quiet
+. $PSScriptRoot\Invoke-Npm @('install', '-g', 'npm@6')
 Write-Status "Updating Angular CLI"
-. $PSScriptRoot\Invoke-Npm install -g @angular/cli $quiet
+. $PSScriptRoot\Invoke-Npm @('install', '-g', '@angular/cli')t
 Write-Status "Updating requirements"
-. $PSScriptRoot\Invoke-Npm install $quiet
+. $PSScriptRoot\Invoke-Npm @('install')
 
 if ($Global:console_functions) {
     # Define or update the console scripts if we want them
