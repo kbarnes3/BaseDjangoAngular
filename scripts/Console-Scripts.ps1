@@ -6,7 +6,8 @@ Set-Item function:global:Invoke-Manage {
 } -Force
 
 Set-Item function:global:Invoke-Npm {
-    . $PSScriptRoot\Invoke-Npm.ps1 @args
+    param([switch]$Async, $NpmArgs)
+    . $PSScriptRoot\Invoke-Npm.ps1 -Async:$Async $NpmArgs
 } -Force
 
 Set-Item function:global:Invoke-Ng {
@@ -15,8 +16,8 @@ Set-Item function:global:Invoke-Ng {
 } -Force
 
 Set-Item function:global:Start-Angular {
-    $open = "--open"
-    Invoke-Ng -Async serve --proxy-config proxy.conf.json $open
+    $npmArgs = @("start", "--", "--open")
+    Invoke-Npm -Async $npmArgs
 } -Force
 
 Set-Item function:global:Start-Django {
