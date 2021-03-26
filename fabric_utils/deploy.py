@@ -89,7 +89,7 @@ def deploy(conn, config, branch=None, secret_branch=None):
 
 
 def _update_source(conn: Connection, repo_dir: str, branch: str):
-    directory(conn, repo_dir, group=WEBADMIN_GROUP, mode='ug+w', sudo=True)
+    directory(conn, repo_dir, user='root', group=WEBADMIN_GROUP, mode='ug+w', sudo=True)
     with conn.cd(repo_dir):
         conn.run('sudo git fetch origin')
         conn.run('sudo git reset --hard origin/{0}'.format(branch))

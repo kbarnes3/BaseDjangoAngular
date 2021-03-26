@@ -156,23 +156,27 @@ def setup_deployment(conn, config, branch=None, secret_branch=None):
     _setup_main_repo(conn, repo_dir, config, branch)
     _setup_secret_repo(conn, config, secret_branch)
 
-    with conn.cd(repo_dir):
-        if not exists('venv'):
-            conn.run('python3 -m venv --system-site-packages venv')
+    venv_dir = '{0}/venv'.format(repo_dir)
+    if not exists(conn, venv_dir):
+        conn.sudo('python3 -m venv --system-site-packages {0}'.format(venv_dir))
+
 
     global_dir = '{0}/config/ubuntu-18.04/global'.format(repo_dir)
-    with conn.cd(global_dir):
-        uwsgi_socket = '/etc/systemd/system/uwsgi-app@.socket'
-        uwsgi_service = '/etc/systemd/system/uwsgi-app@.service'
+    uwsgi_socket_source = '{0}/uwsgi-app@.socket'.format(global_dir)
+    uwsgi_service_source = '{0}/uwsgi-app@.service'.format(global_dir)
 
-        if not exists(conn, uwsgi_socket):
-            conn.sudo('cp uwsgi-app@.socket {0}'.format(uwsgi_socket))
-            set_permissions_file(conn, uwsgi_socket, 'root', 'root', '644')
+    uwsgi_socket = '/etc/systemd/system/uwsgi-app@.socket'
+    uwsgi_service = '/etc/systemd/system/uwsgi-app@.service'
 
-        if not exists(uwsgi_service):
-            conn.sudo('cp uwsgi-app@.service {0}'.format(uwsgi_service))
-            set_permissions_file(conn, uwsgi_service, 'root', 'root', '644')
+    if not exists(conn, uwsgi_socket):
+        conn.sudo('cp {0} {1}'.format(uwsgi_socket_source, uwsgi_socket))
+        set_permissions_file(conn, uwsgi_socket, 'root', 'root', '644')
 
+    if not exists(conn, uwsgi_service):
+        conn.sudo('cp {0} {1}'.format(uwsgi_service_source, uwsgi_service))
+        set_permissions_file(conn, uwsgi_service, 'root', 'root', '644')
+
+    print('deploying...')
     deploy(conn, config, branch, secret_branch)
 
     # if database_created:
