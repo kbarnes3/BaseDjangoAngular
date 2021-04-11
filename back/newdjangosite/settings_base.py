@@ -86,6 +86,8 @@ DATABASES = {
     }
 }
 
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 # User model/login
 AUTH_USER_MODEL = 'users.User'
 
