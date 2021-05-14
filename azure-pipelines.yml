@@ -17,7 +17,7 @@ steps:
 
 - task: NodeTool@0
   inputs:
-    versionSpec: '12.x'
+    versionSpec: '14.x'
   displayName: 'Install Node.js'
 
 - script: |
@@ -45,7 +45,7 @@ steps:
 
 - script: |
     cd front
-    npm install -g npm
+    npm install -g npm@6
     npm install -g @angular/cli
     npm ci
   displayName: 'Install required packages (npm install)'
