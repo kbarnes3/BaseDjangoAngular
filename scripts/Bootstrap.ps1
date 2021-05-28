@@ -31,7 +31,7 @@ Write-Status "Updating requirements"
 Write-Status "Updating dev-requirements"
 & pip install -r (Join-Path $project_root "dev-requirements.txt") $quiet
 Write-Status "Updating npm"
-. $PSScriptRoot\Invoke-Npm @('install', '-g', 'npm@6')
+. $PSScriptRoot\Invoke-Npm @('install', '-g', 'npm@7')
 Write-Status "Updating Angular CLI"
 . $PSScriptRoot\Invoke-Npm @('install', '-g', '@angular/cli')t
 Write-Status "Updating requirements"
