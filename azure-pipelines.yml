@@ -45,7 +45,7 @@ steps:
 
 - script: |
     cd front
-    npm install -g npm@6
+    npm install -g npm@7
     npm install -g @angular/cli
     npm ci
   displayName: 'Install required packages (npm install)'
