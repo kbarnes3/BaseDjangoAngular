@@ -3,10 +3,10 @@ from typing import Optional
 
 from fabric import Task
 from fabric.connection import Connection
-from patchwork.files import directory, exists
+from patchwork.files import exists
 import plush.fabric_commands
 from plush.fabric_commands.git import clone
-from plush.fabric_commands.permissions import set_permissions_file
+from plush.fabric_commands.permissions import ensure_directory, set_permissions_file
 from plush.fabric_commands.ssh_key import create_key
 from plush.oauth_flow import verify_access_token
 from plush.repo_keys import add_repo_key
@@ -86,15 +86,15 @@ def setup_server(conn, setup_wins=False):
         _setup_wins(conn)
 
     conn.sudo('mkdir -p /etc/nginx/ssl')
-    directory(conn, '/var/www', group=WEBADMIN_GROUP, sudo=True)
-    directory(conn, '/var/www/python', group=WEBADMIN_GROUP, sudo=True)
+    ensure_directory(conn, '/var/www', owning_group=WEBADMIN_GROUP)
+    ensure_directory(conn, '/var/www/python', owning_group=WEBADMIN_GROUP)
 
     matching_user_count = conn.run(
         "psql postgres -tAc \"SELECT 1 FROM pg_roles WHERE rolname='root'\"").stdout
     if '1' not in matching_user_count:
         conn.run('createuser -s root')
 
-    directory(conn, '/var/uwsgi', user='root', group='root', mode='777', sudo=True)
+    ensure_directory(conn, '/var/uwsgi', owning_group='root', mod='777')
 
     default_site = '/etc/nginx/sites-enabled/default'
     if exists(conn, default_site):
@@ -199,7 +199,7 @@ def _setup_secret_repo(conn: Connection, config: str, secret_branch_override: Op
 
 
 def _setup_repo(conn: Connection, repo_dir: str, repo_name: str):
-    directory(conn, repo_dir, group=WEBADMIN_GROUP, sudo=True)
+    ensure_directory(conn, repo_dir, owning_group=WEBADMIN_GROUP)
 
     if not exists(conn, '{0}/.git'.format(repo_dir)):
         if not verify_access_token():
