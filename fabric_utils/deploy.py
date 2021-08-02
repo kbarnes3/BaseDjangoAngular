@@ -104,7 +104,7 @@ def _compile_source(conn: Connection, config: str, repo_dir: str, backend_dir: s
     with conn.cd(backend_dir):
         conn.run('sudo find . -iname "*.pyc" -delete')
         conn.run('sudo {0} -m compileall .'.format(virtualenv_python))
-        # conn.run('sudo {0} manage_{1}.py collectstatic --noinput'.format(virtualenv_python, config))
+        conn.run('sudo {0} manage_{1}.py collectstatic --noinput'.format(virtualenv_python, config))
 
 
 def _update_scripts(conn: Connection, config: str, daily_scripts_dir: str):
