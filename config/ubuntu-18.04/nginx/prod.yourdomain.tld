@@ -68,6 +68,11 @@ server {
 	access_log  /var/log/nginx/localhost.access.log;
 
 	location / {
+		root   /var/www/python/newdjangosite-prod/front/dist;
+		try_files $uri $uri/ /index.html;
+	}
+
+	location /api/ {
 		uwsgi_pass unix:/var/run/uwsgi/newdjangosite-prod.socket;
 		uwsgi_param  QUERY_STRING       $query_string;
 		uwsgi_param  REQUEST_METHOD     $request_method;
@@ -84,10 +89,6 @@ server {
 		uwsgi_param  REMOTE_PORT        $remote_port;
 		uwsgi_param  SERVER_PORT        $server_port;
 		uwsgi_param  SERVER_NAME        $server_name;
-	}
-
-	location /static/ {
-		root   /var/www/newdjangosite-prod;
 	}
 }
 

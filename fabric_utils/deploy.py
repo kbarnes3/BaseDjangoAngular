@@ -69,6 +69,7 @@ def deploy(conn, config, branch=None, secret_branch=None):
 
     repo_dir = get_repo_dir(config)
     backend_dir = '{0}/back'.format(repo_dir)
+    frontend_dir = '{0}/front'.format(repo_dir)
     config_dir = '{0}/config/ubuntu-18.04'.format(repo_dir)
     daily_scripts_dir = '{0}/cron.daily'.format(config_dir)
     uwsgi_dir = '{0}/uwsgi'.format(config_dir)
@@ -83,6 +84,7 @@ def deploy(conn, config, branch=None, secret_branch=None):
     _update_scripts(conn, config, daily_scripts_dir)
     _update_database(conn, config, backend_dir, virtualenv_python)
     _reload_code(conn, config, uwsgi_dir)
+    _build_content(conn, frontend_dir)
     _reload_web(conn, config, nginx_dir, use_ssl, ssl_dir)
     _run_tests(conn, config, backend_dir, virtualenv_python)
 
@@ -102,7 +104,7 @@ def _compile_source(conn: Connection, config: str, repo_dir: str, backend_dir: s
     with conn.cd(backend_dir):
         conn.run('sudo find . -iname "*.pyc" -delete')
         conn.run('sudo {0} -m compileall .'.format(virtualenv_python))
-        conn.run('sudo {0} manage_{1}.py collectstatic --noinput'.format(virtualenv_python, config))
+        # conn.run('sudo {0} manage_{1}.py collectstatic --noinput'.format(virtualenv_python, config))
 
 
 def _update_scripts(conn: Connection, config: str, daily_scripts_dir: str):
@@ -130,6 +132,15 @@ def _reload_code(conn: Connection, config: str, uwsgi_dir: str):
         conn.run('sudo systemctl enable uwsgi-app@newdjangosite-{0}.service'.format(config))
         conn.run('sudo systemctl start uwsgi-app@newdjangosite-{0}.socket'.format(config))
         conn.run('sudo touch /var/run/uwsgi/newdjangosite-{0}.reload'.format(config))
+
+
+def _build_content(conn: Connection, angular_dir: str):
+    print('build_content')
+    with conn.cd(angular_dir):
+        conn.run('sudo npm install -g npm@7')
+        conn.run('sudo npm install -g @angular/cli')
+        conn.run('sudo npm ci')
+        conn.run('sudo npm run-script build')
 
 
 def _reload_web(conn: Connection, config: str, nginx_dir: str, ssl: bool, ssl_dir: str):
