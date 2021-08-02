@@ -7,8 +7,8 @@ import {LoginStatus, LoginStatusService} from '../login-status.service';
   styleUrls: ['./nav-bar.component.scss']
 })
 export class NavBarComponent implements OnInit {
-  private isCollapsed: boolean;
-  private status: LoginStatus;
+  public isCollapsed: boolean;
+  public status: LoginStatus;
 
   constructor(private statusService: LoginStatusService) { }
 
