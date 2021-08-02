@@ -141,6 +141,7 @@ def _build_content(conn: Connection, angular_dir: str):
         conn.run('sudo npm install -g @angular/cli')
         conn.run('sudo npm ci')
         conn.run('sudo npm run-script build')
+        conn.run('sudo rsync -va dist/front built')
 
 
 def _reload_web(conn: Connection, config: str, nginx_dir: str, ssl: bool, ssl_dir: str):
