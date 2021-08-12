@@ -85,6 +85,17 @@ Note that no changes are made to ```$deployment$```, the files are just copied f
 Deploying new changes
 ---------------------
 Once a server deployment is set up, only one command is generally needed to update it with the latest changes pushed to GitHub:  
-```fab deploy:$deployment$```  
-This command replies on configuration parameters defined at the top ```web/fabric_utils/deploy.py``` to define the behaviors that should be different on a per-deployment basis. Settings include the default branch and whether or not SSL related files are expected to exist.  
-This command also takes an optional ```branch=``` parameter to override the default branch.
+```fab --hosts $user$@$a.b.c.d$ deploy $deployment$```
+
+A PowerShell wrapper is available using ```Fabric-Deploy```.
+
+Depending on how the server authentication is setup, standard Fabric parameters such as 
+```--prompt-for-login-password```, ```--prompt-for-sudo-password```, or ```--prompt-for-passphrase``` 
+may be needed as well.
+
+This command replies on configuration parameters defined at the top ```fabric_utils/deploy.py``` 
+to define the behaviors that should be different on a per-deployment basis. 
+Settings include the default branch and whether or not SSL related files are expected to exist.  
+
+This command also takes optional ```--branch``` and ```--secret-branch``` parameters 
+to override the default branch for the main and secret repos.
