@@ -1,6 +1,7 @@
 from importlib import import_module
 from typing import Optional
 
+from colorama import init
 from fabric import Task
 from fabric.connection import Connection
 from patchwork.files import exists
@@ -15,7 +16,7 @@ from .deploy import checkout_branch, deploy, get_secret_repo_branch, get_secret_
 from .deploy import get_secret_repo_name, get_repo_dir, WEBADMIN_GROUP
 
 REPO_FULL_NAME = 'kbarnes3/BaseDjangoAngular'
-
+init(autoreset=True)
 
 @Task
 def setup_user(conn, user, disable_sudo_passwd=False, set_public_key_file=None):

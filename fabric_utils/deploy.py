@@ -1,4 +1,6 @@
 from typing import Optional
+
+from colorama import Fore, init
 from fabric import Task
 from fabric.connection import Connection
 from plush.fabric_commands.permissions import ensure_directory, set_permissions_file
@@ -33,6 +35,7 @@ CONFIGURATIONS = {
 PYTHON_DIR = '/var/www/python'
 WEBADMIN_GROUP = 'webadmin'
 
+init(autoreset=True)
 
 class AllowedException(Exception):
     pass
@@ -67,6 +70,10 @@ def deploy(conn, config, branch=None, secret_branch=None):
     secret_branch = get_secret_repo_branch(config, secret_branch)
     use_ssl = configuration['ssl']
 
+    print(Fore.GREEN + ('Deploying {0} from branch {1} with ' + 
+        'secret repo from branch {2}').format(
+            config, branch, secret_branch))
+
     repo_dir = get_repo_dir(config)
     backend_dir = '{0}/back'.format(repo_dir)
     frontend_dir = '{0}/front'.format(repo_dir)
@@ -90,6 +97,7 @@ def deploy(conn, config, branch=None, secret_branch=None):
 
 
 def _update_source(conn: Connection, repo_dir: str, branch: str):
+    print(Fore.GREEN + 'update_source for {0}'.format(repo_dir))
     ensure_directory(conn, repo_dir, owning_group=WEBADMIN_GROUP, mod='ug+w')
     with conn.cd(repo_dir):
         conn.run('sudo git fetch origin')
@@ -97,7 +105,7 @@ def _update_source(conn: Connection, repo_dir: str, branch: str):
 
 
 def _compile_source(conn: Connection, config: str, repo_dir: str, backend_dir: str, virtualenv_python: str):
-    print('compile_source')
+    print(Fore.GREEN + 'compile_source')
     with conn.cd(repo_dir):
         conn.run('venv/bin/pip install --quiet --requirement=requirements.txt')
 
@@ -108,7 +116,7 @@ def _compile_source(conn: Connection, config: str, repo_dir: str, backend_dir: s
 
 
 def _update_scripts(conn: Connection, config: str, daily_scripts_dir: str):
-    print('update_scripts')
+    print(Fore.GREEN + 'update_scripts')
     cron_daily_dir = '/etc/cron.daily'
     with conn.cd(daily_scripts_dir):
         conn.run('sudo cp newdjangosite-{0}-* {1}'.format(config, cron_daily_dir))
@@ -118,13 +126,13 @@ def _update_scripts(conn: Connection, config: str, daily_scripts_dir: str):
 
 
 def _update_database(conn: Connection, config: str, backend_dir: str, virtualenv_python: str):
-    print('update_database')
+    print(Fore.GREEN + 'update_database')
     with conn.cd(backend_dir):
         conn.run('sudo {0} manage_{1}.py migrate'.format(virtualenv_python, config))
 
 
 def _reload_code(conn: Connection, config: str, uwsgi_dir: str):
-    print('reload_code')
+    print(Fore.GREEN + 'reload_code')
     with conn.cd(uwsgi_dir):
         conn.run('sudo cp newdjangosite-{0}.ini /etc/uwsgi/apps-available'.format(config))
         conn.run('sudo chmod 644 /etc/uwsgi/apps-available/newdjangosite-{0}.ini'.format(config))
@@ -135,7 +143,7 @@ def _reload_code(conn: Connection, config: str, uwsgi_dir: str):
 
 
 def _build_content(conn: Connection, angular_dir: str):
-    print('build_content')
+    print(Fore.GREEN + 'build_content')
     with conn.cd(angular_dir):
         conn.run('sudo npm install -g npm@7')
         conn.run('sudo npm install -g @angular/cli')
@@ -145,7 +153,7 @@ def _build_content(conn: Connection, angular_dir: str):
 
 
 def _reload_web(conn: Connection, config: str, nginx_dir: str, ssl: bool, ssl_dir: str):
-    print('reload_web')
+    print(Fore.GREEN + 'reload_web')
     with conn.cd(nginx_dir):
         conn.run('sudo cp {0}.yourdomain.tld /etc/nginx/sites-enabled/'.format(config))
 
@@ -160,7 +168,7 @@ def _reload_web(conn: Connection, config: str, nginx_dir: str, ssl: bool, ssl_di
 
 
 def _run_tests(conn: Connection, config: str, backend_dir: str, virtualenv_python: str):
-    print('run_tests')
+    print(Fore.GREEN + 'run_tests')
     with conn.cd(backend_dir):
         conn.run('{0} manage_{1}.py test'.format(virtualenv_python, config))
 
