@@ -131,6 +131,33 @@ Set-Item function:global:Fabric-SetupServer {
     Invoke-Fabric $Hosts -PromptForPassphrase:$PromptForPassphrase -PromptForLoginPassword:$PromptForLoginPassword -PromptForSudoPassword:$PromptForSudoPassword $setupServerArgs
 } -Force
 
+Set-Item function:global:Fabric-SetupDeployment {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$Hosts,
+        [Parameter(Mandatory=$true)]
+        [ValidateSet('Daily','Dev','Prod','Staging')]
+        [string]$Config,
+        [string]$Branch,
+        [string]$SecretBranch,
+        [switch]$PromptForPassphrase,
+        [switch]$PromptForLoginPassword,
+        [switch]$PromptForSudoPassword
+    )
+    $setupDeploymentArgs = @("setup-deployment")
+    $setupDeploymentArgs += $Config.ToLower()
+    if ($Branch) {
+        $setupDeploymentArgs += "--branch"
+        $setupDeploymentArgs += $Branch
+    }
+    if ($SecretBranch) {
+        $setupDeploymentArgs += "--secret-branch"
+        $setupDeploymentArgs += $SecretBranch
+    }
+
+    Invoke-Fabric $Hosts -PromptForPassphrase:$PromptForPassphrase -PromptForLoginPassword:$PromptForLoginPassword -PromptForSudoPassword:$PromptForSudoPassword $setupDeploymentArgs
+} -Force
+
 Set-Item function:global:Fabric-Deploy {
     param(
         [Parameter(Mandatory=$true)]

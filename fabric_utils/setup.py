@@ -20,6 +20,7 @@ init(autoreset=True)
 
 @Task
 def setup_user(conn, user, disable_sudo_passwd=False, set_public_key_file=None):
+    print(Fore.GREEN + 'Configuring {0}'.format(user))
     messages = plush.fabric_commands.prepare_user(
         conn,
         user,
@@ -41,6 +42,7 @@ def setup_user(conn, user, disable_sudo_passwd=False, set_public_key_file=None):
         print("========================================")
         print(messages)
         print("========================================")
+    print(Fore.GREEN + '{0} configured'.format(user))
 
 
 @Task
@@ -66,6 +68,7 @@ def disable_ssh_passwords(conn):
 
 @Task
 def setup_server(conn, setup_wins=False):
+    print(Fore.GREEN + 'Starting server setup')
     conn.sudo('add-apt-repository universe')
     conn.sudo('apt-get update')
 
@@ -101,6 +104,7 @@ def setup_server(conn, setup_wins=False):
     if exists(conn, default_site):
         conn.sudo('rm {0}'.format(default_site))
     conn.sudo('/etc/init.d/nginx start')
+    print(Fore.GREEN + 'Server setup done')
 
 
 def _setup_node(conn: Connection):
