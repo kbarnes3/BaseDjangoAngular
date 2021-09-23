@@ -128,37 +128,19 @@ def _setup_wins(conn: Connection):
 def setup_deployment(conn, config, branch=None, secret_branch=None):
     repo_dir = get_repo_dir(config)
 
-    # database_created = False
-    # database_exists_count = conn.run(
-    #     "psql postgres -tAc \"SELECT 1 FROM pg_catalog.pg_database WHERE datname='{0}'\"".format(db_name)).stdout
-    # if '1' not in database_exists_count:
-    #     conn.run(
-    #         ('createdb '
-    #          '--encoding=UTF8 '
-    #          '--locale=en_US.UTF-8 '
-    #          '--owner=postgres '
-    #          '--template=template0 {0}').format(db_name))
-    #     # database_created = True
-
-    # matching_user_count = conn.run(
-    #     "psql postgres -tAc \"SELECT 1 FROM pg_roles WHERE rolname='{0}'\"".format(db_user)).stdout
-    # if '1' not in matching_user_count:
-    #     conn.run('createuser -s {0}'.format(db_user))
-
-    # conn.run('psql -d postgres -c \"ALTER ROLE {0} WITH ENCRYPTED PASSWORD \'{1}\';\"'.format(
-    #     db_user,
-    #     db_password))
-
+    print(Fore.GREEN + 'Cloning main repo')
     _setup_main_repo(conn, repo_dir, config, branch)
+    print(Fore.GREEN + 'Cloning secret repo')
     _setup_secret_repo(conn, config, secret_branch)
 
     venv_dir = '{0}/venv'.format(repo_dir)
     if not exists(conn, venv_dir):
+        print(Fore.GREEN + 'Creating virtualenv')
         conn.sudo('python3 -m venv --system-site-packages {0}'.format(venv_dir))
 
     with conn.cd(repo_dir):
         print(Fore.GREEN + 'Installing dependencies with pip')
-        conn.run('sudo venv/bin/pip install --quiet --requirement=requirements.txt')
+        conn.run('sudo venv/bin/pip install --requirement=requirements.txt')
         print(Fore.GREEN + 'Creating database and user')
         conn.run('venv/bin/python back/create_db.py {0}'.format(config))
 
@@ -170,6 +152,8 @@ def setup_deployment(conn, config, branch=None, secret_branch=None):
     uwsgi_socket = '/etc/systemd/system/uwsgi-app@.socket'
     uwsgi_service = '/etc/systemd/system/uwsgi-app@.service'
 
+
+    print(Fore.GREEN + 'Configuring UWSGI')
     if not exists(conn, uwsgi_socket):
         conn.sudo('cp {0} {1}'.format(uwsgi_socket_source, uwsgi_socket))
         set_permissions_file(conn, uwsgi_socket, 'root', 'root', '644')
@@ -178,7 +162,7 @@ def setup_deployment(conn, config, branch=None, secret_branch=None):
         conn.sudo('cp {0} {1}'.format(uwsgi_service_source, uwsgi_service))
         set_permissions_file(conn, uwsgi_service, 'root', 'root', '644')
 
-    print('deploying...')
+    print(Fore.GREEN + 'Deploying')
     deploy(conn, config, branch, secret_branch)
 
     # if database_created:
