@@ -126,6 +126,7 @@ def _setup_wins(conn: Connection):
 
 @Task
 def setup_deployment(conn, config, branch=None, secret_branch=None):
+    print(Fore.GREEN + 'Starting setup deployment for {0}'.format(config))
     repo_dir = get_repo_dir(config)
 
     print(Fore.GREEN + 'Cloning main repo')
@@ -164,6 +165,7 @@ def setup_deployment(conn, config, branch=None, secret_branch=None):
 
     print(Fore.GREEN + 'Deploying')
     deploy(conn, config, branch, secret_branch)
+    print(Fore.GREEN + 'Setup deployment done for {0}'.format(config))
 
     # if database_created:
         # with cd(repo_dir):
