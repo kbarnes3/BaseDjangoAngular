@@ -67,7 +67,22 @@ or:
 
 Setup deployment
 ----------------
-These steps will get a specific deployment of NewDjangoSite running on a server that's been setup using the above directions. Any server can run one or more of the available deployments (prod, staging, daily, dev). See the `back/newdjangosite/settings*.py` files for the differences between the deployments. These steps can be repeated once for each desired deployments.
+These steps will get a specific deployment of NewDjangoSite running on a server that's been setup using the above directions. Any server can run one or more of the available deployments (prod, staging, daily, dev). See the `back/newdjangosite/settings*.py` files for the differences between the deployments. These steps can be repeated once for each desired deployments on a single server or multiple servers as desired.
+
+If this is the first time a specific deployment config is being used, some configuration is required before it can be deployed.
+Deployments require a separate repo to contain secrets like database passwords and SSL keys.
+This separate repo allows secrets to be restricted to a smaller set of people, while still allowing for versioning of important configuration information.
+An example of the expected structure for the secrets repo is in this repo's ```secrets-example``` directory.
+
+1. Copy ```secrets-example``` to a new Git repo and fill in the needed information.
+Note that each deployment config can use a separate secrets repo to better control access.
+In this case, files for other configs can be removed.
+1. Push this repo and all your changes to GitHub.
+1. Update `back/newdjangosite/settings_$deployment$` as needed with other information.
+1. Update the `CONFIGURATIONS` array in `fabric_utils/deploy.py`.
+Make sure the `secret_repo_name` matches the GitHub name of the newly created secrets repo above.
+
+After the needed configuration is committed and pushed, deployments can be added to a server with the following steps.
 
 1. Consider updating the database username and password found in ```web/newdjangosite/settings_$deployment$.py``` file. If you update it, commit and push your changes before continuing. Note that the Fabric script won't work with passwords containing shell escape characters.
 1. Run ```auth``` and follow the prompts in the browser, logging into GitHub with an account that can set deploy keys on this repo.
