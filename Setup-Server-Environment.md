@@ -61,9 +61,7 @@ These steps will install system wide packages and make other global changes that
 
 1. Run:  
 `fab --hosts $user$@$a.b.c.d$ setup-server`  
-or:  
-`fab --hosts $user$@$a.b.c.d$ setup-server --setup-wins`  
-(a PowerShell wrapper is available with `Fabric-SetupServer`). This script will install a variety of packages with apt-get, make various directories, and properly secure these directories. Adding the `--setup-wins` (or `-SetupWins` in PowerShell) parameter will configure the server to broadcast its name via the WINS protocol. This lets you refer to the server by the value in ```/etc/hostname``` from a Windows computer on the same subnet. Consider adding ```--setup-wins``` if this server is on the same subnet as Windows computers that will interact with it.
+(a PowerShell wrapper is available with `Fabric-SetupServer`). This script will install a variety of packages with apt-get, make various directories, and properly secure these directories.
 
 Setup deployment
 ----------------

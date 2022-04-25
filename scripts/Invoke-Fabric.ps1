@@ -117,16 +117,11 @@ Set-Item function:global:Fabric-SetupServer {
     param(
         [Parameter(Mandatory=$true)]
         [string]$Hosts,
-        [Parameter(Mandatory=$true)]
-        [switch]$SetupWins,
         [switch]$PromptForPassphrase,
         [switch]$PromptForLoginPassword,
         [switch]$PromptForSudoPassword
     )
     $setupServerArgs = @("setup-server")
-    if ($SetupWins) {
-        $setupServerArgs += "--setup-wins"
-    }
 
     Invoke-Fabric $Hosts -PromptForPassphrase:$PromptForPassphrase -PromptForLoginPassword:$PromptForLoginPassword -PromptForSudoPassword:$PromptForSudoPassword $setupServerArgs
 } -Force

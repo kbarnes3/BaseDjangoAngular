@@ -67,7 +67,7 @@ def disable_ssh_passwords(conn):
 
 
 @Task
-def setup_server(conn, setup_wins=False):
+def setup_server(conn):
     print(Fore.GREEN + 'Starting server setup')
     conn.sudo('add-apt-repository universe')
     conn.sudo('apt-get update')
@@ -85,9 +85,6 @@ def setup_server(conn, setup_wins=False):
     ]
 
     plush.fabric_commands.install_packages(conn, base_packages)
-
-    if setup_wins:
-        _setup_wins(conn)
 
     conn.sudo('mkdir -p /etc/nginx/ssl')
     ensure_directory(conn, '/var/www', owning_group=WEBADMIN_GROUP)
@@ -111,21 +108,6 @@ def _setup_node(conn: Connection):
     conn.sudo('curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -', pty=True)
     conn.sudo('apt-get update')
     plush.fabric_commands.install_packages(conn, ['nodejs'])
-
-
-def _setup_wins(conn: Connection):
-    wins_packages = [
-        'samba',
-        'smbclient',
-        'winbind',
-    ]
-
-    plush.fabric_commands.install_packages(conn, wins_packages)
-    conn.sudo('sed -i s/\'hosts:.*/hosts:          files dns wins/\' /etc/nsswitch.conf')
-    resolved_config = '/etc/systemd/resolved.conf'
-    conn.sudo("sed -i '/^ *Domains/d' {0}".format(resolved_config))
-    conn.sudo('echo "Domains=localdomain" | sudo tee -a {0}'.format(resolved_config), pty=True)
-    conn.sudo('service systemd-resolved restart')
 
 
 @Task
