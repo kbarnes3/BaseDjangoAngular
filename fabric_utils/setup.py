@@ -1,7 +1,6 @@
-from importlib import import_module
 from typing import Optional
 
-from colorama import Fore, init
+from colorama import Fore, init as colorama_init
 from fabric import Task
 from fabric.connection import Connection
 from patchwork.files import exists
@@ -16,7 +15,7 @@ from .deploy import checkout_branch, deploy, get_secret_repo_branch, get_secret_
 from .deploy import get_secret_repo_name, get_repo_dir, WEBADMIN_GROUP
 
 REPO_FULL_NAME = 'kbarnes3/BaseDjangoAngular'
-init(autoreset=True)
+colorama_init(autoreset=True)
 
 @Task
 def setup_user(conn, user, disable_sudo_passwd=False, set_public_key_file=None):
@@ -153,10 +152,6 @@ def setup_deployment(conn, config, branch=None, secret_branch=None):
     deploy(conn, config, branch, secret_branch)
     print(Fore.GREEN + 'Setup deployment done for {0}'.format(config))
 
-    # if database_created:
-        # with cd(repo_dir):
-            # run('venv/bin/python web/manage_{0}.py createsuperuser'.format(config))
-
 
 def _setup_main_repo(conn: Connection, repo_dir: str, config: str, branch: Optional[str] = None):
     _setup_repo(conn, repo_dir, REPO_FULL_NAME)
@@ -181,3 +176,13 @@ def _setup_repo(conn: Connection, repo_dir: str, repo_name: str):
         create_key(conn, repo_name, WEBADMIN_GROUP)
         add_repo_key(conn, repo_name)
         clone(conn, repo_name, repo_dir, skip_strict_key_checking=True)
+
+@Task
+def setup_superuser(conn, config, email, given_name, surname, password):
+    print(Fore.GREEN + 'Setting up new superuser for {0} deployment'.format(config))
+    repo_dir = get_repo_dir(config)
+
+    env = {'DJANGO_SUPERUSER_PASSWORD': password}
+
+    with conn.cd(repo_dir):
+        conn.run('venv/bin/python back/manage_{0}.py createsuperuser --no-input --primary_email {1} --given_name {2} --surname {3}'.format(config, email, given_name, surname), env=env)
