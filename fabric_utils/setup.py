@@ -190,6 +190,6 @@ def setup_superuser(conn, config, email, given_name, surname, password): # pylin
     env = {'DJANGO_SUPERUSER_PASSWORD': password}
 
     with conn.cd(repo_dir):
-        conn.run(('venv/bin/python back/manage_{0}.py createsuperuser --no-input' +
+        conn.run(('venv/bin/python back/manage_{0}.py createsuperuser --no-input ' +
                   '--primary_email {1} --given_name {2} --surname {3}').format(
                       config, email, given_name, surname), env=env)
