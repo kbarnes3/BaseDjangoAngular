@@ -99,7 +99,7 @@ def setup_server(conn):
     if '1' not in matching_user_count:
         conn.run('createuser -s root')
 
-    ensure_directory(conn, '/var/uwsgi', owning_group='root', mod='777')
+    ensure_directory(conn, '/var/run/uwsgi', owning_group='root', mod='777')
 
     default_site = '/etc/nginx/sites-enabled/default'
     if exists(conn, default_site):
