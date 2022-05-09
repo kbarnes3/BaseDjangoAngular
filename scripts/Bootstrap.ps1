@@ -19,7 +19,7 @@ Push-Location $project_root
 $venv = Join-Path $project_root "venv"
 if (-Not (Test-Path $venv)) {
     Write-Status "Creating venv in $venv"
-    & py -3.6 -m venv $venv
+    & py -3.10 -m venv $venv
 }
 
 $already_activated = . $PSScriptRoot\Ensure-Venv.ps1
