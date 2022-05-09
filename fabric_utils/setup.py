@@ -109,7 +109,7 @@ def setup_server(conn):
 
 
 def _setup_node(conn: Connection):
-    conn.sudo('curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -', pty=True)
+    conn.sudo('curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -', pty=True)
     conn.sudo('apt-get update')
     plush.fabric_commands.install_packages(conn, ['nodejs'])
 
@@ -181,6 +181,7 @@ def _setup_repo(conn: Connection, repo_dir: str, repo_name: str):
         create_key(conn, repo_name, WEBADMIN_GROUP)
         add_repo_key(conn, repo_name)
         clone(conn, repo_name, repo_dir, skip_strict_key_checking=True)
+
 
 @Task
 def setup_superuser(conn, config, email, given_name, surname, password): # pylint: disable=R0913
