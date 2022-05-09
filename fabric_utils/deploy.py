@@ -45,6 +45,18 @@ def get_repo_dir(config: str) -> str:
     return '{0}/newdjangosite-{1}'.format(PYTHON_DIR, config)
 
 
+def get_backend_dir(repo_dir: str) -> str:
+    return '{0}/back'.format(repo_dir)
+
+
+def get_frontend_dir(repo_dir: str) -> str:
+    return '{0}/front'.format(repo_dir)
+
+
+def get_virtualenv_python_bin(repo_dir: str) -> str:
+    return '{0}/venv/bin/python'.format(repo_dir)
+
+
 def get_secret_repo_dir(config: str) -> str:
     return '{0}/newdjangosite-{1}-secrets'.format(PYTHON_DIR, config)
 
@@ -70,30 +82,27 @@ def deploy(conn, config, branch=None, secret_branch=None):
     secret_branch = get_secret_repo_branch(config, secret_branch)
     use_ssl = configuration['ssl']
 
-    print(Fore.GREEN + ('Deploying {0} from branch {1} with ' + 
-        'secret repo from branch {2}').format(
-            config, branch, secret_branch))
+    print(Fore.GREEN + ('Deploying {0} from branch {1} with ' +
+                        'secret repo from branch {2}').format(
+                            config, branch, secret_branch))
 
     repo_dir = get_repo_dir(config)
-    backend_dir = '{0}/back'.format(repo_dir)
-    frontend_dir = '{0}/front'.format(repo_dir)
     config_dir = '{0}/config/ubuntu-18.04'.format(repo_dir)
     daily_scripts_dir = '{0}/cron.daily'.format(config_dir)
     uwsgi_dir = '{0}/uwsgi'.format(config_dir)
     nginx_dir = '{0}/nginx'.format(config_dir)
-    virtualenv_python = '{0}/venv/bin/python'.format(repo_dir)
     secret_repo_dir = get_secret_repo_dir(config)
     ssl_dir = '{0}/{1}/ssl'.format(secret_repo_dir, config)
 
     _update_source(conn, repo_dir, branch)
     _update_source(conn, secret_repo_dir, secret_branch)
-    _compile_source(conn, config, repo_dir, backend_dir, virtualenv_python)
+    _compile_source(conn, config, repo_dir)
     _update_scripts(conn, config, daily_scripts_dir)
-    _update_database(conn, config, backend_dir, virtualenv_python)
+    _update_database(conn, config, repo_dir)
     _reload_code(conn, config, uwsgi_dir)
-    _build_content(conn, frontend_dir)
+    _build_content(conn, repo_dir)
     _reload_web(conn, config, nginx_dir, use_ssl, ssl_dir)
-    _run_tests(conn, config, backend_dir, virtualenv_python)
+    _run_tests(conn, config, repo_dir)
 
     print(Fore.GREEN + 'Deployment to {0} complete'.format(config))
 
@@ -106,15 +115,20 @@ def _update_source(conn: Connection, repo_dir: str, branch: str):
         conn.run('sudo git reset --hard origin/{0}'.format(branch))
 
 
-def _compile_source(conn: Connection, config: str, repo_dir: str, backend_dir: str, virtualenv_python: str):
+def _compile_source(conn: Connection,
+                    config: str,
+                    repo_dir: str):
     print(Fore.GREEN + 'compile_source')
+    backend_dir = get_backend_dir(repo_dir)
+    python_bin = get_virtualenv_python_bin(repo_dir)
+
     with conn.cd(repo_dir):
         conn.run('venv/bin/pip install --quiet --requirement=requirements.txt')
 
     with conn.cd(backend_dir):
         conn.run('sudo find . -iname "*.pyc" -delete')
-        conn.run('sudo {0} -m compileall .'.format(virtualenv_python))
-        conn.run('sudo {0} manage_{1}.py collectstatic --noinput'.format(virtualenv_python, config))
+        conn.run('sudo {0} -m compileall .'.format(python_bin))
+        conn.run('sudo {0} manage_{1}.py collectstatic --noinput'.format(python_bin, config))
 
 
 def _update_scripts(conn: Connection, config: str, daily_scripts_dir: str):
@@ -127,10 +141,12 @@ def _update_scripts(conn: Connection, config: str, daily_scripts_dir: str):
         conn.run('sudo chmod 755 newdjangosite-{0}-*'.format(config))
 
 
-def _update_database(conn: Connection, config: str, backend_dir: str, virtualenv_python: str):
+def _update_database(conn: Connection, config: str, repo_dir: str):
     print(Fore.GREEN + 'update_database')
+    backend_dir = get_backend_dir(repo_dir)
+    python_bin = get_virtualenv_python_bin(repo_dir)
     with conn.cd(backend_dir):
-        conn.run('sudo {0} manage_{1}.py migrate'.format(virtualenv_python, config))
+        conn.run('sudo {0} manage_{1}.py migrate'.format(python_bin, config))
 
 
 def _reload_code(conn: Connection, config: str, uwsgi_dir: str):
@@ -144,7 +160,8 @@ def _reload_code(conn: Connection, config: str, uwsgi_dir: str):
         conn.run('sudo touch /var/run/uwsgi/newdjangosite-{0}.reload'.format(config))
 
 
-def _build_content(conn: Connection, angular_dir: str):
+def _build_content(conn: Connection, repo_dir: str):
+    angular_dir = get_frontend_dir(repo_dir)
     print(Fore.GREEN + 'build_content')
     with conn.cd(angular_dir):
         conn.run('sudo npm install -g npm@7')
@@ -169,10 +186,12 @@ def _reload_web(conn: Connection, config: str, nginx_dir: str, ssl: bool, ssl_di
     conn.sudo('/etc/init.d/nginx reload')
 
 
-def _run_tests(conn: Connection, config: str, backend_dir: str, virtualenv_python: str):
+def _run_tests(conn: Connection, config: str, repo_dir: str):
     print(Fore.GREEN + 'run_tests')
+    backend_dir = get_backend_dir(repo_dir)
+    python_bin = get_virtualenv_python_bin(repo_dir)
     with conn.cd(backend_dir):
-        conn.run('{0} manage_{1}.py test'.format(virtualenv_python, config))
+        conn.run('{0} manage_{1}.py test'.format(python_bin, config))
 
 
 def checkout_branch(conn: Connection, repo_dir: str, config: str, branch: Optional[str] = None):
@@ -213,9 +232,9 @@ def shutdown(conn, config, branch=None, secret_branch=None):
     secret_branch = get_secret_repo_branch(config, secret_branch)
     use_ssl = configuration['ssl']
 
-    print(Fore.GREEN + ('Shuting down {0} from branch {1} with ' + 
-        'secret repro from branch {2}').format(
-            config, branch, secret_branch))
+    print(Fore.GREEN + ('Shuting down {0} from branch {1} with ' +
+                        'secret repro from branch {2}').format(
+                            config, branch, secret_branch))
 
     repo_dir = get_repo_dir(config)
     nginx_dir = '{0}/config/ubuntu-18.04/nginx/shutdown'.format(repo_dir)

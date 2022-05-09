@@ -3,7 +3,7 @@ from typing import Optional
 from colorama import Fore, init as colorama_init
 from fabric import Task
 from fabric.connection import Connection
-from patchwork.files import exists
+from patchwork.files import exists as patchwork_exists
 import plush.fabric_commands
 from plush.fabric_commands.git import clone
 from plush.fabric_commands.permissions import ensure_directory, set_permissions_file
@@ -16,6 +16,11 @@ from .deploy import get_secret_repo_name, get_repo_dir, WEBADMIN_GROUP
 
 REPO_FULL_NAME = 'kbarnes3/BaseDjangoAngular'
 colorama_init(autoreset=True)
+
+def exists(conn: Connection, path: str) -> bool:
+    # pylint doesn't understand the @set_runner decorator
+    # create a wrapper so we only have to suppress the error once
+    return patchwork_exists(conn, path) # pylint: disable=E1120
 
 @Task
 def setup_user(conn, user, disable_sudo_passwd=False, set_public_key_file=None):
@@ -178,11 +183,13 @@ def _setup_repo(conn: Connection, repo_dir: str, repo_name: str):
         clone(conn, repo_name, repo_dir, skip_strict_key_checking=True)
 
 @Task
-def setup_superuser(conn, config, email, given_name, surname, password):
+def setup_superuser(conn, config, email, given_name, surname, password): # pylint: disable=R0913
     print(Fore.GREEN + 'Setting up new superuser for {0} deployment'.format(config))
     repo_dir = get_repo_dir(config)
 
     env = {'DJANGO_SUPERUSER_PASSWORD': password}
 
     with conn.cd(repo_dir):
-        conn.run('venv/bin/python back/manage_{0}.py createsuperuser --no-input --primary_email {1} --given_name {2} --surname {3}'.format(config, email, given_name, surname), env=env)
+        conn.run(('venv/bin/python back/manage_{0}.py createsuperuser --no-input' +
+                  '--primary_email {1} --given_name {2} --surname {3}').format(
+                      config, email, given_name, surname), env=env)
