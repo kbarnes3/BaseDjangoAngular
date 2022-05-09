@@ -95,6 +95,8 @@ def deploy(conn, config, branch=None, secret_branch=None):
     _reload_web(conn, config, nginx_dir, use_ssl, ssl_dir)
     _run_tests(conn, config, backend_dir, virtualenv_python)
 
+    print(Fore.GREEN + 'Deployment to {0} complete'.format(config))
+
 
 def _update_source(conn: Connection, repo_dir: str, branch: str):
     print(Fore.GREEN + 'update_source for {0}'.format(repo_dir))
@@ -211,8 +213,8 @@ def shutdown(conn, config, branch=None, secret_branch=None):
     secret_branch = get_secret_repo_branch(config, secret_branch)
     use_ssl = configuration['ssl']
 
-    print(Fore.GREEN + 'Shuting down {0} from branch {1} with ' + 
-        'secret repro from branch {2}'.format(
+    print(Fore.GREEN + ('Shuting down {0} from branch {1} with ' + 
+        'secret repro from branch {2}').format(
             config, branch, secret_branch))
 
     repo_dir = get_repo_dir(config)

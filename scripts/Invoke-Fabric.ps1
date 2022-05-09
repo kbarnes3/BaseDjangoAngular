@@ -231,3 +231,30 @@ Set-Item function:global:Fabric-Deploy {
 
     Invoke-Fabric $Hosts -PromptForPassphrase:$PromptForPassphrase -PromptForLoginPassword:$PromptForLoginPassword -PromptForSudoPassword:$PromptForSudoPassword $deployArgs
 } -Force
+
+Set-Item function:global:Fabric-Shutdown {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$Hosts,
+        [Parameter(Mandatory=$true)]
+        [ValidateSet('Daily','Dev','Prod','Staging')]
+        [string]$Config,
+        [string]$Branch,
+        [string]$SecretBranch,
+        [switch]$PromptForPassphrase,
+        [switch]$PromptForLoginPassword,
+        [switch]$PromptForSudoPassword
+    )
+    $shutdownArgs = @("shutdown")
+    $shutdownArgs += $Config.ToLower()
+    if ($Branch) {
+        $shutdownArgs += "--branch"
+        $shutdownArgs += $Branch
+    }
+    if ($SecretBranch) {
+        $shutdownArgs += "--secret-branch"
+        $shutdownArgs += $SecretBranch
+    }
+
+    Invoke-Fabric $Hosts -PromptForPassphrase:$PromptForPassphrase -PromptForLoginPassword:$PromptForLoginPassword -PromptForSudoPassword:$PromptForSudoPassword $shutdownArgs
+} -Force
