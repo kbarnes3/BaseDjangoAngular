@@ -84,8 +84,9 @@ After the needed configuration is committed and pushed, deployments can be added
 
 1. Consider updating the database username and password found in ```web/newdjangosite/settings_$deployment$.py``` file. If you update it, commit and push your changes before continuing. Note that the Fabric script won't work with passwords containing shell escape characters.
 1. Run ```auth``` and follow the prompts in the browser, logging into GitHub with an account that can set deploy keys on this repo.
-1. Run ```fab setup-deployment $deployment$``` (or `Fabric-SetupDeployment` in PowerShell)
+1. Run ```fab setup-deployment $deployment$``` (or `Fabric-SetupDeployment` in PowerShell).
 1. The OAuth token stored by ```auth``` is no longer needed unless you intend to setup more deployments. It isn't used to updated a deployment in the steady state. Optionally, you can remove the token by running ```auth delete```.
+1. An initial Django superuser can be created if needed with `fab setup-superuser $deployment$ $email$ $given_name$ $surname$ $password` (or `Fabric-SetupSuperuser` in PowerShell).
 
 Finishing up global server deployment
 -------------------------------------

@@ -153,6 +153,38 @@ Set-Item function:global:Fabric-SetupDeployment {
     Invoke-Fabric $Hosts -PromptForPassphrase:$PromptForPassphrase -PromptForLoginPassword:$PromptForLoginPassword -PromptForSudoPassword:$PromptForSudoPassword $setupDeploymentArgs
 } -Force
 
+Set-Item function:global:Fabric-SetupSuperuser {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$Hosts,
+        [Parameter(Mandatory=$true)]
+        [ValidateSet('Daily','Dev','Prod','Staging')]
+        [string]$Config,
+        [Parameter(Mandatory=$true)]
+        [string]$Email,
+        [Parameter(Mandatory=$true)]
+        [string]$GivenName,
+        [Parameter(Mandatory=$true)]
+        [string]$Surname,
+        [switch]$PromptForPassphrase,
+        [switch]$PromptForLoginPassword,
+        [switch]$PromptForSudoPassword
+    )
+    Write-Host "Password: " -NoNewline
+    $password = Read-Host -AsSecureString
+    $password = ConvertFrom-SecureString $password -AsPlainText
+
+    Invoke-Fabric $Hosts setup-superuser `
+        $Config.ToLower() `
+        --email $Email `
+        --given-name $GivenName `
+        --surname $Surname `
+        --password $password `
+        -PromptForPassphrase:$PromptForPassphrase `
+        -PromptForLoginPassword:$PromptForLoginPassword `
+        -PromptForSudoPassword:$PromptForSudoPassword
+}
+
 Set-Item function:global:Fabric-Deploy {
     param(
         [Parameter(Mandatory=$true)]
