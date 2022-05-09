@@ -181,24 +181,26 @@ def checkout_branch(conn: Connection, repo_dir: str, config: str, branch: Option
     _update_source(conn, repo_dir, branch)
 
 
-def deploy_global_config(config):
+@Task
+def deploy_global_config(conn, config):
+    print(Fore.GREEN + 'deploy_global_config')
     repo_dir = get_repo_dir(config)
     global_dir = '{0}/config/ubuntu-18.04/global'.format(repo_dir)
     nginx_conf = '/etc/nginx/nginx.conf'
     uwsgi_socket = '/etc/systemd/system/uwsgi-app@.socket'
     uwsgi_service = '/etc/systemd/system/uwsgi-app@.service'
 
-    with cd(global_dir):
-        sudo('cp nginx.conf {0}'.format(nginx_conf))
-        set_permissions_file(nginx_conf, 'root', 'root', '644')
+    conn.sudo('cp {0}/nginx.conf {1}'.format(global_dir, nginx_conf))
+    set_permissions_file(conn, nginx_conf, 'root', 'root', '644')
 
-        sudo('cp uwsgi-app@.socket {0}'.format(uwsgi_socket))
-        set_permissions_file(uwsgi_socket, 'root', 'root', '644')
+    conn.sudo('cp {0}/uwsgi-app@.socket {1}'.format(global_dir, uwsgi_socket))
+    set_permissions_file(conn, uwsgi_socket, 'root', 'root', '644')
 
-        sudo('cp uwsgi-app@.service {0}'.format(uwsgi_service))
-        set_permissions_file(uwsgi_service, 'root', 'root', '644')
+    conn.sudo('cp {0}/uwsgi-app@.service {1}'.format(global_dir, uwsgi_service))
+    set_permissions_file(conn, uwsgi_service, 'root', 'root', '644')
 
-    sudo('/etc/init.d/nginx restart')
+    conn.sudo('/etc/init.d/nginx restart')
+    print(Fore.GREEN + 'deploy_global_config done')
 
 
 def shutdown(config, branch=''):
