@@ -136,7 +136,7 @@ def setup_deployment(conn, config, branch=None, secret_branch=None):
         conn.run('venv/bin/python back/create_db.py {0}'.format(config))
 
 
-    global_dir = '{0}/config/ubuntu-18.04/global'.format(repo_dir)
+    global_dir = '{0}/config/ubuntu-22.04/global'.format(repo_dir)
     uwsgi_socket_source = '{0}/uwsgi-app@.socket'.format(global_dir)
     uwsgi_service_source = '{0}/uwsgi-app@.service'.format(global_dir)
 
