@@ -203,14 +203,24 @@ def deploy_global_config(conn, config):
     print(Fore.GREEN + 'deploy_global_config done')
 
 
-def shutdown(config, branch=''):
+@Task
+def shutdown(conn, config, branch=None, secret_branch=None):
     configuration = CONFIGURATIONS[config]
     if not branch:
         branch = configuration['branch']
+    secret_branch = get_secret_repo_branch(config, secret_branch)
     use_ssl = configuration['ssl']
+
+    print(Fore.GREEN + 'Shuting down {0} from branch {1} with ' + 
+        'secret repro from branch {2}'.format(
+            config, branch, secret_branch))
 
     repo_dir = get_repo_dir(config)
     nginx_dir = '{0}/config/ubuntu-18.04/nginx/shutdown'.format(repo_dir)
+    secret_repo_dir = get_secret_repo_dir(config)
+    ssl_dir = '{0}/{1}/ssl'.format(secret_repo_dir, config)
 
-    _update_source(repo_dir, branch)
-    _reload_web(config, nginx_dir, use_ssl)
+    _update_source(conn, repo_dir, branch)
+    _update_source(conn, secret_repo_dir, secret_branch)
+    _reload_web(conn, config, nginx_dir, use_ssl, ssl_dir)
+    print(Fore.GREEN + 'Static shutdown site deployed')
