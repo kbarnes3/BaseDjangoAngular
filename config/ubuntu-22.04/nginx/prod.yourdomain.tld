@@ -8,7 +8,6 @@ server {
 	location / {
 		rewrite ^(.*) https://yourdomain.tld$1;
 	}
-
 }
 
 # Redirect www to base
@@ -23,7 +22,6 @@ server {
 	location / {
 		rewrite ^(.*) https://yourdomain.tld$1;
 	}
-
 }
 
 # Serve the site on HTTPS
