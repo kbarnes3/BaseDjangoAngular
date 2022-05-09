@@ -44,6 +44,11 @@ steps:
   displayName: 'Run linting (pylint back)'
 
 - script: |
+    pylint fabric_utils
+  condition: succeededOrFailed()
+  displayName: 'Run linting (pylint fabric_utils)'
+
+- script: |
     cd front
     npm install -g npm@8
     npm install -g @angular/cli

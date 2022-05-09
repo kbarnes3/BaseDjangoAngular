@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "node git-version.js && ng serve",
-    "build": "node git-version.js && ng build",
+    "build": "node git-version.js && ng build --configuration production",
     "test": "ng test",
     "test-headless": "ng test --watch=false --browsers=ChromeHeadless --reporters junit",
     "lint": "ng lint",

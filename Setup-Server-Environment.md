@@ -61,30 +61,55 @@ These steps will install system wide packages and make other global changes that
 
 1. Run:  
 `fab --hosts $user$@$a.b.c.d$ setup-server`  
-or:  
-`fab --hosts $user$@$a.b.c.d$ setup-server --setup-wins`  
-(a PowerShell wrapper is available with `Fabric-SetupServer`). This script will install a variety of packages with apt-get, make various directories, and properly secure these directories. Adding the `--setup-wins` (or `-SetupWins` in PowerShell) parameter will configure the server to broadcast its name via the WINS protocol. This lets you refer to the server by the value in ```/etc/hostname``` from a Windows computer on the same subnet. Consider adding ```--setup-wins``` if this server is on the same subnet as Windows computers that will interact with it.
+(a PowerShell wrapper is available with `Fabric-SetupServer`). This script will install a variety of packages with apt-get, make various directories, and properly secure these directories.
 
 Setup deployment
 ----------------
-These steps will get a specific deployment of NewDjangoSite running on a server that's been setup using the above directions. Any server can run one or more of the available deployments (prod, staging, daily, dev). See the `back/newdjangosite/settings*.py` files for the differences between the deployments. These steps can be repeated once for each desired deployments.
+These steps will get a specific deployment of NewDjangoSite running on a server that's been setup using the above directions. Any server can run one or more of the available deployments (prod, staging, daily, dev). See the `back/newdjangosite/settings*.py` files for the differences between the deployments. These steps can be repeated once for each desired deployments on a single server or multiple servers as desired.
+
+If this is the first time a specific deployment config is being used, some configuration is required before it can be deployed.
+Deployments require a separate repo to contain secrets like database passwords and SSL keys.
+This separate repo allows secrets to be restricted to a smaller set of people, while still allowing for versioning of important configuration information.
+An example of the expected structure for the secrets repo is in this repo's ```secrets-example``` directory.
+
+1. Copy ```secrets-example``` to a new Git repo and fill in the needed information.
+Note that each deployment config can use a separate secrets repo to better control access.
+In this case, files for other configs can be removed.
+1. Push this repo and all your changes to GitHub.
+1. Update `back/newdjangosite/settings_$deployment$` as needed with other information.
+1. Update the `CONFIGURATIONS` array in `fabric_utils/deploy.py`.
+Make sure the `secret_repo_name` matches the GitHub name of the newly created secrets repo above.
+
+After the needed configuration is committed and pushed, deployments can be added to a server with the following steps.
 
 1. Consider updating the database username and password found in ```web/newdjangosite/settings_$deployment$.py``` file. If you update it, commit and push your changes before continuing. Note that the Fabric script won't work with passwords containing shell escape characters.
 1. Run ```auth``` and follow the prompts in the browser, logging into GitHub with an account that can set deploy keys on this repo.
-1. Run ```fab setup_deployment:$deployment$```
-1. When prompted for a passphrase after seeing "Generating public/private rsa key pair", an empty passphrase is recommended
-1. When prompted for a primary email and subsequent fields, enter the information for the Django superuser to create
+1. Run ```fab --hosts $user$@$a.b.c.d$ setup-deployment $deployment$``` (or `Fabric-SetupDeployment` in PowerShell).
 1. The OAuth token stored by ```auth``` is no longer needed unless you intend to setup more deployments. It isn't used to updated a deployment in the steady state. Optionally, you can remove the token by running ```auth delete```.
+1. An initial Django superuser can be created if needed with `fab setup-superuser $deployment$ $email$ $given_name$ $surname$ $password` (or `Fabric-SetupSuperuser` in PowerShell).
 
 Finishing up global server deployment
 -------------------------------------
 The files in config/ubuntu-18.04/global can impact all the Django sites running on the server, so they aren't routinely deployed. After your first deployment, or after updating these files, they need to be explictly deployed. They can be deployed with:  
-```fab deploy_global_config:$deployment$```  
+```fab --hosts $user$@$a.b.c.d$ deploy_global_config $deployment$```  
 Note that no changes are made to ```$deployment$```, the files are just copied from that deployment at its current state. You may need to deploy to ```$deployment$``` to ensure recent updates to the global files are in the deployment's repo first. See the next section for details on deploying.
+
+A PowerShell wrapper is available here as well: `Fabric-DeployGlobalConfig`.
 
 Deploying new changes
 ---------------------
 Once a server deployment is set up, only one command is generally needed to update it with the latest changes pushed to GitHub:  
-```fab deploy:$deployment$```  
-This command replies on configuration parameters defined at the top ```web/fabric_utils/deploy.py``` to define the behaviors that should be different on a per-deployment basis. Settings include the default branch and whether or not SSL related files are expected to exist.  
-This command also takes an optional ```branch=``` parameter to override the default branch.
+```fab --hosts $user$@$a.b.c.d$ deploy $deployment$```
+
+A PowerShell wrapper is available using ```Fabric-Deploy```.
+
+Depending on how the server authentication is setup, standard Fabric parameters such as 
+```--prompt-for-login-password```, ```--prompt-for-sudo-password```, or ```--prompt-for-passphrase``` 
+may be needed as well.
+
+This command replies on configuration parameters defined at the top ```fabric_utils/deploy.py``` 
+to define the behaviors that should be different on a per-deployment basis. 
+Settings include the default branch and whether or not SSL related files are expected to exist.  
+
+This command also takes optional ```--branch``` and ```--secret-branch``` parameters 
+to override the default branch for the main and secret repos.

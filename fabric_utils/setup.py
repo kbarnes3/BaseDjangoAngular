@@ -1,12 +1,12 @@
-from importlib import import_module
 from typing import Optional
 
+from colorama import Fore, init as colorama_init
 from fabric import Task
 from fabric.connection import Connection
-from patchwork.files import directory, exists
+from patchwork.files import exists as patchwork_exists
 import plush.fabric_commands
 from plush.fabric_commands.git import clone
-from plush.fabric_commands.permissions import set_permissions_file
+from plush.fabric_commands.permissions import ensure_directory, set_permissions_file
 from plush.fabric_commands.ssh_key import create_key
 from plush.oauth_flow import verify_access_token
 from plush.repo_keys import add_repo_key
@@ -15,10 +15,16 @@ from .deploy import checkout_branch, deploy, get_secret_repo_branch, get_secret_
 from .deploy import get_secret_repo_name, get_repo_dir, WEBADMIN_GROUP
 
 REPO_FULL_NAME = 'kbarnes3/BaseDjangoAngular'
+colorama_init(autoreset=True)
 
+def exists(conn: Connection, path: str) -> bool:
+    # pylint doesn't understand the @set_runner decorator
+    # create a wrapper so we only have to suppress the error once
+    return patchwork_exists(conn, path) # pylint: disable=E1120
 
 @Task
 def setup_user(conn, user, disable_sudo_passwd=False, set_public_key_file=None):
+    print(Fore.GREEN + 'Configuring {0}'.format(user))
     messages = plush.fabric_commands.prepare_user(
         conn,
         user,
@@ -40,6 +46,7 @@ def setup_user(conn, user, disable_sudo_passwd=False, set_public_key_file=None):
         print("========================================")
         print(messages)
         print("========================================")
+    print(Fore.GREEN + '{0} configured'.format(user))
 
 
 @Task
@@ -64,7 +71,8 @@ def disable_ssh_passwords(conn):
 
 
 @Task
-def setup_server(conn, setup_wins=False):
+def setup_server(conn):
+    print(Fore.GREEN + 'Starting server setup')
     conn.sudo('add-apt-repository universe')
     conn.sudo('apt-get update')
 
@@ -82,24 +90,22 @@ def setup_server(conn, setup_wins=False):
 
     plush.fabric_commands.install_packages(conn, base_packages)
 
-    if setup_wins:
-        _setup_wins(conn)
-
     conn.sudo('mkdir -p /etc/nginx/ssl')
-    directory(conn, '/var/www', group=WEBADMIN_GROUP, sudo=True)
-    directory(conn, '/var/www/python', group=WEBADMIN_GROUP, sudo=True)
+    ensure_directory(conn, '/var/www', owning_group=WEBADMIN_GROUP)
+    ensure_directory(conn, '/var/www/python', owning_group=WEBADMIN_GROUP)
 
     matching_user_count = conn.run(
         "psql postgres -tAc \"SELECT 1 FROM pg_roles WHERE rolname='root'\"").stdout
     if '1' not in matching_user_count:
         conn.run('createuser -s root')
 
-    directory(conn, '/var/uwsgi', user='root', group='root', mode='777', sudo=True)
+    ensure_directory(conn, '/var/uwsgi', owning_group='root', mod='777')
 
     default_site = '/etc/nginx/sites-enabled/default'
     if exists(conn, default_site):
         conn.sudo('rm {0}'.format(default_site))
     conn.sudo('/etc/init.d/nginx start')
+    print(Fore.GREEN + 'Server setup done')
 
 
 def _setup_node(conn: Connection):
@@ -108,76 +114,48 @@ def _setup_node(conn: Connection):
     plush.fabric_commands.install_packages(conn, ['nodejs'])
 
 
-def _setup_wins(conn: Connection):
-    wins_packages = [
-        'samba',
-        'smbclient',
-        'winbind',
-    ]
-
-    plush.fabric_commands.install_packages(conn, wins_packages)
-    conn.sudo('sed -i s/\'hosts:.*/hosts:          files dns wins/\' /etc/nsswitch.conf')
-    resolved_config = '/etc/systemd/resolved.conf'
-    conn.sudo("sed -i '/^ *Domains/d' {0}".format(resolved_config))
-    conn.sudo('echo "Domains=localdomain" | sudo tee -a {0}'.format(resolved_config), pty=True)
-    conn.sudo('service systemd-resolved restart')
-
-
 @Task
 def setup_deployment(conn, config, branch=None, secret_branch=None):
-    django_settings = import_module('back.newdjangosite.settings_{0}'.format(config))
-    db_settings = django_settings.DATABASES['default']
-    db_name = db_settings['NAME']
-    db_user = db_settings['USER']
-    db_password = db_settings['PASSWORD']
+    print(Fore.GREEN + 'Starting setup deployment for {0}'.format(config))
     repo_dir = get_repo_dir(config)
 
-    # database_created = False
-    database_exists_count = conn.run(
-        "psql postgres -tAc \"SELECT 1 FROM pg_catalog.pg_database WHERE datname='{0}'\"".format(db_name)).stdout
-    if '1' not in database_exists_count:
-        conn.run(
-            ('createdb '
-             '--encoding=UTF8 '
-             '--locale=en_US.UTF-8 '
-             '--owner=postgres '
-             '--template=template0 {0}').format(db_name))
-        # database_created = True
-
-    matching_user_count = conn.run(
-        "psql postgres -tAc \"SELECT 1 FROM pg_roles WHERE rolname='{0}'\"".format(db_user)).stdout
-    if '1' not in matching_user_count:
-        conn.run('createuser -s {0}'.format(db_user))
-
-    conn.run('psql -d postgres -c \"ALTER ROLE {0} WITH ENCRYPTED PASSWORD \'{1}\';\"'.format(
-        db_user,
-        db_password))
-
+    print(Fore.GREEN + 'Cloning main repo')
     _setup_main_repo(conn, repo_dir, config, branch)
+    print(Fore.GREEN + 'Cloning secret repo')
     _setup_secret_repo(conn, config, secret_branch)
 
+    venv_dir = '{0}/venv'.format(repo_dir)
+    if not exists(conn, venv_dir):
+        print(Fore.GREEN + 'Creating virtualenv')
+        conn.sudo('python3 -m venv --system-site-packages {0}'.format(venv_dir))
+
     with conn.cd(repo_dir):
-        if not exists('venv'):
-            conn.run('python3 -m venv --system-site-packages venv')
+        print(Fore.GREEN + 'Installing dependencies with pip')
+        conn.run('sudo venv/bin/pip install --requirement=requirements.txt')
+        print(Fore.GREEN + 'Creating database and user')
+        conn.run('venv/bin/python back/create_db.py {0}'.format(config))
+
 
     global_dir = '{0}/config/ubuntu-18.04/global'.format(repo_dir)
-    with conn.cd(global_dir):
-        uwsgi_socket = '/etc/systemd/system/uwsgi-app@.socket'
-        uwsgi_service = '/etc/systemd/system/uwsgi-app@.service'
+    uwsgi_socket_source = '{0}/uwsgi-app@.socket'.format(global_dir)
+    uwsgi_service_source = '{0}/uwsgi-app@.service'.format(global_dir)
 
-        if not exists(conn, uwsgi_socket):
-            conn.sudo('cp uwsgi-app@.socket {0}'.format(uwsgi_socket))
-            set_permissions_file(conn, uwsgi_socket, 'root', 'root', '644')
+    uwsgi_socket = '/etc/systemd/system/uwsgi-app@.socket'
+    uwsgi_service = '/etc/systemd/system/uwsgi-app@.service'
 
-        if not exists(uwsgi_service):
-            conn.sudo('cp uwsgi-app@.service {0}'.format(uwsgi_service))
-            set_permissions_file(conn, uwsgi_service, 'root', 'root', '644')
 
+    print(Fore.GREEN + 'Configuring UWSGI')
+    if not exists(conn, uwsgi_socket):
+        conn.sudo('cp {0} {1}'.format(uwsgi_socket_source, uwsgi_socket))
+        set_permissions_file(conn, uwsgi_socket, 'root', 'root', '644')
+
+    if not exists(conn, uwsgi_service):
+        conn.sudo('cp {0} {1}'.format(uwsgi_service_source, uwsgi_service))
+        set_permissions_file(conn, uwsgi_service, 'root', 'root', '644')
+
+    print(Fore.GREEN + 'Deploying')
     deploy(conn, config, branch, secret_branch)
-
-    # if database_created:
-        # with cd(repo_dir):
-            # run('venv/bin/python web/manage_{0}.py createsuperuser'.format(config))
+    print(Fore.GREEN + 'Setup deployment done for {0}'.format(config))
 
 
 def _setup_main_repo(conn: Connection, repo_dir: str, config: str, branch: Optional[str] = None):
@@ -195,7 +173,7 @@ def _setup_secret_repo(conn: Connection, config: str, secret_branch_override: Op
 
 
 def _setup_repo(conn: Connection, repo_dir: str, repo_name: str):
-    directory(conn, repo_dir, group=WEBADMIN_GROUP, sudo=True)
+    ensure_directory(conn, repo_dir, owning_group=WEBADMIN_GROUP)
 
     if not exists(conn, '{0}/.git'.format(repo_dir)):
         if not verify_access_token():
@@ -203,3 +181,15 @@ def _setup_repo(conn: Connection, repo_dir: str, repo_name: str):
         create_key(conn, repo_name, WEBADMIN_GROUP)
         add_repo_key(conn, repo_name)
         clone(conn, repo_name, repo_dir, skip_strict_key_checking=True)
+
+@Task
+def setup_superuser(conn, config, email, given_name, surname, password): # pylint: disable=R0913
+    print(Fore.GREEN + 'Setting up new superuser for {0} deployment'.format(config))
+    repo_dir = get_repo_dir(config)
+
+    env = {'DJANGO_SUPERUSER_PASSWORD': password}
+
+    with conn.cd(repo_dir):
+        conn.run(('venv/bin/python back/manage_{0}.py createsuperuser --no-input ' +
+                  '--primary_email {1} --given_name {2} --surname {3}').format(
+                      config, email, given_name, surname), env=env)

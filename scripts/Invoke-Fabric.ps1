@@ -117,33 +117,144 @@ Set-Item function:global:Fabric-SetupServer {
     param(
         [Parameter(Mandatory=$true)]
         [string]$Hosts,
-        [Parameter(Mandatory=$true)]
-        [switch]$SetupWins,
         [switch]$PromptForPassphrase,
         [switch]$PromptForLoginPassword,
         [switch]$PromptForSudoPassword
     )
     $setupServerArgs = @("setup-server")
-    if ($SetupWins) {
-        $setupServerArgs += "--setup-wins"
-    }
 
     Invoke-Fabric $Hosts -PromptForPassphrase:$PromptForPassphrase -PromptForLoginPassword:$PromptForLoginPassword -PromptForSudoPassword:$PromptForSudoPassword $setupServerArgs
 } -Force
+
+Set-Item function:global:Fabric-SetupDeployment {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$Hosts,
+        [Parameter(Mandatory=$true)]
+        [ValidateSet('Daily','Dev','Prod','Staging')]
+        [string]$Config,
+        [string]$Branch,
+        [string]$SecretBranch,
+        [switch]$PromptForPassphrase,
+        [switch]$PromptForLoginPassword,
+        [switch]$PromptForSudoPassword
+    )
+    $setupDeploymentArgs = @("setup-deployment")
+    $setupDeploymentArgs += $Config.ToLower()
+    if ($Branch) {
+        $setupDeploymentArgs += "--branch"
+        $setupDeploymentArgs += $Branch
+    }
+    if ($SecretBranch) {
+        $setupDeploymentArgs += "--secret-branch"
+        $setupDeploymentArgs += $SecretBranch
+    }
+
+    Invoke-Fabric $Hosts -PromptForPassphrase:$PromptForPassphrase -PromptForLoginPassword:$PromptForLoginPassword -PromptForSudoPassword:$PromptForSudoPassword $setupDeploymentArgs
+} -Force
+
+Set-Item function:global:Fabric-SetupSuperuser {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$Hosts,
+        [Parameter(Mandatory=$true)]
+        [ValidateSet('Daily','Dev','Prod','Staging')]
+        [string]$Config,
+        [Parameter(Mandatory=$true)]
+        [string]$Email,
+        [Parameter(Mandatory=$true)]
+        [string]$GivenName,
+        [Parameter(Mandatory=$true)]
+        [string]$Surname,
+        [switch]$PromptForPassphrase,
+        [switch]$PromptForLoginPassword,
+        [switch]$PromptForSudoPassword
+    )
+    Write-Host "Password: " -NoNewline
+    $password = Read-Host -AsSecureString
+    $password = ConvertFrom-SecureString $password -AsPlainText
+
+    Invoke-Fabric $Hosts setup-superuser `
+        $Config.ToLower() `
+        --email $Email `
+        --given-name $GivenName `
+        --surname $Surname `
+        --password $password `
+        -PromptForPassphrase:$PromptForPassphrase `
+        -PromptForLoginPassword:$PromptForLoginPassword `
+        -PromptForSudoPassword:$PromptForSudoPassword
+}
+
+Set-Item function:global:Fabric-DeployGlobalConfig {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$Hosts,
+        [Parameter(Mandatory=$true)]
+        [ValidateSet('Daily','Dev','Prod','Staging')]
+        [string]$Config,
+        [switch]$PromptForPassphrase,
+        [switch]$PromptForLoginPassword,
+        [switch]$PromptForSudoPassword
+    )
+
+    Invoke-Fabric $Hosts deploy-global-config `
+        $Config.ToLower() `
+        -PromptForPassphrase:$PromptForPassphrase `
+        -PromptForLoginPassword:$PromptForLoginPassword `
+        -PromptForSudoPassword:$PromptForSudoPassword
+} -Force
+
 
 Set-Item function:global:Fabric-Deploy {
     param(
         [Parameter(Mandatory=$true)]
         [string]$Hosts,
         [Parameter(Mandatory=$true)]
-        [string]$Repo,
+        [ValidateSet('Daily','Dev','Prod','Staging')]
+        [string]$Config,
+        [string]$Branch,
+        [string]$SecretBranch,
         [switch]$PromptForPassphrase,
         [switch]$PromptForLoginPassword,
         [switch]$PromptForSudoPassword
     )
-    $testDeployArgs = @("deploy")
-    $testDeployArgs += "--repo"
-    $testDeployArgs += $Repo
+    $deployArgs = @("deploy")
+    $deployArgs += $Config.ToLower()
+    if ($Branch) {
+        $deployArgs += "--branch"
+        $deployArgs += $Branch
+    }
+    if ($SecretBranch) {
+        $deployArgs += "--secret-branch"
+        $deployArgs += $SecretBranch
+    }
 
-    Invoke-Fabric $Hosts -PromptForPassphrase:$PromptForPassphrase -PromptForLoginPassword:$PromptForLoginPassword -PromptForSudoPassword:$PromptForSudoPassword $testDeployArgs
+    Invoke-Fabric $Hosts -PromptForPassphrase:$PromptForPassphrase -PromptForLoginPassword:$PromptForLoginPassword -PromptForSudoPassword:$PromptForSudoPassword $deployArgs
+} -Force
+
+Set-Item function:global:Fabric-Shutdown {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$Hosts,
+        [Parameter(Mandatory=$true)]
+        [ValidateSet('Daily','Dev','Prod','Staging')]
+        [string]$Config,
+        [string]$Branch,
+        [string]$SecretBranch,
+        [switch]$PromptForPassphrase,
+        [switch]$PromptForLoginPassword,
+        [switch]$PromptForSudoPassword
+    )
+    $shutdownArgs = @("shutdown")
+    $shutdownArgs += $Config.ToLower()
+    if ($Branch) {
+        $shutdownArgs += "--branch"
+        $shutdownArgs += $Branch
+    }
+    if ($SecretBranch) {
+        $shutdownArgs += "--secret-branch"
+        $shutdownArgs += $SecretBranch
+    }
+
+    Invoke-Fabric $Hosts -PromptForPassphrase:$PromptForPassphrase -PromptForLoginPassword:$PromptForLoginPassword -PromptForSudoPassword:$PromptForSudoPassword $shutdownArgs
 } -Force
