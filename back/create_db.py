@@ -7,7 +7,7 @@ if len(argv) < 2:
     sys_exit(1)
 
 CONFIG = argv[1]
-DJANGO_SETTINGS = import_module('newdjangosite.settings_{0}'.format(CONFIG))
+DJANGO_SETTINGS = import_module(f'newdjangosite.settings_{CONFIG}')
 DB_SETTINGS = DJANGO_SETTINGS.DATABASES['default']
 DB_NAME = DB_SETTINGS['NAME']
 DB_USER = DB_SETTINGS['USER']
@@ -17,12 +17,12 @@ DATABASE_EXISTS_COUNT = check_output([
     'psql',
     'postgres',
     '-tAc',
-    "SELECT 1 FROM pg_catalog.pg_database WHERE datname='{0}'".format(DB_NAME)
+    f"SELECT 1 FROM pg_catalog.pg_database WHERE datname='{DB_NAME}'"
 ])
 if '1' in DATABASE_EXISTS_COUNT.decode('utf-8'):
-    print('Database {0} already exists'.format(DB_NAME))
+    print(f'Database {DB_NAME} already exists')
 else:
-    print('Creating database {0}'.format(DB_NAME))
+    print(f'Creating database {DB_NAME}')
     check_call([
         'createdb',
         '--encoding=UTF8',
@@ -31,30 +31,30 @@ else:
         '--template=template0',
         DB_NAME
     ])
-    print('{0} database created'.format(DB_NAME))
+    print(f'{DB_NAME} database created')
 
 MATCHING_USER_COUNT = check_output([
     'psql',
     'postgres',
     '-tAc',
-    "SELECT 1 FROM pg_roles WHERE rolname='{0}'".format(DB_USER)
+    f"SELECT 1 FROM pg_roles WHERE rolname='{DB_USER}'"
 ])
 if '1' in MATCHING_USER_COUNT.decode('utf-8'):
-    print('User {0} already exists'.format(DB_USER))
+    print(f'User {DB_USER} already exists')
 else:
-    print('Creating user {0}'.format(DB_USER))
+    print(f'Creating user {DB_USER}')
     check_call([
         'createuser',
         '-s',
         DB_USER
     ])
-    print('{0} user created'.format(DB_USER))
+    print(f'{DB_USER} user created')
 
 check_call([
     'psql',
     '-d',
     'postgres',
     '-c',
-    "ALTER ROLE {0} WITH ENCRYPTED PASSWORD '{1}';".format(DB_USER, DB_PASSWORD)
+    f"ALTER ROLE {DB_USER} WITH ENCRYPTED PASSWORD '{DB_PASSWORD}';"
 ])
-print('Passsword updated for user {0}'.format(DB_USER))
+print(f'Passsword updated for user {DB_USER}')
