@@ -3,7 +3,6 @@ from typing import Optional
 from colorama import Fore, init as colorama_init
 from fabric import Task
 from fabric.connection import Connection
-from patchwork.files import exists as patchwork_exists
 import plush.fabric_commands
 from plush.fabric_commands.git import clone
 from plush.fabric_commands.permissions import ensure_directory, set_permissions_file
@@ -11,16 +10,13 @@ from plush.fabric_commands.ssh_key import create_key
 from plush.oauth_flow import verify_access_token
 from plush.repo_keys import add_repo_key
 
-from .deploy import checkout_branch, deploy, get_secret_repo_branch, get_secret_repo_dir
-from .deploy import get_secret_repo_name, get_repo_dir, WEBADMIN_GROUP
+from .deploy import checkout_branch, deploy, exists, get_secret_repo_branch
+from .deploy import get_secret_repo_dir, get_secret_repo_name, get_repo_dir
+from .deploy import update_backend_dependencies, WEBADMIN_GROUP
 
 REPO_FULL_NAME = 'kbarnes3/BaseDjangoAngular'
 colorama_init(autoreset=True)
 
-def exists(conn: Connection, path: str) -> bool:
-    # pylint doesn't understand the @set_runner decorator
-    # create a wrapper so we only have to suppress the error once
-    return patchwork_exists(conn, path) # pylint: disable=E1120
 
 @Task
 def setup_user(conn, user, disable_sudo_passwd=False, set_public_key_file=None):
@@ -124,14 +120,9 @@ def setup_deployment(conn, config, branch=None, secret_branch=None):
     print(Fore.GREEN + 'Cloning secret repo')
     _setup_secret_repo(conn, config, secret_branch)
 
-    venv_dir = '{0}/venv'.format(repo_dir)
-    if not exists(conn, venv_dir):
-        print(Fore.GREEN + 'Creating virtualenv')
-        conn.sudo('python3 -m venv --system-site-packages {0}'.format(venv_dir))
+    update_backend_dependencies(conn, repo_dir)
 
     with conn.cd(repo_dir):
-        print(Fore.GREEN + 'Installing dependencies with pip')
-        conn.run('sudo venv/bin/pip install --requirement=requirements.txt')
         print(Fore.GREEN + 'Creating database and user')
         conn.run('venv/bin/python back/create_db.py {0}'.format(config))
 

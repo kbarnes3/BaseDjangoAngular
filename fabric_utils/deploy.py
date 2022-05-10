@@ -3,6 +3,7 @@ from typing import Optional
 from colorama import Fore, init
 from fabric import Task
 from fabric.connection import Connection
+from patchwork.files import exists as patchwork_exists
 from plush.fabric_commands.permissions import ensure_directory, set_permissions_file
 
 CONFIGURATIONS = {
@@ -40,6 +41,11 @@ init(autoreset=True)
 class AllowedException(Exception):
     pass
 
+
+def exists(conn: Connection, path: str) -> bool:
+    # pylint doesn't understand the @set_runner decorator
+    # create a wrapper so we only have to suppress the error once
+    return patchwork_exists(conn, path) # pylint: disable=E1120
 
 def get_repo_dir(config: str) -> str:
     return '{0}/newdjangosite-{1}'.format(PYTHON_DIR, config)
@@ -96,6 +102,7 @@ def deploy(conn, config, branch=None, secret_branch=None):
 
     _update_source(conn, repo_dir, branch)
     _update_source(conn, secret_repo_dir, secret_branch)
+    update_backend_dependencies(conn, repo_dir)
     _compile_source(conn, config, repo_dir)
     _update_scripts(conn, config, daily_scripts_dir)
     _update_database(conn, config, repo_dir)
@@ -115,15 +122,31 @@ def _update_source(conn: Connection, repo_dir: str, branch: str):
         conn.run('sudo git reset --hard origin/{0}'.format(branch))
 
 
+def update_backend_dependencies(conn: Connection, repo_dir: str):
+    print(Fore.GREEN + 'update_backend_dependencies')
+
+    venv_dir = '{0}/venv'.format(repo_dir)
+    if not exists(conn, venv_dir):
+        print(Fore.GREEN + 'Creating virtualenv')
+        conn.sudo('python3 -m venv --system-site-packages {0}'.format(venv_dir))
+
+    with conn.cd(repo_dir):
+        print(Fore.GREEN + 'Updating pip')
+        conn.run('venv/bin/python -m pip install --upgrade pip')
+
+        print(Fore.GREEN + 'Updating pip-tools')
+        conn.run('venv/bin/python -m pip install --upgrade pip-tools')
+
+        print(Fore.GREEN + 'Installing dependencies with pip-sync')
+        conn.run('venv/bin/pip-sync ubuntu64-py310-requirements.txt')
+
+
 def _compile_source(conn: Connection,
                     config: str,
                     repo_dir: str):
     print(Fore.GREEN + 'compile_source')
     backend_dir = get_backend_dir(repo_dir)
     python_bin = get_virtualenv_python_bin(repo_dir)
-
-    with conn.cd(repo_dir):
-        conn.run('venv/bin/pip install --quiet --requirement=requirements.txt')
 
     with conn.cd(backend_dir):
         conn.run('sudo find . -iname "*.pyc" -delete')
