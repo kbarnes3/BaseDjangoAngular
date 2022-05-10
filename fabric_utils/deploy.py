@@ -128,7 +128,7 @@ def update_backend_dependencies(conn: Connection, repo_dir: str):
     venv_dir = '{0}/venv'.format(repo_dir)
     if not exists(conn, venv_dir):
         print(Fore.GREEN + 'Creating virtualenv')
-        conn.sudo('python3 -m venv --system-site-packages {0}'.format(venv_dir))
+        conn.run('python3 -m venv --system-site-packages {0}'.format(venv_dir))
 
     with conn.cd(repo_dir):
         print(Fore.GREEN + 'Updating pip')
@@ -187,7 +187,7 @@ def _build_content(conn: Connection, repo_dir: str):
     angular_dir = get_frontend_dir(repo_dir)
     print(Fore.GREEN + 'build_content')
     with conn.cd(angular_dir):
-        conn.run('sudo npm install -g npm@7')
+        conn.run('sudo npm install -g npm@8')
         conn.run('sudo npm install -g @angular/cli')
         conn.run('sudo npm ci')
         conn.run('sudo npm run-script build')
