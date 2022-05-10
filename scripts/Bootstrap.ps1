@@ -19,7 +19,7 @@ Push-Location $project_root
 $venv = Join-Path $project_root "venv"
 if (-Not (Test-Path $venv)) {
     Write-Status "Creating venv in $venv"
-    & py -3.10 -m venv $venv
+    . $PSScriptRoot\Invoke-NonVenvPython.ps1 @('-m', 'venv', $venv)
 }
 
 $already_activated = . $PSScriptRoot\Ensure-Venv.ps1
@@ -31,11 +31,11 @@ Write-Status "Updating requirements"
 Write-Status "Updating dev-requirements"
 & pip install -r (Join-Path $project_root "dev-requirements.txt") $quiet
 Write-Status "Updating npm"
-. $PSScriptRoot\Invoke-Npm @('install', '-g', 'npm@8')
+. $PSScriptRoot\Invoke-Npm.ps1 @('install', '-g', 'npm@8')
 Write-Status "Updating Angular CLI"
-. $PSScriptRoot\Invoke-Npm @('install', '-g', '@angular/cli')t
+. $PSScriptRoot\Invoke-Npm.ps1 @('install', '-g', '@angular/cli')t
 Write-Status "Updating requirements"
-. $PSScriptRoot\Invoke-Npm @('install')
+. $PSScriptRoot\Invoke-Npm.ps1 @('install')
 
 if ($Global:console_functions) {
     # Define or update the console scripts if we want them
