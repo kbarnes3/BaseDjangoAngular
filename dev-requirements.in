@@ -4,5 +4,5 @@ plush-fabric==0.5.2
 colorama==0.4.4
 pylint
 pylint-django
-pytest==5.2.1
-pytest-django==3.5.1
+pytest
+pytest-django
