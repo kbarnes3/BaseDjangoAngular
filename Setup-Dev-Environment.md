@@ -9,7 +9,7 @@ To setup your dev environment
 -----------------------------
 
 1. Install all the required tools. This includes:  
-    a. The latest release of [Python 3.6](https://www.python.org/). For best results, only use releases of Python 3.6 as that will be the version used by the server.  
+    a. The latest release of [Python 3.10](https://www.python.org/). For best results, only use releases of Python 3.10 as that will be the version used by the server.  
     b. The latest release of [Git](http://git-scm.com/downloads).
 1. Clone the repo locally and open a PowerShell prompt in the root folder.
 1. Run scripts\Console.ps1. The first time this script is run, it will create a virtual env, install Django and other dependencies, and create a local test database.
