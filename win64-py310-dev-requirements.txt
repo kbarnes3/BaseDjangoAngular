@@ -6,7 +6,7 @@
 #
 asgiref==3.5.1
     # via django
-astroid==2.3.3
+astroid==2.11.5
     # via pylint
 atomicwrites==1.4.0
     # via pytest
@@ -32,6 +32,8 @@ cryptography==37.0.2
     # via paramiko
 deprecated==1.2.13
     # via pygithub
+dill==0.3.4
+    # via pylint
 django==3.2.13
     # via -r .\requirements.in
 django-environ==0.4.5
@@ -51,13 +53,13 @@ importlib-metadata==4.11.3
     # via keyring
 invoke==1.7.0
     # via fabric
-isort==4.3.21
+isort==5.10.1
     # via pylint
 keyring==23.5.0
     # via plush-fabric
-lazy-object-proxy==1.4.3
+lazy-object-proxy==1.7.1
     # via astroid
-mccabe==0.6.1
+mccabe==0.7.0
     # via pylint
 more-itertools==8.13.0
     # via pytest
@@ -73,6 +75,8 @@ patchwork==1.0.1
     #   plush-fabric
 pathlib2==2.3.7.post1
     # via fabric
+platformdirs==2.5.2
+    # via pylint
 pluggy==0.13.1
     # via pytest
 plush-fabric==0.5.2
@@ -92,12 +96,12 @@ pygithub==1.55
     # via plush-fabric
 pyjwt==2.3.0
     # via pygithub
-pylint==2.4.3
+pylint==2.13.8
     # via
     #   -r .\dev-requirements.in
     #   pylint-django
     #   pylint-plugin-utils
-pylint-django==2.0.11
+pylint-django==2.5.3
     # via -r .\dev-requirements.in
 pylint-plugin-utils==0.7
     # via pylint-django
@@ -125,19 +129,23 @@ rsa==4.8
     # via oauth2client
 six==1.16.0
     # via
-    #   astroid
     #   oauth2client
     #   paramiko
     #   pathlib2
 sqlparse==0.4.2
     # via django
+tomli==2.0.1
+    # via pylint
 urllib3==1.26.9
     # via requests
 wcwidth==0.2.5
     # via pytest
-wrapt==1.11.2
+wrapt==1.14.1
     # via
     #   astroid
     #   deprecated
 zipp==3.8.0
     # via importlib-metadata
+
+# The following packages are considered to be unsafe in a requirements file:
+# setuptools

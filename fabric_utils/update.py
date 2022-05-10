@@ -16,9 +16,11 @@ def compile_requirements(conn, fresh=False, upgrade=False):
 
     transfer = Transfer(conn)
     transfer.put('requirements.in', '/tmp/pip-tools/requirements.in')
+    transfer.put('dev-requirements.in', '/tmp/pip-tools/dev-requirements.in')
 
     if not fresh:
         transfer.put('ubuntu64-py310-requirements.txt', '/tmp/pip-tools/ubuntu64-py310-requirements.txt')
+        transfer.put('ubuntu64-py310-dev-requirements.txt', '/tmp/pip-tools/ubuntu64-py310-dev-requirements.txt')
 
     print(Fore.GREEN + 'Setting up virtualenv')
     with conn.cd('/tmp/pip-tools/'):
@@ -36,7 +38,15 @@ def compile_requirements(conn, fresh=False, upgrade=False):
             upgrade_flag = '--upgrade'
         conn.run('venv/bin/pip-compile {0} --output-file=ubuntu64-py310-requirements.txt requirements.in'.format(upgrade_flag))
 
+        print(Fore.GREEN + 'Compiling dev requirements')
+        upgrade_flag = ''
+        if upgrade:
+            upgrade_flag = '--upgrade'
+        conn.run('venv/bin/pip-compile {0} --output-file=ubuntu64-py310-dev-requirements.txt requirements.in dev-requirements.in'.format(upgrade_flag))
+
     transfer.get('/tmp/pip-tools/ubuntu64-py310-requirements.txt', 'ubuntu64-py310-requirements.txt')
     print(Fore.GREEN + 'Updated ubuntu64-py310-requirements.txt')
+    transfer.get('/tmp/pip-tools/ubuntu64-py310-dev-requirements.txt', 'ubuntu64-py310-dev-requirements.txt')
+    print(Fore.GREEN + 'Updated ubuntu64-py310-dev-requirements.txt')
     print(Fore.GREEN + 'Removing temp files')
     conn.sudo('rm -rf /tmp/pip-tools')
