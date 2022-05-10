@@ -20,7 +20,7 @@ colorama_init(autoreset=True)
 
 @Task
 def setup_user(conn, user, disable_sudo_passwd=False, set_public_key_file=None):
-    print(Fore.GREEN + 'Configuring {0}'.format(user))
+    print(Fore.GREEN + f'Configuring {user}')
     messages = plush.fabric_commands.prepare_user(
         conn,
         user,
@@ -33,22 +33,22 @@ def setup_user(conn, user, disable_sudo_passwd=False, set_public_key_file=None):
         plush.fabric_commands.install_packages(conn, ['postgresql'])
 
     matching_user_count = conn.sudo(
-        "psql postgres -tAc \"SELECT 1 FROM pg_roles WHERE rolname='{0}'\"".format(user),
+        f"psql postgres -tAc \"SELECT 1 FROM pg_roles WHERE rolname='{user}'\"",
         user='postgres').stdout
     if '1' not in matching_user_count:
-        conn.sudo('createuser -s {0}'.format(user), user='postgres')
+        conn.sudo(f'createuser -s {user}', user='postgres')
 
     if messages:
         print("========================================")
         print(messages)
         print("========================================")
-    print(Fore.GREEN + '{0} configured'.format(user))
+    print(Fore.GREEN + f'{user} configured')
 
 
 @Task
 def add_authorized_key(conn, user, set_public_key_file):
     if set_public_key_file:
-        with open(set_public_key_file, 'r') as public_key:
+        with open(set_public_key_file, 'r', encoding='utf-8') as public_key:
             public_key_contents = public_key.read()
         plush.fabric_commands.add_authorized_key(conn, user, public_key_contents)
 
@@ -56,8 +56,8 @@ def add_authorized_key(conn, user, set_public_key_file):
 @Task
 def disable_ssh_passwords(conn):
     sshd_config = '/etc/ssh/sshd_config'
-    conn.sudo("sed -i '/^ *PasswordAuthentication/d' {0}".format(sshd_config))
-    conn.sudo('echo "PasswordAuthentication no" | sudo tee -a {0}'.format(sshd_config), pty=True)
+    conn.sudo(f"sed -i '/^ *PasswordAuthentication/d' {sshd_config}")
+    conn.sudo(f'echo "PasswordAuthentication no" | sudo tee -a {sshd_config}', pty=True)
     print("========================================")
     print("Password authentication disabled for SSH.")
     print("Restart the SSH daemon by logging into the console and running:")
@@ -99,7 +99,7 @@ def setup_server(conn):
 
     default_site = '/etc/nginx/sites-enabled/default'
     if exists(conn, default_site):
-        conn.sudo('rm {0}'.format(default_site))
+        conn.sudo(f'rm {default_site}')
     conn.sudo('/etc/init.d/nginx start')
     print(Fore.GREEN + 'Server setup done')
 
@@ -112,7 +112,7 @@ def _setup_node(conn: Connection):
 
 @Task
 def setup_deployment(conn, config, branch=None, secret_branch=None):
-    print(Fore.GREEN + 'Starting setup deployment for {0}'.format(config))
+    print(Fore.GREEN + f'Starting setup deployment for {config}')
     repo_dir = get_repo_dir(config)
 
     print(Fore.GREEN + 'Cloning main repo')
@@ -124,12 +124,12 @@ def setup_deployment(conn, config, branch=None, secret_branch=None):
 
     with conn.cd(repo_dir):
         print(Fore.GREEN + 'Creating database and user')
-        conn.run('venv/bin/python back/create_db.py {0}'.format(config))
+        conn.run(f'venv/bin/python back/create_db.py {config}')
 
 
-    global_dir = '{0}/config/ubuntu-22.04/global'.format(repo_dir)
-    uwsgi_socket_source = '{0}/uwsgi-app@.socket'.format(global_dir)
-    uwsgi_service_source = '{0}/uwsgi-app@.service'.format(global_dir)
+    global_dir = f'{repo_dir}/config/ubuntu-22.04/global'
+    uwsgi_socket_source = f'{global_dir}/uwsgi-app@.socket'
+    uwsgi_service_source = f'{global_dir}/uwsgi-app@.service'
 
     uwsgi_socket = '/etc/systemd/system/uwsgi-app@.socket'
     uwsgi_service = '/etc/systemd/system/uwsgi-app@.service'
@@ -137,16 +137,16 @@ def setup_deployment(conn, config, branch=None, secret_branch=None):
 
     print(Fore.GREEN + 'Configuring UWSGI')
     if not exists(conn, uwsgi_socket):
-        conn.sudo('cp {0} {1}'.format(uwsgi_socket_source, uwsgi_socket))
+        conn.sudo(f'cp {uwsgi_socket_source} {uwsgi_socket}')
         set_permissions_file(conn, uwsgi_socket, 'root', 'root', '644')
 
     if not exists(conn, uwsgi_service):
-        conn.sudo('cp {0} {1}'.format(uwsgi_service_source, uwsgi_service))
+        conn.sudo(f'cp {uwsgi_service_source} {uwsgi_service}')
         set_permissions_file(conn, uwsgi_service, 'root', 'root', '644')
 
     print(Fore.GREEN + 'Deploying')
     deploy(conn, config, branch, secret_branch)
-    print(Fore.GREEN + 'Setup deployment done for {0}'.format(config))
+    print(Fore.GREEN + f'Setup deployment done for {config}')
 
 
 def _setup_main_repo(conn: Connection, repo_dir: str, config: str, branch: Optional[str] = None):
@@ -166,7 +166,7 @@ def _setup_secret_repo(conn: Connection, config: str, secret_branch_override: Op
 def _setup_repo(conn: Connection, repo_dir: str, repo_name: str):
     ensure_directory(conn, repo_dir, owning_group=WEBADMIN_GROUP)
 
-    if not exists(conn, '{0}/.git'.format(repo_dir)):
+    if not exists(conn, f'{repo_dir}/.git'):
         if not verify_access_token():
             raise Exception("Unable to access GitHub account. Run 'auth' to fix this")
         create_key(conn, repo_name, WEBADMIN_GROUP)
@@ -176,12 +176,12 @@ def _setup_repo(conn: Connection, repo_dir: str, repo_name: str):
 
 @Task
 def setup_superuser(conn, config, email, given_name, surname, password): # pylint: disable=R0913
-    print(Fore.GREEN + 'Setting up new superuser for {0} deployment'.format(config))
+    print(Fore.GREEN + f'Setting up new superuser for {config} deployment')
     repo_dir = get_repo_dir(config)
 
     env = {'DJANGO_SUPERUSER_PASSWORD': password}
 
     with conn.cd(repo_dir):
-        conn.run(('venv/bin/python back/manage_{0}.py createsuperuser --no-input ' +
-                  '--primary_email {1} --given_name {2} --surname {3}').format(
-                      config, email, given_name, surname), env=env)
+        conn.run(f'venv/bin/python back/manage_{config}.py createsuperuser --no-input ' +
+                  f'--primary_email {email} --given_name {given_name} --surname {surname}',
+                  env=env)
