@@ -26,15 +26,15 @@ $already_activated = . $PSScriptRoot\Ensure-Venv.ps1
 
 Write-Status "Updating pip"
 & python -m pip install --upgrade pip $quiet
-Write-Status "Updating requirements"
-& pip install -r (Join-Path $project_root "requirements.txt") $quiet
-Write-Status "Updating dev-requirements"
-& pip install -r (Join-Path $project_root "dev-requirements.txt") $quiet
+Write-Status "Updating pip-tools"
+& python -m pip install --upgrade pip-tools $quiet
+Write-Status "Updating Python requirements"
+& pip-sync .\win64-py310-dev-requirements.txt
 Write-Status "Updating npm"
 . $PSScriptRoot\Invoke-Npm.ps1 @('install', '-g', 'npm@8')
 Write-Status "Updating Angular CLI"
 . $PSScriptRoot\Invoke-Npm.ps1 @('install', '-g', '@angular/cli')t
-Write-Status "Updating requirements"
+Write-Status "Updating Node requirements"
 . $PSScriptRoot\Invoke-Npm.ps1 @('install')
 
 if ($Global:console_functions) {
