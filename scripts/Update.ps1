@@ -9,12 +9,12 @@ $already_activated = . $PSScriptRoot\Ensure-Venv.ps1
 
 # Check Python version
 $venv_version = & python --version
-$installed_version = & py -3.6 --version
+$installed_version = . $PSScriptRoot\Invoke-NonVenvPython.ps1 @('--version')
 if ($venv_version -ne $installed_version) {
     Write-Status "Updating venv from $venv_version to $installed_version"
     deactivate
     $venv = Join-Path $project_root "venv"
-    & py -3.6 -m venv $venv --upgrade
+    . $PSScriptRoot\Invoke-NonVenvPython.ps1 @('-m', 'venv', $venv, '--upgrade')
     . $PSScriptRoot\Ensure-Venv.ps1 | Out-Null
 }
 
