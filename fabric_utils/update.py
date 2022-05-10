@@ -8,7 +8,7 @@ init(autoreset=True)
 
 
 @Task
-def compile_requirements(conn, fresh=False, update=False):
+def compile_requirements(conn, fresh=False, upgrade=False):
     print(Fore.GREEN + 'Compiling Python requirements')
     remote_user = conn.run('whoami').stdout.strip()
     ensure_directory(conn, '/tmp/pip-tools', remote_user)
@@ -31,7 +31,10 @@ def compile_requirements(conn, fresh=False, update=False):
         conn.run('venv/bin/python -m pip install --upgrade pip-tools')
 
         print(Fore.GREEN + 'Compiling requirements')
-        conn.run('venv/bin/pip-compile --output-file=ubuntu64-py310-requirements.txt requirements.in')
+        upgrade_flag = ''
+        if upgrade:
+            upgrade_flag = '--upgrade'
+        conn.run('venv/bin/pip-compile {0} --output-file=ubuntu64-py310-requirements.txt requirements.in'.format(upgrade_flag))
 
     transfer.get('/tmp/pip-tools/ubuntu64-py310-requirements.txt', 'ubuntu64-py310-requirements.txt')
     print(Fore.GREEN + 'Updated ubuntu64-py310-requirements.txt')
