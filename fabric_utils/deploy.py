@@ -93,7 +93,7 @@ def deploy(conn, config, branch=None, secret_branch=None):
 
     repo_dir = get_repo_dir(config)
     config_dir = f'{repo_dir}/config/ubuntu-22.04'
-    daily_scripts_dir = f'{repo_dir}/cron.daily'
+    daily_scripts_dir = f'{config_dir}/cron.daily'
     uwsgi_dir = f'{config_dir}/uwsgi'
     nginx_dir = f'{config_dir}/nginx'
     secret_repo_dir = get_secret_repo_dir(config)
