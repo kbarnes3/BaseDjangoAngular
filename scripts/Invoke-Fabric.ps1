@@ -95,7 +95,7 @@ Set-Item function:global:Fabric-AddAuthorizedKey {
     $addAuthorizedKeyArgs = @("add-authorized-key")
     $addAuthorizedKeyArgs += "--user"
     $addAuthorizedKeyArgs += $User
-    $addAuthorizedKeyArgs += "--public-key-file"
+    $addAuthorizedKeyArgs += "--set-public-key-file"
     $addAuthorizedKeyArgs += $PublicKeyFile
 
     Invoke-Fabric $Hosts -PromptForPassphrase:$PromptForPassphrase -PromptForLoginPassword:$PromptForLoginPassword -PromptForSudoPassword:$PromptForSudoPassword $addAuthorizedKeyArgs
