@@ -11,9 +11,9 @@ pool:
 steps:
 - task: UsePythonVersion@0
   inputs:
-    versionSpec: 3.6
+    versionSpec: 3.10
     architecture: 'x64'
-  displayName: 'Use Python 3.6'
+  displayName: 'Use Python 3.10'
 
 - task: NodeTool@0
   inputs:
@@ -22,8 +22,8 @@ steps:
 
 - script: |
     python -m pip install --upgrade pip
-    pip install -r requirements.txt
-    pip install -r dev-requirements.txt
+    python -m pip install --upgrade pip-tools
+    pip-sync ubuntu64-py310-dev-requirements.txt
   displayName: 'Install prerequisites'
 
 - script: |

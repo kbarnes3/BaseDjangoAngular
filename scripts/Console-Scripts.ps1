@@ -33,3 +33,11 @@ Set-Item function:global:Update-DevEnvironment {
     param([switch]$Verbose)
     . $PSScriptRoot\Update.ps1 -Verbose:$Verbose
 } -Force
+
+Set-Item function:global:Upgrade-Requirements {
+    Push-Location $PSScriptRoot\..
+    & pip-compile --upgrade --output-file=win64-py310-dev-requirements.txt '.\dev-requirements.in' '.\requirements.in'
+    Pop-Location
+    Write-Host 'win64-py310-dev-requirements.txt updated.'
+    Write-Host 'Run pip-sync win64-py310-dev-requirements.txt to update your environment.'
+}

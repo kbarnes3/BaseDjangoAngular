@@ -95,7 +95,7 @@ Set-Item function:global:Fabric-AddAuthorizedKey {
     $addAuthorizedKeyArgs = @("add-authorized-key")
     $addAuthorizedKeyArgs += "--user"
     $addAuthorizedKeyArgs += $User
-    $addAuthorizedKeyArgs += "--public-key-file"
+    $addAuthorizedKeyArgs += "--set-public-key-file"
     $addAuthorizedKeyArgs += $PublicKeyFile
 
     Invoke-Fabric $Hosts -PromptForPassphrase:$PromptForPassphrase -PromptForLoginPassword:$PromptForLoginPassword -PromptForSudoPassword:$PromptForSudoPassword $addAuthorizedKeyArgs
@@ -258,3 +258,25 @@ Set-Item function:global:Fabric-Shutdown {
 
     Invoke-Fabric $Hosts -PromptForPassphrase:$PromptForPassphrase -PromptForLoginPassword:$PromptForLoginPassword -PromptForSudoPassword:$PromptForSudoPassword $shutdownArgs
 } -Force
+
+Set-Item function:global:Fabric-CompileRequirements {
+    param(
+        [Parameter(Mandatory=$true)]
+        [string]$Hosts,
+        [switch]$Fresh,
+        [switch]$Upgrade,
+        [switch]$PromptForPassphrase,
+        [switch]$PromptForLoginPassword,
+        [switch]$PromptForSudoPassword
+    )
+
+    $compileArgs = @("compile-requirements")
+    if ($Fresh) {
+        $compileArgs += "--fresh"
+    }
+    if ($Upgrade) {
+        $compileArgs += "--upgrade"
+    }
+
+    Invoke-Fabric $Hosts -PromptForPassphrase:$PromptForPassphrase -PromptForLoginPassword:$PromptForLoginPassword -PromptForSudoPassword:$PromptForSudoPassword $compileArgs
+}

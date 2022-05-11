@@ -1,0 +1,8 @@
+Fabric==2.7.0
+patchwork==1.0.1
+plush-fabric==0.5.2
+colorama==0.4.4
+pylint
+pylint-django
+pytest
+pytest-django

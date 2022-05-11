@@ -28,7 +28,7 @@ class User(AbstractBaseUser):
     REQUIRED_FIELDS = ['given_name', 'surname']
 
     def get_full_name(self):
-        full_name = '%s %s' % (self.given_name, self.surname)
+        full_name = f'{self.given_name} {self.surname}'
         return full_name.strip()
 
     def get_short_name(self):
