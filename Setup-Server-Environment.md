@@ -90,7 +90,7 @@ After the needed configuration is committed and pushed, deployments can be added
 
 Finishing up global server deployment
 -------------------------------------
-The files in config/ubuntu-18.04/global can impact all the Django sites running on the server, so they aren't routinely deployed. After your first deployment, or after updating these files, they need to be explictly deployed. They can be deployed with:  
+The files in config/ubuntu-18.04/global can impact all the Django sites running on the server, so they aren't routinely deployed. After your first deployment, or after updating these files, they need to be explicitly deployed. They can be deployed with:  
 ```fab --hosts $user$@$a.b.c.d$ deploy_global_config $deployment$```  
 Note that no changes are made to ```$deployment$```, the files are just copied from that deployment at its current state. You may need to deploy to ```$deployment$``` to ensure recent updates to the global files are in the deployment's repo first. See the next section for details on deploying.
 
