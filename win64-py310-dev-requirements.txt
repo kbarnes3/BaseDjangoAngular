@@ -34,11 +34,11 @@ deprecated==1.2.13
     # via pygithub
 dill==0.3.4
     # via pylint
-django==3.2.13
+django==4.0.4
     # via -r .\requirements.in
-django-environ==0.4.5
+django-environ==0.8.1
     # via -r .\requirements.in
-django-widget-tweaks==1.4.1
+django-widget-tweaks==1.4.12
     # via -r .\requirements.in
 fabric==2.7.0
     # via
@@ -119,8 +119,6 @@ pytest==7.1.2
     #   pytest-django
 pytest-django==4.5.2
     # via -r .\dev-requirements.in
-pytz==2022.1
-    # via django
 pywin32-ctypes==0.2.0
     # via keyring
 requests==2.27.1
@@ -138,6 +136,8 @@ tomli==2.0.1
     # via
     #   pylint
     #   pytest
+tzdata==2022.1
+    # via django
 urllib3==1.26.9
     # via requests
 wrapt==1.14.1
