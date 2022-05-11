@@ -4,7 +4,7 @@ from fabric_utils.update import compile_requirements
 
 __all__ = [
     'add_authorized_key',
-    'compile_reqirements',
+    'compile_requirements',
     'deploy',
     'deploy_global_config',
     'disable_ssh_passwords',
