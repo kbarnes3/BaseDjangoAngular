@@ -6,7 +6,7 @@ trigger:
 - trunk
 
 pool:
-  vmImage: 'ubuntu-2204'
+  vmImage: 'ubuntu-latest'
 
 steps:
 - task: UsePythonVersion@0
