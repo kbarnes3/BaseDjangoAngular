@@ -35,7 +35,7 @@ def compile_requirements(conn, fresh=False, upgrade=False):
         conn.run('python3 -m venv venv')
 
         print(Fore.GREEN + 'Updating pip')
-        conn.run('venv/bin/python -m pip install pip==22.0.4')
+        conn.run('venv/bin/python -m pip install --upgrade pip')
 
         print(Fore.GREEN + 'Updating pip-tools')
         conn.run('venv/bin/python -m pip install --upgrade pip-tools')
