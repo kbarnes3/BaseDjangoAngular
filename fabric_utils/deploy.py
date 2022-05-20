@@ -131,7 +131,7 @@ def update_backend_dependencies(conn: Connection, repo_dir: str):
 
     with conn.cd(repo_dir):
         print(Fore.GREEN + 'Updating pip')
-        conn.run('venv/bin/python -m pip install pip==22.0.4')
+        conn.run('venv/bin/python -m pip install --upgrade pip')
 
         print(Fore.GREEN + 'Updating pip-tools')
         conn.run('venv/bin/python -m pip install --upgrade pip-tools')
