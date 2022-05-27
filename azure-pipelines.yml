@@ -50,8 +50,8 @@ steps:
 
 - script: |
     cd front
-    npm install -g npm@8
-    npm install -g @angular/cli
+    npm install --location=global npm@8
+    npm install --location=global @angular/cli
     npm ci
   displayName: 'Install required packages (npm install)'
 

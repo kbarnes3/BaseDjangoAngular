@@ -186,8 +186,8 @@ def _build_content(conn: Connection, repo_dir: str):
     angular_dir = get_frontend_dir(repo_dir)
     print(Fore.GREEN + 'build_content')
     with conn.cd(angular_dir):
-        conn.run('sudo npm install -g npm@8')
-        conn.run('sudo npm install -g @angular/cli')
+        conn.run('sudo npm install --location=global npm@8')
+        conn.run('sudo npm install --location=global @angular/cli')
         conn.run('sudo npm ci')
         conn.run('sudo npm run-script build')
         conn.run('sudo rsync -va dist/front built')
