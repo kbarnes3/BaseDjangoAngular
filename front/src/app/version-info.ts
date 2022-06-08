@@ -1,6 +1,6 @@
 export const versionInfo = (() => {
   try {
-    // tslint:disable-next-line:no-var-requires
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     return require('../../git-version.json');
   } catch {
     // In dev the file might not exist:

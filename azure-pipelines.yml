@@ -73,6 +73,6 @@ steps:
 
 - script: |
     cd front
-    # ng lint
-  displayName: 'Run linting (ng lint) (Temporarily disabled)'
+    npm run-script lint
+  displayName: 'Run linting (ng lint)'
 
