@@ -41,7 +41,7 @@ server {
 	}
 
 	location ~ ^(/api/|/account/) {
-		uwsgi_pass unix:/var/run/uwsgi/newdjangosite-prod.socket;
+		uwsgi_pass unix:/var/uwsgi/newdjangosite-prod.socket;
 		uwsgi_param  QUERY_STRING       $query_string;
 		uwsgi_param  REQUEST_METHOD     $request_method;
 		uwsgi_param  CONTENT_TYPE       $content_type;

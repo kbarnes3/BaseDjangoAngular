@@ -179,7 +179,7 @@ def _reload_code(conn: Connection, config: str, uwsgi_dir: str):
         conn.run(f'sudo systemctl enable uwsgi-app@newdjangosite-{config}.socket')
         conn.run(f'sudo systemctl enable uwsgi-app@newdjangosite-{config}.service')
         conn.run(f'sudo systemctl start uwsgi-app@newdjangosite-{config}.socket')
-        conn.run(f'sudo touch /var/run/uwsgi/newdjangosite-{config}.reload')
+        conn.run(f'sudo touch /var/uwsgi/newdjangosite-{config}.reload')
 
 
 def _build_content(conn: Connection, repo_dir: str):
