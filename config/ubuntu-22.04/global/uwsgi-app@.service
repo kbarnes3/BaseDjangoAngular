@@ -5,8 +5,8 @@ After=syslog.target
 [Service]
 ExecStart=/usr/bin/uwsgi \
         --ini /etc/uwsgi/apps-available/%i.ini \
-        --socket /var/run/uwsgi/%i.socket \
-        --touch-reload /var/run/uwsgi/%i.reload
+        --socket /var/uwsgi/%i.socket \
+        --touch-reload /var/uwsgi/%i.reload
 User=www-data
 Group=www-data
 Restart=on-failure
