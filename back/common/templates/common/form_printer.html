@@ -1,4 +1,7 @@
 {%  load widget_tweaks %}
+{% for error in form.non_field_errors %}
+<p class="alert alert-danger">{{ error | escape }}</p>
+{% endfor %}
 {% for field in form %}
     <div class="mb-3 {% if field.errors %} has-error {% endif %}">
         <label for="id_{{  field.html_name }}" class="form-label">{{ field.label }}</label>
