@@ -49,6 +49,16 @@ steps:
   displayName: 'Run linting (pylint fabric_utils)'
 
 - script: |
+    pylint fabfile.py
+  condition: succeededOrFailed()
+  displayName: 'Run linting (pylint fabfile.py)'
+
+- script: |
+    fab -l
+  condition: succeededOrFailed()
+  displayName: 'Run Fabric (fab -l)'
+
+- script: |
     cd front
     npm install --location=global npm@8
     npm install --location=global @angular/cli
