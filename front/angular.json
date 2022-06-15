@@ -128,9 +128,10 @@
       }
     }
   },
-  "defaultProject": "front",
   "cli": {
     "analytics": "ad757bad-a761-491d-93fb-06ed92e7bfb6",
-    "defaultCollection": "@angular-eslint/schematics"
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   }
 }
