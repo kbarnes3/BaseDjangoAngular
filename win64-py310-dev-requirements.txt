@@ -14,7 +14,7 @@ attrs==21.4.0
     # via pytest
 bcrypt==3.2.2
     # via paramiko
-certifi==2022.5.18.1
+certifi==2022.6.15
     # via requests
 cffi==1.15.0
     # via
@@ -23,7 +23,7 @@ cffi==1.15.0
     #   pynacl
 charset-normalizer==2.0.12
     # via requests
-colorama==0.4.4
+colorama==0.4.5
     # via
     #   -r .\dev-requirements.in
     #   plush-fabric
@@ -39,7 +39,7 @@ dill==0.3.5.1
     # via pylint
 django==4.0.5
     # via -r .\requirements.in
-django-environ==0.8.1
+django-environ==0.9.0
     # via -r .\requirements.in
 django-widget-tweaks==1.4.12
     # via -r .\requirements.in
