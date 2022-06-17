@@ -97,7 +97,7 @@ pygithub==1.55
     # via plush-fabric
 pyjwt==2.4.0
     # via pygithub
-pylint==2.14.2
+pylint==2.14.1
     # via
     #   -r .\dev-requirements.in
     #   pylint-django
