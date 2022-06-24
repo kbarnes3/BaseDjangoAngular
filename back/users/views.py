@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login
+from django.core.mail import mail_admins
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 
@@ -12,6 +13,9 @@ def create_user_account(request):
             form.save()
             primary_email = form.cleaned_data['primary_email']
             password = form.cleaned_data['password1']
+
+            mail_admins('New user account created',
+                f'A new user account was created for {primary_email}')
 
             user = authenticate(username=primary_email, password=password)
             login(request, user)
