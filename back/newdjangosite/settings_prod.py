@@ -28,8 +28,8 @@ EMAIL_HOST_PASSWORD = ENV('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = ENV('EMAIL_USE_TLS', cast=bool, default=False)
 EMAIL_USE_SSL = ENV('EMAIL_USE_SSL', cast=bool, default=False)
 
-SERVER_EMAIL = 'newdjangosite-prod@yourdomain.tld'
-DEFAULT_FROM_EMAIL = 'newdjangosite@yourdomain.tld'
+SERVER_EMAIL = 'newdjangosite-prod@kbarnes3.com'
+DEFAULT_FROM_EMAIL = 'newdjangosite@kbarnes3.com'
 
 ALLOWED_HOSTS = ['yourdomain.tld']
 
