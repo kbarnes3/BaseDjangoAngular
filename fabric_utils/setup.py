@@ -173,6 +173,8 @@ def _setup_repo(conn: Connection, repo_dir: str, repo_name: str):
         add_repo_key(conn, repo_name)
         clone(conn, repo_name, repo_dir, skip_strict_key_checking=True)
 
+    conn.sudo(f'git config --system --add safe.directory {repo_dir}')
+
 
 @Task
 def setup_superuser(conn, config, email, given_name, surname, password): # pylint: disable=R0913
