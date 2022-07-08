@@ -26,7 +26,7 @@ SECRET_KEY = 'ThisIsABadSecret'
 ALLOWED_HOSTS = []
 
 ADMINS = (
-    ('DjangoSiteOwner', 'djangositeemail@example.com'),
+    ('DjangoSiteOwner', 'kbarnes3@gmail.com'),
 )
 
 # Application definition
