@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
+from django.utils import timezone
 
 
 class UserManager(BaseUserManager):
@@ -20,11 +21,13 @@ class User(AbstractBaseUser):
     primary_email = models.EmailField(max_length=255, unique=True)
     given_name = models.CharField(max_length=50)
     surname = models.CharField(max_length=50)
+    date_joined = models.DateTimeField(default=timezone.now)
     is_admin = models.BooleanField(default=False)
 
     objects = UserManager()
 
     USERNAME_FIELD = 'primary_email'
+    EMAIL_FIELD = 'primary_email'
     REQUIRED_FIELDS = ['given_name', 'surname']
 
     def get_full_name(self):
