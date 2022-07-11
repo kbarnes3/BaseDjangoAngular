@@ -47,5 +47,9 @@ class User(AbstractBaseUser):
         return self.primary_email
 
     @property
+    def email(self):
+        return self.primary_email
+
+    @property
     def is_staff(self):
         return self.is_admin

@@ -4,7 +4,7 @@
 {%  block content %}
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <form method="post" action="{% url 'login' %}">
+            <form method="post" action="{% url 'auth_login' %}">
                 {% csrf_token %}
                 {% include "common/form_printer.html" with form=form only %}
 
