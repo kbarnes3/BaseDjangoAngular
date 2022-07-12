@@ -11,7 +11,7 @@
                 <button type="submit" class="btn btn-primary">Login</button>
                 <input type="hidden" name="next" value="{{ next }}" />
             </form>
-            <a href="{% url 'password_reset' %}">Reset your password</a>
+            <a href="{% url 'auth_password_reset' %}">Reset your password</a>
         </div>
     </div>
 {% endblock %}

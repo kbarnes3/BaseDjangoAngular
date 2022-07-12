@@ -143,3 +143,4 @@ DEALER_TYPE = 'git'
 # Registration settings
 ACCOUNT_ACTIVATION_DAYS = 1
 REGISTRATION_AUTO_LOGIN = True
+REGISTRATION_FORM = 'users.forms.UserCreationForm'

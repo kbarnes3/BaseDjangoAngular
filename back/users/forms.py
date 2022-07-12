@@ -27,6 +27,9 @@ class UserCreationForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('primary_email', 'given_name', 'surname')
+        labels = {
+            'primary_email': 'Email'
+        }
 
     def clean_password1(self):
         # Check that the password meets the required complexity checks
