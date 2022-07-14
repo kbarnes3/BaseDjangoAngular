@@ -25,6 +25,7 @@ class User(AbstractBaseUser):
     objects = UserManager()
 
     USERNAME_FIELD = 'primary_email'
+    EMAIL_FIELD = 'primary_email'
     REQUIRED_FIELDS = ['given_name', 'surname']
 
     def get_full_name(self):
