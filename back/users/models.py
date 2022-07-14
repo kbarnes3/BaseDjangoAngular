@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
+from django.utils import timezone
 
 
 class UserManager(BaseUserManager):
@@ -20,7 +21,17 @@ class User(AbstractBaseUser):
     primary_email = models.EmailField(max_length=255, unique=True)
     given_name = models.CharField(max_length=50)
     surname = models.CharField(max_length=50)
+    is_active = models.BooleanField(
+        default=True,
+        help_text=
+            "Designates whether this user should be treated as active. "
+            "Unselect this instead of deleting accounts."
+        ,
+    )
     is_admin = models.BooleanField(default=False)
+
+    date_joined = models.DateTimeField(default=timezone.now)
+    registration_completed = models.BooleanField(default=False)
 
     objects = UserManager()
 
