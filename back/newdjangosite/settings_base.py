@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_registration',
     'widget_tweaks',
     'common',
     'users',
@@ -136,4 +137,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# Django Registration settings
+ACCOUNT_ACTIVATION_DAYS = 1
+
+# Dealer settings
 DEALER_TYPE = 'git'
