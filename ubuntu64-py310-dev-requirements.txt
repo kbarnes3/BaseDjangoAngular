@@ -6,7 +6,7 @@
 #
 asgiref==3.5.2
     # via django
-astroid==2.11.6
+astroid==2.11.7
     # via pylint
 attrs==21.4.0
     # via pytest
@@ -25,6 +25,8 @@ colorama==0.4.5
     # via
     #   -r dev-requirements.in
     #   plush-fabric
+confusable-homoglyphs==3.2.0
+    # via django-registration
 cryptography==37.0.4
     # via
     #   paramiko
@@ -36,8 +38,12 @@ deprecated==1.2.13
 dill==0.3.5.1
     # via pylint
 django==4.0.6
-    # via -r requirements.in
+    # via
+    #   -r requirements.in
+    #   django-registration
 django-environ==0.9.0
+    # via -r requirements.in
+django-registration==3.3
     # via -r requirements.in
 django-widget-tweaks==1.4.12
     # via -r requirements.in
@@ -60,7 +66,7 @@ jeepney==0.8.0
     # via
     #   keyring
     #   secretstorage
-keyring==23.6.0
+keyring==23.7.0
     # via plush-fabric
 lazy-object-proxy==1.7.1
     # via astroid
