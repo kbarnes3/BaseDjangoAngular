@@ -3,12 +3,12 @@ from django.core.mail import mail_admins
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 
-from users.forms import UserCreationForm
+from users.forms import RegistrationForm
 
 
 def create_user_account(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = RegistrationForm(request.POST)
         if form.is_valid():
             form.save()
             primary_email = form.cleaned_data['primary_email']
@@ -21,7 +21,7 @@ def create_user_account(request):
             login(request, user)
             return redirect('/')
     else:
-        form = UserCreationForm()
+        form = RegistrationForm()
 
     return render(request, 'users/create_user_account.html', {'form': form})
 
