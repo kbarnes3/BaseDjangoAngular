@@ -49,7 +49,7 @@ django-registration==3.3
     # via -r .\requirements.in
 django-widget-tweaks==1.4.12
     # via -r .\requirements.in
-fabric==2.7.0
+fabric==2.7.1
     # via
     #   -r .\dev-requirements.in
     #   patchwork
