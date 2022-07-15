@@ -6,9 +6,9 @@
 #
 asgiref==3.5.2
     # via django
-astroid==2.11.6
+astroid==2.11.7
     # via pylint
-atomicwrites==1.4.0
+atomicwrites==1.4.1
     # via pytest
 attrs==21.4.0
     # via pytest
@@ -43,7 +43,7 @@ django-environ==0.9.0
     # via -r .\requirements.in
 django-widget-tweaks==1.4.12
     # via -r .\requirements.in
-fabric==2.7.0
+fabric==2.7.1
     # via
     #   -r .\dev-requirements.in
     #   patchwork
@@ -58,7 +58,7 @@ invoke==1.7.1
     # via fabric
 isort==5.10.1
     # via pylint
-keyring==23.6.0
+keyring==23.7.0
     # via plush-fabric
 lazy-object-proxy==1.7.1
     # via astroid
