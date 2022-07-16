@@ -1,7 +1,8 @@
 from django.urls import include, path
 from django.contrib.auth.views import LogoutView, PasswordResetView
+from django_registration.backends.activation.views import RegistrationView
 
-from users.forms import EmailPasswordResetForm
+from users.forms import EmailPasswordResetForm, RegistrationForm
 from users.views import create_user_account
 
 
@@ -11,5 +12,5 @@ urlpatterns = [
          PasswordResetView.as_view(form_class=EmailPasswordResetForm),
          name='password_reset'),
     path('', include('django.contrib.auth.urls')),
-    path('signup/', create_user_account, name='create_user_account')
+    path('signup/', RegistrationView.as_view(form_class=RegistrationForm), name='django_registration_register')
 ]
