@@ -17,7 +17,7 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('primary_email', 'given_name', 'surname', 'is_admin')
+        fields = ('username', 'given_name', 'surname', 'is_admin')
 
     def clean_password(self):
         # Regardless of what the user provides, return the initial value.
@@ -34,10 +34,10 @@ class UserAdmin(django.contrib.auth.admin.UserAdmin):
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
-    list_display = ('primary_email', 'given_name', 'surname', 'is_admin')
+    list_display = ('username', 'given_name', 'surname', 'is_admin')
     list_filter = ('is_admin',)
     fieldsets = (
-        (None, {'fields': ('primary_email', 'password')}),
+        (None, {'fields': ('username', 'password')}),
         ('Personal info', {'fields': ('given_name', 'surname')}),
         ('Permissions', {'fields': ('is_admin',)}),
         ('Important dates', {'fields': ('last_login',)}),
@@ -45,11 +45,11 @@ class UserAdmin(django.contrib.auth.admin.UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('primary_email', 'given_name', 'surname', 'password1', 'password2')}
+            'fields': ('username', 'given_name', 'surname', 'password1', 'password2')}
         ),
     )
-    search_fields = ('primary_email',)
-    ordering = ('primary_email',)
+    search_fields = ('username',)
+    ordering = ('username',)
     filter_horizontal = ()
 
 # Now register the new UserAdmin...

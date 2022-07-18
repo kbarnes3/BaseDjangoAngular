@@ -4,21 +4,21 @@ from django.utils import timezone
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, primary_email, given_name, surname, password=None):
-        user = self.model(primary_email=primary_email, given_name=given_name, surname=surname)
+    def create_user(self, username, given_name, surname, password=None):
+        user = self.model(username=username, given_name=given_name, surname=surname)
         user.set_password(password)
         user.save()
         return user
 
-    def create_superuser(self, primary_email, given_name, surname, password):
-        user = self.create_user(primary_email, given_name, surname, password)
+    def create_superuser(self, username, given_name, surname, password):
+        user = self.create_user(username, given_name, surname, password)
         user.is_admin = True
         user.save()
         return user
 
 
 class User(AbstractBaseUser):
-    primary_email = models.EmailField(max_length=255, unique=True)
+    username = models.EmailField('email address', max_length=255, unique=True)
     given_name = models.CharField(max_length=50)
     surname = models.CharField(max_length=50)
     is_active = models.BooleanField(
@@ -35,8 +35,8 @@ class User(AbstractBaseUser):
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'primary_email'
-    EMAIL_FIELD = 'primary_email'
+    USERNAME_FIELD = 'username'
+    EMAIL_FIELD = 'username'
     REQUIRED_FIELDS = ['given_name', 'surname']
 
     def get_full_name(self):

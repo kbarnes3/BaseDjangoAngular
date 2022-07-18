@@ -36,18 +36,15 @@ class RegistrationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = User
         fields = [
-            'primary_email',
+            'username',
             'given_name',
             'surname',
             'password1',
             'password2',
         ]
-        labels = {
-            'primary_email': 'Email'
-        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['primary_email'].validators.extend(
+        self.fields['username'].validators.extend(
             (validators.HTML5EmailValidator(), validators.validate_confusables_email)
         )
