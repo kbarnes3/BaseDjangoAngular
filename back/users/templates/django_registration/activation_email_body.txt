@@ -1,0 +1,2 @@
+Thank you for creating a account. Please confirm your email address by clicking here:
+{{ scheme }}://{{ site }}{% url 'django_registration_activate' activation_key %}
