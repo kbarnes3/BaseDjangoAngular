@@ -130,7 +130,7 @@ pytest-django==4.5.2
     # via -r dev-requirements.in
 requests==2.28.1
     # via pygithub
-rsa==4.8
+rsa==4.9
     # via oauth2client
 secretstorage==3.3.2
     # via keyring
