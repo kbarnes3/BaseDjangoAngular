@@ -27,7 +27,7 @@
     "git-describe": "^4.1.1",
     "rxjs": "~6.6.7",
     "tslib": "^2.4.0",
-    "zone.js": "^0.11.6"
+    "zone.js": "^0.11.7"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^14.1.0",
@@ -41,10 +41,10 @@
     "@angular/language-service": "^14.1.0",
     "@types/jasmine": "^4.0.3",
     "@types/jasminewd2": "^2.0.10",
-    "@types/node": "^18.0.4",
-    "@typescript-eslint/eslint-plugin": "^5.30.6",
-    "@typescript-eslint/parser": "^5.30.6",
-    "eslint": "^8.19.0",
+    "@types/node": "^18.0.6",
+    "@typescript-eslint/eslint-plugin": "^5.30.7",
+    "@typescript-eslint/parser": "^5.30.7",
+    "eslint": "^8.20.0",
     "jasmine-core": "^4.2.0",
     "jasmine-spec-reporter": "^7.0.0",
     "karma": "^6.4.0",
