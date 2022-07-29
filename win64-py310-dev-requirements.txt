@@ -10,7 +10,7 @@ astroid==2.11.7
     # via pylint
 atomicwrites==1.4.1
     # via pytest
-attrs==21.4.0
+attrs==22.1.0
     # via pytest
 bcrypt==3.2.2
     # via paramiko
@@ -141,7 +141,7 @@ tomlkit==0.11.1
     # via pylint
 tzdata==2022.1
     # via django
-urllib3==1.26.10
+urllib3==1.26.11
     # via requests
 wrapt==1.14.1
     # via
