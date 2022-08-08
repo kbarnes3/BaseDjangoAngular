@@ -2,7 +2,7 @@ Fabric
 patchwork
 plush-fabric
 colorama
-pylint==2.14.1
+pylint
 pylint-django
 pytest
 pytest-django

@@ -39,7 +39,7 @@ deprecated==1.2.13
     # via pygithub
 dill==0.3.5.1
     # via pylint
-django==4.0.6
+django==4.1
     # via
     #   -r .\requirements.in
     #   django-registration
@@ -64,7 +64,7 @@ invoke==1.7.1
     # via fabric
 isort==5.10.1
     # via pylint
-keyring==23.7.0
+keyring==23.8.1
     # via plush-fabric
 lazy-object-proxy==1.7.1
     # via astroid
@@ -103,7 +103,7 @@ pygithub==1.55
     # via plush-fabric
 pyjwt==2.4.0
     # via pygithub
-pylint==2.14.1
+pylint==2.14.5
     # via
     #   -r .\dev-requirements.in
     #   pylint-django
@@ -143,7 +143,7 @@ tomli==2.0.1
     # via
     #   pylint
     #   pytest
-tomlkit==0.11.1
+tomlkit==0.11.2
     # via pylint
 tzdata==2022.1
     # via django
