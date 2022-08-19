@@ -126,7 +126,7 @@ requests==2.28.1
     # via pygithub
 rsa==4.9
     # via oauth2client
-secretstorage==3.3.2
+secretstorage==3.3.3
     # via keyring
 six==1.16.0
     # via
@@ -139,7 +139,7 @@ tomli==2.0.1
     # via
     #   pylint
     #   pytest
-tomlkit==0.11.3
+tomlkit==0.11.4
     # via pylint
 urllib3==1.26.11
     # via requests
