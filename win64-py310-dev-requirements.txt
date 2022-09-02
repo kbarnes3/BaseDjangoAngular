@@ -6,7 +6,7 @@
 #
 asgiref==3.5.2
     # via django
-astroid==2.12.5
+astroid==2.11.7
     # via pylint
 atomicwrites==1.4.1
     # via pytest
@@ -100,7 +100,7 @@ pygithub==1.55
     # via plush-fabric
 pyjwt==2.4.0
     # via pygithub
-pylint==2.15.0
+pylint==2.14.5
     # via
     #   -r .\dev-requirements.in
     #   pylint-django
@@ -150,3 +150,6 @@ wrapt==1.14.1
     # via
     #   astroid
     #   deprecated
+
+# The following packages are considered to be unsafe in a requirements file:
+# setuptools
