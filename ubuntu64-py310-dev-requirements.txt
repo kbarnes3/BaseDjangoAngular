@@ -12,7 +12,7 @@ attrs==22.1.0
     # via pytest
 bcrypt==4.0.0
     # via paramiko
-certifi==2022.9.14
+certifi==2022.9.24
     # via requests
 cffi==1.15.1
     # via
@@ -55,7 +55,7 @@ invoke==1.7.1
     # via fabric
 isort==5.10.1
     # via pylint
-jaraco-classes==3.2.2
+jaraco-classes==3.2.3
     # via keyring
 jeepney==0.8.0
     # via
@@ -136,13 +136,13 @@ six==1.16.0
     #   oauth2client
     #   paramiko
     #   pathlib2
-sqlparse==0.4.2
+sqlparse==0.4.3
     # via django
 tomli==2.0.1
     # via
     #   pylint
     #   pytest
-tomlkit==0.11.4
+tomlkit==0.11.5
     # via pylint
 urllib3==1.26.12
     # via requests

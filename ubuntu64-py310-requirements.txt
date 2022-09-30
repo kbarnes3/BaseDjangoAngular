@@ -14,5 +14,5 @@ django-environ==0.9.0
     # via -r requirements.in
 django-widget-tweaks==1.4.12
     # via -r requirements.in
-sqlparse==0.4.2
+sqlparse==0.4.3
     # via django
