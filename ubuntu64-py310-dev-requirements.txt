@@ -57,7 +57,7 @@ idna==3.4
     # via requests
 iniconfig==1.1.1
     # via pytest
-invoke==1.7.1
+invoke==1.7.3
     # via fabric
 isort==5.10.1
     # via pylint
@@ -91,7 +91,7 @@ platformdirs==2.5.2
     # via pylint
 pluggy==1.0.0
     # via pytest
-plush-fabric==0.5.3
+plush-fabric==0.5.4
     # via -r dev-requirements.in
 py==1.11.0
     # via pytest
