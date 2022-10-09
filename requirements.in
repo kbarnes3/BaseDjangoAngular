@@ -1,4 +1,4 @@
-Django==4.1.1
+Django==4.1.2
 dealer
 django-environ
 django-registration
