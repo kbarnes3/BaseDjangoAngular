@@ -24,7 +24,7 @@ colorama==0.4.6
     # via
     #   -r dev-requirements.in
     #   plush-fabric
-cryptography==38.0.1
+cryptography==38.0.3
     # via
     #   paramiko
     #   secretstorage
@@ -40,14 +40,14 @@ django-environ==0.9.0
     # via -r requirements.in
 django-widget-tweaks==1.4.12
     # via -r requirements.in
-exceptiongroup==1.0.0rc9
+exceptiongroup==1.0.0
     # via pytest
 fabric==2.7.1
     # via
     #   -r dev-requirements.in
     #   patchwork
     #   plush-fabric
-httplib2==0.20.4
+httplib2==0.21.0
     # via oauth2client
 idna==3.4
     # via requests
@@ -65,7 +65,7 @@ jeepney==0.8.0
     #   secretstorage
 keyring==23.9.3
     # via plush-fabric
-lazy-object-proxy==1.7.1
+lazy-object-proxy==1.8.0
     # via astroid
 mccabe==0.7.0
     # via pylint
@@ -87,7 +87,7 @@ platformdirs==2.5.2
     # via pylint
 pluggy==1.0.0
     # via pytest
-plush-fabric==0.5.4
+plush-fabric==0.5.5
     # via -r dev-requirements.in
 pyasn1==0.4.8
     # via
@@ -142,7 +142,7 @@ tomli==2.0.1
     # via
     #   pylint
     #   pytest
-tomlkit==0.11.5
+tomlkit==0.11.6
     # via pylint
 urllib3==1.26.12
     # via requests
