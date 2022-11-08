@@ -89,7 +89,7 @@ platformdirs==2.5.3
     # via pylint
 pluggy==1.0.0
     # via pytest
-plush-fabric==0.5.5
+plush-fabric==0.5.6
     # via -r dev-requirements.in
 pyasn1==0.4.8
     # via
