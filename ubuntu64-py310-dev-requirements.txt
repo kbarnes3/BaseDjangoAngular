@@ -40,7 +40,7 @@ django-environ==0.9.0
     # via -r requirements.in
 django-widget-tweaks==1.4.12
     # via -r requirements.in
-exceptiongroup==1.0.1
+exceptiongroup==1.0.4
     # via pytest
 fabric==2.7.1
     # via
@@ -85,7 +85,7 @@ patchwork==1.0.1
     #   plush-fabric
 pathlib2==2.3.7.post1
     # via fabric
-platformdirs==2.5.3
+platformdirs==2.5.4
     # via pylint
 pluggy==1.0.0
     # via pytest
