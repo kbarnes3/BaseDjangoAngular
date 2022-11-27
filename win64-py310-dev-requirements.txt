@@ -51,7 +51,7 @@ httplib2==0.21.0
     # via oauth2client
 idna==3.4
     # via requests
-importlib-metadata==5.0.0
+importlib-metadata==5.1.0
     # via keyring
 iniconfig==1.1.1
     # via pytest
@@ -144,13 +144,13 @@ tomlkit==0.11.6
     # via pylint
 tzdata==2022.6
     # via django
-urllib3==1.26.12
+urllib3==1.26.13
     # via requests
 wrapt==1.14.1
     # via
     #   astroid
     #   deprecated
-zipp==3.10.0
+zipp==3.11.0
     # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
