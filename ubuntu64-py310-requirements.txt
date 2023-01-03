@@ -4,7 +4,7 @@
 #
 #    pip-compile --output-file=ubuntu64-py310-requirements.txt requirements.in
 #
-asgiref==3.5.2
+asgiref==3.6.0
     # via django
 confusable-homoglyphs==3.2.0
     # via django-registration

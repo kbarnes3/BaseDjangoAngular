@@ -4,11 +4,11 @@
 #
 #    pip-compile --output-file=ubuntu64-py310-dev-requirements.txt dev-requirements.in requirements.in
 #
-asgiref==3.5.2
+asgiref==3.6.0
     # via django
 astroid==2.11.7
     # via pylint
-attrs==22.1.0
+attrs==22.2.0
     # via pytest
 bcrypt==4.0.1
     # via paramiko
@@ -26,7 +26,7 @@ colorama==0.4.6
     #   plush-fabric
 confusable-homoglyphs==3.2.0
     # via django-registration
-cryptography==38.0.4
+cryptography==39.0.0
     # via
     #   paramiko
     #   secretstorage
@@ -46,7 +46,7 @@ django-registration==3.3
     # via -r requirements.in
 django-widget-tweaks==1.4.12
     # via -r requirements.in
-exceptiongroup==1.0.4
+exceptiongroup==1.1.0
     # via pytest
 fabric==2.7.1
     # via
@@ -57,13 +57,13 @@ httplib2==0.21.0
     # via oauth2client
 idna==3.4
     # via requests
-importlib-metadata==5.1.0
+importlib-metadata==6.0.0
     # via keyring
 iniconfig==1.1.1
     # via pytest
 invoke==1.7.3
     # via fabric
-isort==5.10.1
+isort==5.11.4
     # via pylint
 jaraco-classes==3.2.3
     # via keyring
@@ -71,7 +71,7 @@ jeepney==0.8.0
     # via
     #   keyring
     #   secretstorage
-keyring==23.11.0
+keyring==23.13.1
     # via plush-fabric
 lazy-object-proxy==1.8.0
     # via astroid
@@ -91,11 +91,11 @@ patchwork==1.0.1
     #   plush-fabric
 pathlib2==2.3.7.post1
     # via fabric
-platformdirs==2.6.0
+platformdirs==2.6.2
     # via pylint
 pluggy==1.0.0
     # via pytest
-plush-fabric==0.5.6
+plush-fabric==0.5.7
     # via -r dev-requirements.in
 pyasn1==0.4.8
     # via
