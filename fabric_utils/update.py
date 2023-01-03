@@ -14,7 +14,7 @@ def compile_requirements(conn, fresh=False, upgrade=False):
 
     staging_dir = '/tmp/pip-tools'
 
-    ensure_directory(conn, staging_dir, remote_user)
+    ensure_directory(conn, staging_dir, owning_user=remote_user)
     conn.sudo(f'rm -rf {staging_dir}/*')
 
     requirements_in = 'requirements.in'
