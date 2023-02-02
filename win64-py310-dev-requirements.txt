@@ -18,7 +18,7 @@ cffi==1.15.1
     # via
     #   cryptography
     #   pynacl
-charset-normalizer==2.1.1
+charset-normalizer==3.0.1
     # via requests
 colorama==0.4.6
     # via
@@ -36,7 +36,7 @@ deprecated==1.2.13
     # via pygithub
 dill==0.3.6
     # via pylint
-django==4.1.4
+django==4.1.5
     # via
     #   -r .\requirements.in
     #   django-registration
@@ -59,17 +59,17 @@ idna==3.4
     # via requests
 importlib-metadata==6.0.0
     # via keyring
-iniconfig==1.1.1
+iniconfig==2.0.0
     # via pytest
 invoke==1.7.3
     # via fabric
-isort==5.11.4
+isort==5.12.0
     # via pylint
 jaraco-classes==3.2.3
     # via keyring
 keyring==23.13.1
     # via plush-fabric
-lazy-object-proxy==1.8.0
+lazy-object-proxy==1.9.0
     # via astroid
 mccabe==0.7.0
     # via pylint
@@ -77,9 +77,9 @@ more-itertools==9.0.0
     # via jaraco-classes
 oauth2client==4.1.3
     # via plush-fabric
-packaging==22.0
+packaging==23.0
     # via pytest
-paramiko==2.12.0
+paramiko==3.0.0
     # via fabric
 patchwork==1.0.1
     # via
@@ -121,7 +121,7 @@ pynacl==1.5.0
     #   pygithub
 pyparsing==3.0.9
     # via httplib2
-pytest==7.2.0
+pytest==7.2.1
     # via
     #   -r .\dev-requirements.in
     #   pytest-django
@@ -129,14 +129,13 @@ pytest-django==4.5.2
     # via -r .\dev-requirements.in
 pywin32-ctypes==0.2.0
     # via keyring
-requests==2.28.1
+requests==2.28.2
     # via pygithub
 rsa==4.9
     # via oauth2client
 six==1.16.0
     # via
     #   oauth2client
-    #   paramiko
     #   pathlib2
 sqlparse==0.4.3
     # via django
@@ -148,13 +147,13 @@ tomlkit==0.11.6
     # via pylint
 tzdata==2022.7
     # via django
-urllib3==1.26.13
+urllib3==1.26.14
     # via requests
 wrapt==1.14.1
     # via
     #   astroid
     #   deprecated
-zipp==3.11.0
+zipp==3.12.0
     # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
