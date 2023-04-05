@@ -24,7 +24,7 @@ colorama==0.4.6
     # via
     #   -r dev-requirements.in
     #   plush-fabric
-cryptography==39.0.2
+cryptography==40.0.1
     # via
     #   paramiko
     #   pyjwt
@@ -48,11 +48,11 @@ fabric==2.7.1
     #   -r dev-requirements.in
     #   patchwork
     #   plush-fabric
-httplib2==0.21.0
+httplib2==0.22.0
     # via oauth2client
 idna==3.4
     # via requests
-importlib-metadata==6.0.0
+importlib-metadata==6.1.0
     # via keyring
 iniconfig==2.0.0
     # via pytest
@@ -86,11 +86,11 @@ patchwork==1.0.1
     #   plush-fabric
 pathlib2==2.3.7.post1
     # via fabric
-platformdirs==3.1.1
+platformdirs==3.2.0
     # via pylint
 pluggy==1.0.0
     # via pytest
-plush-fabric==0.5.8
+plush-fabric==0.5.9
     # via -r dev-requirements.in
 pyasn1==0.4.8
     # via
@@ -142,7 +142,7 @@ tomli==2.0.1
     # via
     #   pylint
     #   pytest
-tomlkit==0.11.6
+tomlkit==0.11.7
     # via pylint
 urllib3==1.26.15
     # via requests
