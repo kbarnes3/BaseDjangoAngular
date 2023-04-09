@@ -78,7 +78,6 @@ def setup_server(conn):
         'git',
         'python3-venv',
         'postgresql',
-        'python3-psycopg2',
         'nginx',
         'uwsgi',
         'uwsgi-plugin-python3',
@@ -172,6 +171,8 @@ def _setup_repo(conn: Connection, repo_dir: str, repo_name: str):
         create_key(conn, repo_name, WEBADMIN_GROUP)
         add_repo_key(conn, repo_name)
         clone(conn, repo_name, repo_dir, skip_strict_key_checking=True)
+
+    conn.sudo(f'git config --system --add safe.directory {repo_dir}')
 
 
 @Task

@@ -8,8 +8,6 @@ asgiref==3.6.0
     # via django
 astroid==2.11.7
     # via pylint
-attrs==22.2.0
-    # via pytest
 bcrypt==4.0.1
     # via paramiko
 certifi==2022.12.7
@@ -35,7 +33,7 @@ deprecated==1.2.13
     # via pygithub
 dill==0.3.6
     # via pylint
-django==4.1.7
+django==4.2.0
     # via -r requirements.in
 django-environ==0.10.0
     # via -r requirements.in
@@ -52,7 +50,7 @@ httplib2==0.22.0
     # via oauth2client
 idna==3.4
     # via requests
-importlib-metadata==6.1.0
+importlib-metadata==6.2.1
     # via keyring
 iniconfig==2.0.0
     # via pytest
@@ -92,6 +90,10 @@ pluggy==1.0.0
     # via pytest
 plush-fabric==0.5.9
     # via -r dev-requirements.in
+psycopg[binary]==3.1.8
+    # via -r requirements.in
+psycopg-binary==3.1.8
+    # via psycopg
 pyasn1==0.4.8
     # via
     #   oauth2client
@@ -120,7 +122,7 @@ pynacl==1.5.0
     #   pygithub
 pyparsing==3.0.9
     # via httplib2
-pytest==7.2.2
+pytest==7.3.0
     # via
     #   -r dev-requirements.in
     #   pytest-django
@@ -144,6 +146,8 @@ tomli==2.0.1
     #   pytest
 tomlkit==0.11.7
     # via pylint
+typing-extensions==4.5.0
+    # via psycopg
 urllib3==1.26.15
     # via requests
 wrapt==1.15.0
