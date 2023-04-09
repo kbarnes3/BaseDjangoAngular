@@ -78,7 +78,6 @@ def setup_server(conn):
         'git',
         'python3-venv',
         'postgresql',
-        'python3-psycopg2',
         'nginx',
         'uwsgi',
         'uwsgi-plugin-python3',
