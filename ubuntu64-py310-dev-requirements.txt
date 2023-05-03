@@ -84,15 +84,15 @@ patchwork==1.0.1
     #   plush-fabric
 pathlib2==2.3.7.post1
     # via fabric
-platformdirs==3.2.0
+platformdirs==3.5.0
     # via pylint
 pluggy==1.0.0
     # via pytest
 plush-fabric==0.5.9
     # via -r dev-requirements.in
-psycopg[binary]==3.1.8
+psycopg[binary]==3.1.9
     # via -r requirements.in
-psycopg-binary==3.1.8
+psycopg-binary==3.1.9
     # via psycopg
 pyasn1==0.5.0
     # via
@@ -128,7 +128,7 @@ pytest==7.3.1
     #   pytest-django
 pytest-django==4.5.2
     # via -r dev-requirements.in
-requests==2.28.2
+requests==2.29.0
     # via pygithub
 rsa==4.9
     # via oauth2client
@@ -144,7 +144,7 @@ tomli==2.0.1
     # via
     #   pylint
     #   pytest
-tomlkit==0.11.7
+tomlkit==0.11.8
     # via pylint
 typing-extensions==4.5.0
     # via psycopg
