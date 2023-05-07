@@ -10,7 +10,7 @@ astroid==2.11.7
     # via pylint
 bcrypt==4.0.1
     # via paramiko
-certifi==2022.12.7
+certifi==2023.5.7
     # via requests
 cffi==1.15.1
     # via
@@ -34,7 +34,7 @@ deprecated==1.2.13
     # via pygithub
 dill==0.3.6
     # via pylint
-django==4.2.0
+django==4.2.1
     # via -r .\requirements.in
 django-environ==0.10.0
     # via -r .\requirements.in
@@ -127,7 +127,7 @@ pytest-django==4.5.2
     # via -r .\dev-requirements.in
 pywin32-ctypes==0.2.0
     # via keyring
-requests==2.29.0
+requests==2.30.0
     # via pygithub
 rsa==4.9
     # via oauth2client
@@ -149,7 +149,7 @@ tzdata==2023.3
     # via
     #   django
     #   psycopg
-urllib3==1.26.15
+urllib3==2.0.2
     # via requests
 wrapt==1.15.0
     # via
