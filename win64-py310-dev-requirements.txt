@@ -4,7 +4,7 @@
 #
 #    pip-compile --output-file=win64-py310-dev-requirements.txt '.\dev-requirements.in' '.\requirements.in'
 #
-asgiref==3.6.0
+asgiref==3.7.1
     # via django
 astroid==2.11.7
     # via pylint
@@ -81,11 +81,11 @@ patchwork==1.0.1
     #   plush-fabric
 pathlib2==2.3.7.post1
     # via fabric
-platformdirs==3.5.0
+platformdirs==3.5.1
     # via pylint
 pluggy==1.0.0
     # via pytest
-plush-fabric==0.5.9
+plush-fabric==0.5.10
     # via -r .\dev-requirements.in
 psycopg[binary]==3.1.9
     # via -r .\requirements.in
@@ -100,9 +100,9 @@ pyasn1-modules==0.3.0
     # via oauth2client
 pycparser==2.21
     # via cffi
-pygithub==1.58.1
+pygithub==1.58.2
     # via plush-fabric
-pyjwt[crypto]==2.6.0
+pyjwt[crypto]==2.7.0
     # via pygithub
 pylint==2.14.5
     # via
@@ -111,7 +111,7 @@ pylint==2.14.5
     #   pylint-plugin-utils
 pylint-django==2.5.3
     # via -r .\dev-requirements.in
-pylint-plugin-utils==0.7
+pylint-plugin-utils==0.8.2
     # via pylint-django
 pynacl==1.5.0
     # via
@@ -127,7 +127,7 @@ pytest-django==4.5.2
     # via -r .\dev-requirements.in
 pywin32-ctypes==0.2.0
     # via keyring
-requests==2.30.0
+requests==2.31.0
     # via pygithub
 rsa==4.9
     # via oauth2client
@@ -143,8 +143,10 @@ tomli==2.0.1
     #   pytest
 tomlkit==0.11.8
     # via pylint
-typing-extensions==4.5.0
-    # via psycopg
+typing-extensions==4.6.1
+    # via
+    #   asgiref
+    #   psycopg
 tzdata==2023.3
     # via
     #   django
