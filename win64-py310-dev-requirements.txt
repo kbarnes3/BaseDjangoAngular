@@ -34,7 +34,7 @@ deprecated==1.2.14
     # via pygithub
 dill==0.3.6
     # via pylint
-django==4.2.1
+django==4.2.2
     # via -r .\requirements.in
 django-environ==0.10.0
     # via -r .\requirements.in
@@ -81,7 +81,7 @@ patchwork==1.0.1
     #   plush-fabric
 pathlib2==2.3.7.post1
     # via fabric
-platformdirs==3.5.1
+platformdirs==3.5.3
     # via pylint
 pluggy==1.0.0
     # via pytest
@@ -119,7 +119,7 @@ pynacl==1.5.0
     #   pygithub
 pyparsing==3.0.9
     # via httplib2
-pytest==7.3.1
+pytest==7.3.2
     # via
     #   -r .\dev-requirements.in
     #   pytest-django
@@ -151,7 +151,7 @@ tzdata==2023.3
     # via
     #   django
     #   psycopg
-urllib3==2.0.2
+urllib3==2.0.3
     # via requests
 wrapt==1.15.0
     # via
