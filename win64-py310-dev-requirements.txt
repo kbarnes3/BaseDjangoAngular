@@ -16,7 +16,7 @@ cffi==1.15.1
     # via
     #   cryptography
     #   pynacl
-charset-normalizer==3.1.0
+charset-normalizer==3.2.0
     # via requests
 colorama==0.4.6
     # via
@@ -34,13 +34,13 @@ deprecated==1.2.14
     # via pygithub
 dill==0.3.6
     # via pylint
-django==4.2.2
+django==4.2.3
     # via -r .\requirements.in
 django-environ==0.10.0
     # via -r .\requirements.in
 django-widget-tweaks==1.4.12
     # via -r .\requirements.in
-exceptiongroup==1.1.1
+exceptiongroup==1.1.2
     # via pytest
 fabric==2.7.1
     # via
@@ -51,7 +51,7 @@ httplib2==0.22.0
     # via oauth2client
 idna==3.4
     # via requests
-importlib-metadata==6.7.0
+importlib-metadata==6.8.0
     # via keyring
 iniconfig==2.0.0
     # via pytest
@@ -59,7 +59,7 @@ invoke==1.7.3
     # via fabric
 isort==5.12.0
     # via pylint
-jaraco-classes==3.2.3
+jaraco-classes==3.3.0
     # via keyring
 keyring==24.2.0
     # via plush-fabric
@@ -81,7 +81,7 @@ patchwork==1.0.1
     #   plush-fabric
 pathlib2==2.3.7.post1
     # via fabric
-platformdirs==3.8.0
+platformdirs==3.8.1
     # via pylint
 pluggy==1.2.0
     # via pytest
@@ -143,7 +143,7 @@ tomli==2.0.1
     #   pytest
 tomlkit==0.11.8
     # via pylint
-typing-extensions==4.7.0
+typing-extensions==4.7.1
     # via
     #   asgiref
     #   psycopg
@@ -157,7 +157,7 @@ wrapt==1.15.0
     # via
     #   astroid
     #   deprecated
-zipp==3.15.0
+zipp==3.16.0
     # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
