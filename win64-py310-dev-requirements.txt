@@ -24,7 +24,7 @@ colorama==0.4.6
     #   plush-fabric
     #   pylint
     #   pytest
-cryptography==41.0.1
+cryptography==41.0.2
     # via
     #   paramiko
     #   pyjwt
@@ -81,7 +81,7 @@ patchwork==1.0.1
     #   plush-fabric
 pathlib2==2.3.7.post1
     # via fabric
-platformdirs==3.8.1
+platformdirs==3.9.1
     # via pylint
 pluggy==1.2.0
     # via pytest
@@ -157,7 +157,7 @@ wrapt==1.15.0
     # via
     #   astroid
     #   deprecated
-zipp==3.16.0
+zipp==3.16.2
     # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
