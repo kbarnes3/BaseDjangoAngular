@@ -24,7 +24,7 @@ colorama==0.4.6
     #   plush-fabric
     #   pylint
     #   pytest
-cryptography==41.0.4
+cryptography==41.0.5
     # via
     #   paramiko
     #   pyjwt
@@ -115,7 +115,7 @@ pylint==2.14.5
     #   -r .\dev-requirements.in
     #   pylint-django
     #   pylint-plugin-utils
-pylint-django==2.5.4
+pylint-django==2.5.5
     # via -r .\dev-requirements.in
 pylint-plugin-utils==0.8.2
     # via pylint-django
@@ -125,7 +125,7 @@ pynacl==1.5.0
     #   pygithub
 pyparsing==3.1.1
     # via httplib2
-pytest==7.4.2
+pytest==7.4.3
     # via
     #   -r .\dev-requirements.in
     #   pytest-django
