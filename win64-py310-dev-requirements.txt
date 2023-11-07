@@ -36,7 +36,7 @@ deprecated==1.2.14
     #   pygithub
 dill==0.3.7
     # via pylint
-django==4.2.6
+django==4.2.7
     # via -r .\requirements.in
 django-environ==0.11.2
     # via -r .\requirements.in
@@ -150,7 +150,7 @@ tomli==2.0.1
     # via
     #   pylint
     #   pytest
-tomlkit==0.12.1
+tomlkit==0.12.2
     # via pylint
 typing-extensions==4.8.0
     # via
