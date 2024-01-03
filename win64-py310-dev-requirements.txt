@@ -125,7 +125,7 @@ pynacl==1.5.0
     #   pygithub
 pyparsing==3.1.1
     # via httplib2
-pytest==7.4.3
+pytest==7.4.4
     # via
     #   -r .\dev-requirements.in
     #   pytest-django
@@ -157,7 +157,7 @@ typing-extensions==4.9.0
     #   asgiref
     #   psycopg
     #   pygithub
-tzdata==2023.3
+tzdata==2023.4
     # via
     #   django
     #   psycopg
