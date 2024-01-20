@@ -31,7 +31,7 @@
     "git-describe": "^4.1.1",
     "rxjs": "~6.6.7",
     "tslib": "^2.6.2",
-    "zone.js": "^0.14.2"
+    "zone.js": "^0.14.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^17.1.0",
@@ -45,9 +45,9 @@
     "@angular/language-service": "^17.1.0",
     "@types/jasmine": "^5.1.4",
     "@types/jasminewd2": "^2.0.13",
-    "@types/node": "^20.10.7",
-    "@typescript-eslint/eslint-plugin": "^6.18.0",
-    "@typescript-eslint/parser": "^6.18.0",
+    "@types/node": "^20.11.5",
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/parser": "^6.19.0",
     "eslint": "^8.56.0",
     "jasmine-core": "^5.1.1",
     "jasmine-spec-reporter": "^7.0.0",
@@ -58,6 +58,6 @@
     "karma-jasmine-html-reporter": "^2.1.0",
     "karma-junit-reporter": "^2.0.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.2.2"
+    "typescript": "^5.3.3"
   }
 }
