@@ -10,7 +10,7 @@ astroid==2.11.7
     # via pylint
 bcrypt==4.1.2
     # via paramiko
-certifi==2023.11.17
+certifi==2024.2.2
     # via requests
 cffi==1.16.0
     # via
@@ -86,11 +86,11 @@ patchwork==1.0.1
     #   plush-fabric
 pathlib2==2.3.7.post1
     # via fabric
-platformdirs==4.1.0
+platformdirs==4.2.0
     # via pylint
 pluggy==1.4.0
     # via pytest
-plush-fabric==0.5.14
+plush-fabric==0.5.15
     # via -r dev-requirements.in
 psycopg[binary]==3.1.17
     # via
