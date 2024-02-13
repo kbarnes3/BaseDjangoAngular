@@ -36,7 +36,7 @@ deprecated==1.2.14
     #   pygithub
 dill==0.3.8
     # via pylint
-django==5.0.1
+django==5.0.2
     # via -r .\requirements.in
 django-environ==0.11.2
     # via -r .\requirements.in
@@ -61,7 +61,7 @@ invoke==1.7.3
     # via fabric
 isort==5.13.2
     # via pylint
-jaraco-classes==3.3.0
+jaraco-classes==3.3.1
     # via keyring
 keyring==24.3.0
     # via plush-fabric
@@ -89,11 +89,11 @@ pluggy==1.4.0
     # via pytest
 plush-fabric==0.5.15
     # via -r .\dev-requirements.in
-psycopg[binary]==3.1.17
+psycopg[binary]==3.1.18
     # via
     #   -r .\requirements.in
     #   psycopg
-psycopg-binary==3.1.17
+psycopg-binary==3.1.18
     # via psycopg
 pyasn1==0.5.1
     # via
@@ -154,7 +154,7 @@ typing-extensions==4.9.0
     #   asgiref
     #   psycopg
     #   pygithub
-tzdata==2023.4
+tzdata==2024.1
     # via
     #   django
     #   psycopg
