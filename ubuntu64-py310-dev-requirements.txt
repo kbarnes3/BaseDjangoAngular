@@ -22,7 +22,7 @@ colorama==0.4.6
     # via
     #   -r dev-requirements.in
     #   plush-fabric
-cryptography==42.0.3
+cryptography==42.0.4
     # via
     #   paramiko
     #   pyjwt

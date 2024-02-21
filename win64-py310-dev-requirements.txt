@@ -24,7 +24,7 @@ colorama==0.4.6
     #   plush-fabric
     #   pylint
     #   pytest
-cryptography==42.0.3
+cryptography==42.0.4
     # via
     #   paramiko
     #   pyjwt
