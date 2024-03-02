@@ -22,7 +22,7 @@ colorama==0.4.6
     # via
     #   -r dev-requirements.in
     #   plush-fabric
-cryptography==42.0.4
+cryptography==42.0.5
     # via
     #   paramiko
     #   pyjwt
@@ -66,7 +66,7 @@ jeepney==0.8.0
     # via
     #   keyring
     #   secretstorage
-keyring==24.3.0
+keyring==24.3.1
     # via plush-fabric
 lazy-object-proxy==1.10.0
     # via astroid
@@ -90,7 +90,7 @@ platformdirs==4.2.0
     # via pylint
 pluggy==1.4.0
     # via pytest
-plush-fabric==0.5.15
+plush-fabric==0.5.16
     # via -r dev-requirements.in
 psycopg[binary]==3.1.18
     # via -r requirements.in
@@ -124,7 +124,7 @@ pynacl==1.5.0
     #   pygithub
 pyparsing==3.1.1
     # via httplib2
-pytest==8.0.1
+pytest==8.0.2
     # via
     #   -r dev-requirements.in
     #   pytest-django
@@ -146,9 +146,9 @@ tomli==2.0.1
     # via
     #   pylint
     #   pytest
-tomlkit==0.12.3
+tomlkit==0.12.4
     # via pylint
-typing-extensions==4.9.0
+typing-extensions==4.10.0
     # via
     #   asgiref
     #   psycopg
