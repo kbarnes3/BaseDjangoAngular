@@ -1,5 +1,6 @@
-Django==4.1.6
+Django==5.0.2
 dealer
 django-environ
 django-registration
 django-widget-tweaks
+psycopg[binary]>=3.0.0

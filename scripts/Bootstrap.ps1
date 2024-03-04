@@ -6,7 +6,7 @@ param(
 . $PSScriptRoot\Write-Status.ps1
 
 if ($Verbose) {
-    $quiet = ""
+    $quiet = $null
 }
 else {
     $quiet = "--quiet"
@@ -31,7 +31,7 @@ Write-Status "Updating pip-tools"
 Write-Status "Updating Python requirements"
 & pip-sync .\win64-py310-dev-requirements.txt
 Write-Status "Updating npm"
-. $PSScriptRoot\Invoke-Npm.ps1 @('install', '--location=global', 'npm@9')
+. $PSScriptRoot\Invoke-Npm.ps1 @('install', '--location=global', 'npm@10')
 Write-Status "Updating Angular CLI"
 . $PSScriptRoot\Invoke-Npm.ps1 @('install', '--location=global', '@angular/cli')
 Write-Status "Updating Node requirements"
