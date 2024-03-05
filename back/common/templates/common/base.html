@@ -29,7 +29,10 @@
                         </div>
                         <div class="navbar-nav flex-row ml-lg-auto d-block d-lg-flex">
                             <a class="nav-item nav-link" href="{% url 'password_change' %}">Change Password</a>
-                            <a class="nav-item nav-link" href="{% url 'logout' %}"><span class="d-none d-lg-block">Logout</span><span class="d-lg-none">Logout {{ user.get_short_name }}</span></a>
+                            <form method="post" action="{% url 'logout' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-link nav-item nav-link"><span class="d-none d-lg-block">Logout</span><span class="d-lg-none">Logout {{ user.get_short_name }}</span></button>
+                            </form>
                         </div>
                     {% else %}
                         <div class="navbar-nav flex-row ml-lg-auto d-block d-lg-flex">
