@@ -8,6 +8,8 @@ asgiref==3.8.1
     # via django
 astroid==2.11.7
     # via pylint
+backports-tarfile==1.0.0
+    # via jaraco-context
 bcrypt==4.1.2
     # via paramiko
 certifi==2024.2.2
@@ -35,7 +37,7 @@ deprecated==1.2.14
     #   pygithub
 dill==0.3.8
     # via pylint
-django==5.0.3
+django==5.0.4
     # via -r requirements.in
 django-environ==0.11.2
     # via -r requirements.in
@@ -62,7 +64,7 @@ isort==5.13.2
     # via pylint
 jaraco-classes==3.4.0
     # via keyring
-jaraco-context==4.3.0
+jaraco-context==5.3.0
     # via keyring
 jaraco-functools==4.0.0
     # via keyring
@@ -70,7 +72,7 @@ jeepney==0.8.0
     # via
     #   keyring
     #   secretstorage
-keyring==25.0.0
+keyring==25.1.0
     # via plush-fabric
 lazy-object-proxy==1.10.0
     # via astroid
@@ -154,7 +156,7 @@ tomli==2.0.1
     #   pytest
 tomlkit==0.12.4
     # via pylint
-typing-extensions==4.10.0
+typing-extensions==4.11.0
     # via
     #   asgiref
     #   psycopg
