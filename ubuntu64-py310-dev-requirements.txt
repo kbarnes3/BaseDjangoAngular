@@ -52,7 +52,7 @@ fabric==2.7.1
     #   plush-fabric
 httplib2==0.22.0
     # via oauth2client
-idna==3.6
+idna==3.7
     # via requests
 importlib-metadata==7.1.0
     # via keyring
@@ -148,7 +148,7 @@ six==1.16.0
     # via
     #   oauth2client
     #   pathlib2
-sqlparse==0.4.4
+sqlparse==0.5.0
     # via django
 tomli==2.0.1
     # via
