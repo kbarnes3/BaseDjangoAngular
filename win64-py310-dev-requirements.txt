@@ -8,7 +8,7 @@ asgiref==3.8.1
     # via django
 astroid==2.11.7
     # via pylint
-backports-tarfile==1.0.0
+backports-tarfile==1.1.0
     # via jaraco-context
 bcrypt==4.1.2
     # via paramiko
@@ -95,7 +95,7 @@ platformdirs==4.2.0
     # via pylint
 pluggy==1.4.0
     # via pytest
-plush-fabric==0.5.17
+plush-fabric==0.5.18
     # via -r .\dev-requirements.in
 psycopg[binary]==3.1.18
     # via -r .\requirements.in
