@@ -8,7 +8,7 @@ asgiref==3.8.1
     # via django
 astroid==2.11.7
     # via pylint
-backports-tarfile==1.1.0
+backports-tarfile==1.1.1
     # via jaraco-context
 bcrypt==4.1.2
     # via paramiko
@@ -43,7 +43,7 @@ django-environ==0.11.2
     # via -r requirements.in
 django-widget-tweaks==1.5.0
     # via -r requirements.in
-exceptiongroup==1.2.0
+exceptiongroup==1.2.1
     # via pytest
 fabric==2.7.1
     # via
@@ -66,13 +66,13 @@ jaraco-classes==3.4.0
     # via keyring
 jaraco-context==5.3.0
     # via keyring
-jaraco-functools==4.0.0
+jaraco-functools==4.0.1
     # via keyring
 jeepney==0.8.0
     # via
     #   keyring
     #   secretstorage
-keyring==25.1.0
+keyring==25.2.0
     # via plush-fabric
 lazy-object-proxy==1.10.0
     # via astroid
@@ -94,11 +94,11 @@ patchwork==1.0.1
     #   plush-fabric
 pathlib2==2.3.7.post1
     # via fabric
-platformdirs==4.2.0
+platformdirs==4.2.1
     # via pylint
-pluggy==1.4.0
+pluggy==1.5.0
     # via pytest
-plush-fabric==0.5.18
+plush-fabric==0.5.21
     # via -r dev-requirements.in
 psycopg[binary]==3.1.18
     # via -r requirements.in
@@ -132,7 +132,7 @@ pynacl==1.5.0
     #   pygithub
 pyparsing==3.1.2
     # via httplib2
-pytest==8.1.1
+pytest==8.2.0
     # via
     #   -r dev-requirements.in
     #   pytest-django
