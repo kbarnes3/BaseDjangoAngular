@@ -1,6 +1,6 @@
 Fabric
 patchwork
-plush-fabric
+plush-fabric<1.0.0
 colorama
 pylint<=2.14.5 # https://github.com/PyCQA/pylint-django/issues/370
 pylint-django
