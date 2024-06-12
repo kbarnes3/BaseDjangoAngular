@@ -1,8 +1,7 @@
 Fabric
-patchwork
-plush-fabric<1.0.0
+plush-fabric
 colorama
-pylint<=2.14.5 # https://github.com/PyCQA/pylint-django/issues/370
+pylint
 pylint-django
 pytest
 pytest-django

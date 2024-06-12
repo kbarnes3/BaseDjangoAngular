@@ -126,7 +126,7 @@ def setup_deployment(conn, config, branch=None, secret_branch=None):
         conn.run(f'venv/bin/python back/create_db.py {config}')
 
 
-    global_dir = f'{repo_dir}/config/ubuntu-22.04/global'
+    global_dir = f'{repo_dir}/config/ubuntu-24.04/global'
     uwsgi_socket_source = f'{global_dir}/uwsgi-app@.socket'
     uwsgi_service_source = f'{global_dir}/uwsgi-app@.service'
 
@@ -167,7 +167,7 @@ def _setup_repo(conn: Connection, repo_dir: str, repo_name: str):
 
     if not exists(conn, f'{repo_dir}/.git'):
         if not verify_access_token():
-            raise Exception("Unable to access GitHub account. Run 'auth' to fix this")
+            raise PermissionError("Unable to access GitHub account. Run 'auth' to fix this")
         create_key(conn, repo_name, WEBADMIN_GROUP)
         add_repo_key(conn, repo_name)
         clone(conn, repo_name, repo_dir, skip_strict_key_checking=True)
