@@ -19,8 +19,8 @@ def compile_requirements(conn, fresh=False, upgrade=False):
 
     requirements_in = 'requirements.in'
     dev_requirements_in = 'dev-requirements.in'
-    requirements_txt = 'ubuntu64-py310-requirements.txt'
-    dev_requirements_txt = 'ubuntu64-py310-dev-requirements.txt'
+    requirements_txt = 'ubuntu64-py312-requirements.txt'
+    dev_requirements_txt = 'ubuntu64-py312-dev-requirements.txt'
 
     transfer = Transfer(conn)
     transfer.put(requirements_in, f'{staging_dir}/{requirements_in}')

@@ -3,7 +3,7 @@ from typing import Optional
 from colorama import Fore, init
 from fabric import Task
 from fabric.connection import Connection
-from patchwork.files import exists as patchwork_exists
+from plush.patchwork.files import exists as patchwork_exists
 from plush.fabric_commands.permissions import ensure_directory, set_permissions_file
 
 CONFIGURATIONS = {
@@ -137,7 +137,7 @@ def update_backend_dependencies(conn: Connection, repo_dir: str):
         conn.run('venv/bin/python -m pip install --upgrade pip-tools')
 
         print(Fore.GREEN + 'Installing dependencies with pip-sync')
-        conn.run('venv/bin/pip-sync ubuntu64-py310-requirements.txt')
+        conn.run('venv/bin/pip-sync ubuntu64-py312-requirements.txt')
 
 
 def _compile_source(conn: Connection,
