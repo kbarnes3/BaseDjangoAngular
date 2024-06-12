@@ -92,7 +92,7 @@ def deploy(conn, config, branch=None, secret_branch=None):
                         f'secret repo from branch {secret_branch}')
 
     repo_dir = get_repo_dir(config)
-    config_dir = f'{repo_dir}/config/ubuntu-22.04'
+    config_dir = f'{repo_dir}/config/ubuntu-24.04'
     daily_scripts_dir = f'{config_dir}/cron.daily'
     uwsgi_dir = f'{config_dir}/uwsgi'
     nginx_dir = f'{config_dir}/nginx'
@@ -228,7 +228,7 @@ def checkout_branch(conn: Connection, repo_dir: str, config: str, branch: Option
 def deploy_global_config(conn, config):
     print(Fore.GREEN + 'deploy_global_config')
     repo_dir = get_repo_dir(config)
-    global_dir = f'{repo_dir}/config/ubuntu-22.04/global'
+    global_dir = f'{repo_dir}/config/ubuntu-24.04/global'
     nginx_conf = '/etc/nginx/nginx.conf'
     uwsgi_socket = '/etc/systemd/system/uwsgi-app@.socket'
     uwsgi_service = '/etc/systemd/system/uwsgi-app@.service'
@@ -259,7 +259,7 @@ def shutdown(conn, config, branch=None, secret_branch=None):
                             config, branch, secret_branch))
 
     repo_dir = get_repo_dir(config)
-    nginx_dir = f'{repo_dir}/config/ubuntu-22.04/nginx/shutdown'
+    nginx_dir = f'{repo_dir}/config/ubuntu-24.04/nginx/shutdown'
     secret_repo_dir = get_secret_repo_dir(config)
     ssl_dir = f'{secret_repo_dir}/{config}/ssl'
 
