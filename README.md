@@ -1,5 +1,6 @@
 BaseDjangoSite
 ==============
+[![Test 🧪 BaseDjangoAngular](https://github.com/kbarnes3/BaseDjangoAngular/actions/workflows/test.yml/badge.svg)](https://github.com/kbarnes3/BaseDjangoAngular/actions/workflows/test.yml)
 
 A basic template for a Django site and the framework to deploy it.
 
