@@ -17,6 +17,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+        cache-dependency-path: 'front/package-lock.json'
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v5
       with:
