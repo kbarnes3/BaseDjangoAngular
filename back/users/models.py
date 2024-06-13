@@ -61,7 +61,7 @@ class User(AbstractBaseUser):
         return self.is_admin
 
     def __str__(self):
-        return self.primary_email
+        return self.username
 
     @property
     def is_staff(self):

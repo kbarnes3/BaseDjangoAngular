@@ -1,4 +1,3 @@
-from django import forms
 from django.contrib.auth.forms import PasswordResetForm, UserCreationForm
 from django_registration import validators
 
@@ -19,7 +18,7 @@ class EmailPasswordResetForm(PasswordResetForm):
         return (u for u in active_users if u.has_usable_password())
 
 
-class RegistrationForm(UserCreationForm):
+class RegistrationForm(UserCreationForm): # pylint: disable=too-many-ancestors
     """
     Form for registering a new user account.
 
