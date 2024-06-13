@@ -36,7 +36,7 @@ server {
 	access_log  /var/log/nginx/localhost.access.log;
 
 	location / {
-		root   /var/www/python/newdjangosite-prod/front/built/front;
+		root   /var/www/python/newdjangosite-prod/front/built/front/browser;
 		try_files $uri $uri/ /index.html;
 	}
 
