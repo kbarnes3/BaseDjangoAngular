@@ -1,0 +1,62 @@
+name: Test 🧪 BaseDjangoAngular
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ["20.x"]
+        python-version: ["3.12"]
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: 'front/package-lock.json'
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install --upgrade pip-tools
+        pip-sync ubuntu64-py312-dev-requirements.txt
+    - name: Running pylint back
+      run: |
+        pylint back
+    - name: Running pylint fabric_utils
+      run: |
+        pylint fabric_utils
+    - name: Running pylint fabfile.py
+      run: |
+        pylint fabfile.py
+    - name: Run pytest back
+      run: |
+        pytest back
+    - name: Running fab -l
+      run: |
+        fab -l
+    - name: Install Node dependencies
+      run: |
+        cd front
+        npm install --location=global npm@10
+        npm install --location=global @angular/cli
+        npm ci
+    - name: Run ng lint
+      run: |
+        cd front
+        npm run-script lint
+    - name: Run ng test
+      run: |
+        cd front
+        npm run-script test-headless
+    - name: Run ng build
+      run: |
+        cd front
+        npm run-script build

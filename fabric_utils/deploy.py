@@ -3,7 +3,7 @@ from typing import Optional
 from colorama import Fore, init
 from fabric import Task
 from fabric.connection import Connection
-from patchwork.files import exists as patchwork_exists
+from plush.patchwork.files import exists as patchwork_exists
 from plush.fabric_commands.permissions import ensure_directory, set_permissions_file
 
 CONFIGURATIONS = {
@@ -92,7 +92,7 @@ def deploy(conn, config, branch=None, secret_branch=None):
                         f'secret repo from branch {secret_branch}')
 
     repo_dir = get_repo_dir(config)
-    config_dir = f'{repo_dir}/config/ubuntu-22.04'
+    config_dir = f'{repo_dir}/config/ubuntu-24.04'
     daily_scripts_dir = f'{config_dir}/cron.daily'
     uwsgi_dir = f'{config_dir}/uwsgi'
     nginx_dir = f'{config_dir}/nginx'
@@ -137,7 +137,7 @@ def update_backend_dependencies(conn: Connection, repo_dir: str):
         conn.run('venv/bin/python -m pip install --upgrade pip-tools')
 
         print(Fore.GREEN + 'Installing dependencies with pip-sync')
-        conn.run('venv/bin/pip-sync ubuntu64-py310-requirements.txt')
+        conn.run('venv/bin/pip-sync ubuntu64-py312-requirements.txt')
 
 
 def _compile_source(conn: Connection,
@@ -228,7 +228,7 @@ def checkout_branch(conn: Connection, repo_dir: str, config: str, branch: Option
 def deploy_global_config(conn, config):
     print(Fore.GREEN + 'deploy_global_config')
     repo_dir = get_repo_dir(config)
-    global_dir = f'{repo_dir}/config/ubuntu-22.04/global'
+    global_dir = f'{repo_dir}/config/ubuntu-24.04/global'
     nginx_conf = '/etc/nginx/nginx.conf'
     uwsgi_socket = '/etc/systemd/system/uwsgi-app@.socket'
     uwsgi_service = '/etc/systemd/system/uwsgi-app@.service'
@@ -259,7 +259,7 @@ def shutdown(conn, config, branch=None, secret_branch=None):
                             config, branch, secret_branch))
 
     repo_dir = get_repo_dir(config)
-    nginx_dir = f'{repo_dir}/config/ubuntu-22.04/nginx/shutdown'
+    nginx_dir = f'{repo_dir}/config/ubuntu-24.04/nginx/shutdown'
     secret_repo_dir = get_secret_repo_dir(config)
     ssl_dir = f'{secret_repo_dir}/{config}/ssl'
 
