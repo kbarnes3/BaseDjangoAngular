@@ -12,7 +12,7 @@ bcrypt==4.2.0
     # via paramiko
 certifi==2024.8.30
     # via requests
-cffi==1.17.0
+cffi==1.17.1
     # via
     #   cryptography
     #   pynacl
@@ -37,7 +37,7 @@ deprecated==1.2.14
     #   pygithub
 dill==0.3.8
     # via pylint
-django==5.1
+django==5.1.1
     # via -r requirements.in
 django-environ==0.11.2
     # via -r requirements.in
@@ -71,7 +71,7 @@ keyring==25.3.0
     # via plush-fabric
 mccabe==0.7.0
     # via pylint
-more-itertools==10.4.0
+more-itertools==10.5.0
     # via
     #   jaraco-classes
     #   jaraco-functools
@@ -81,7 +81,7 @@ packaging==24.1
     # via pytest
 paramiko==3.4.1
     # via fabric
-platformdirs==4.2.2
+platformdirs==4.3.2
     # via pylint
 pluggy==1.5.0
     # via pytest
