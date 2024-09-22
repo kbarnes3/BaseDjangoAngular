@@ -6,7 +6,7 @@
 #
 asgiref==3.8.1
     # via django
-astroid==3.2.4
+astroid==3.3.3
     # via pylint
 bcrypt==4.2.0
     # via paramiko
@@ -49,7 +49,7 @@ fabric==3.2.2
     #   plush-fabric
 httplib2==0.22.0
     # via oauth2client
-idna==3.8
+idna==3.10
     # via requests
 iniconfig==2.0.0
     # via pytest
@@ -67,7 +67,7 @@ jeepney==0.8.0
     # via
     #   keyring
     #   secretstorage
-keyring==25.3.0
+keyring==25.4.1
     # via plush-fabric
 mccabe==0.7.0
     # via pylint
@@ -79,24 +79,24 @@ oauth2client==4.1.3
     # via plush-fabric
 packaging==24.1
     # via pytest
-paramiko==3.4.1
+paramiko==3.5.0
     # via fabric
-platformdirs==4.3.2
+platformdirs==4.3.6
     # via pylint
 pluggy==1.5.0
     # via pytest
 plush-fabric==1.0.5
     # via -r dev-requirements.in
-psycopg[binary]==3.2.1
+psycopg[binary]==3.2.2
     # via -r requirements.in
-psycopg-binary==3.2.1
+psycopg-binary==3.2.2
     # via psycopg
-pyasn1==0.6.0
+pyasn1==0.6.1
     # via
     #   oauth2client
     #   pyasn1-modules
     #   rsa
-pyasn1-modules==0.4.0
+pyasn1-modules==0.4.1
     # via oauth2client
 pycparser==2.22
     # via cffi
@@ -104,7 +104,7 @@ pygithub==2.4.0
     # via plush-fabric
 pyjwt[crypto]==2.9.0
     # via pygithub
-pylint==3.2.7
+pylint==3.3.0
     # via
     #   -r dev-requirements.in
     #   pylint-django
@@ -119,7 +119,7 @@ pynacl==1.5.0
     #   pygithub
 pyparsing==3.1.4
     # via httplib2
-pytest==8.3.2
+pytest==8.3.3
     # via
     #   -r dev-requirements.in
     #   pytest-django
@@ -141,7 +141,7 @@ typing-extensions==4.12.2
     # via
     #   psycopg
     #   pygithub
-urllib3==2.2.2
+urllib3==2.2.3
     # via
     #   pygithub
     #   requests

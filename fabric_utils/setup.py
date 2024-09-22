@@ -179,7 +179,7 @@ def _setup_repo(conn: Connection, repo_dir: str, repo_name: str):
 
 
 @Task
-def setup_superuser(conn, config, email, given_name, surname, password): # pylint: disable=R0913
+def setup_superuser(conn, config, email, given_name, surname, password): # pylint: disable=R0913,R0917
     print(Fore.GREEN + f'Setting up new superuser for {config} deployment')
     repo_dir = get_repo_dir(config)
 
