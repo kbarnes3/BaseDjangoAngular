@@ -6,7 +6,7 @@
 #
 asgiref==3.8.1
     # via django
-astroid==3.3.3
+astroid==3.3.4
     # via pylint
 bcrypt==4.2.0
     # via paramiko
@@ -101,7 +101,7 @@ pygithub==2.4.0
     # via plush-fabric
 pyjwt[crypto]==2.9.0
     # via pygithub
-pylint==3.3.0
+pylint==3.3.1
     # via
     #   -r .\dev-requirements.in
     #   pylint-django
@@ -138,7 +138,7 @@ typing-extensions==4.12.2
     # via
     #   psycopg
     #   pygithub
-tzdata==2024.1
+tzdata==2024.2
     # via
     #   django
     #   psycopg
