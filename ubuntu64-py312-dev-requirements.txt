@@ -35,7 +35,7 @@ deprecated==1.2.14
     # via
     #   fabric
     #   pygithub
-dill==0.3.8
+dill==0.3.9
     # via pylint
 django==5.1.1
     # via -r requirements.in
@@ -61,7 +61,7 @@ jaraco-classes==3.4.0
     # via keyring
 jaraco-context==6.0.1
     # via keyring
-jaraco-functools==4.0.2
+jaraco-functools==4.1.0
     # via keyring
 jeepney==0.8.0
     # via
@@ -85,11 +85,11 @@ platformdirs==4.3.6
     # via pylint
 pluggy==1.5.0
     # via pytest
-plush-fabric==1.0.5
+plush-fabric==1.0.6
     # via -r dev-requirements.in
-psycopg[binary]==3.2.2
+psycopg[binary]==3.2.3
     # via -r requirements.in
-psycopg-binary==3.2.2
+psycopg-binary==3.2.3
     # via psycopg
 pyasn1==0.6.1
     # via

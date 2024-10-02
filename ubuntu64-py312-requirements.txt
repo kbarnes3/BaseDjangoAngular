@@ -14,9 +14,9 @@ django-environ==0.11.2
     # via -r requirements.in
 django-widget-tweaks==1.5.0
     # via -r requirements.in
-psycopg[binary]==3.2.2
+psycopg[binary]==3.2.3
     # via -r requirements.in
-psycopg-binary==3.2.2
+psycopg-binary==3.2.3
     # via psycopg
 sqlparse==0.5.1
     # via django
