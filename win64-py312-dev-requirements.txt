@@ -8,7 +8,7 @@ asgiref==3.8.1
     # via django
 astroid==3.3.5
     # via pylint
-bcrypt==4.2.0
+bcrypt==4.2.1
     # via paramiko
 certifi==2024.8.30
     # via requests
@@ -24,7 +24,7 @@ colorama==0.4.6
     #   plush-fabric
     #   pylint
     #   pytest
-cryptography==43.0.3
+cryptography==44.0.0
     # via
     #   paramiko
     #   pyjwt
@@ -32,7 +32,7 @@ dealer==2.1.0
     # via -r .\requirements.in
 decorator==5.1.1
     # via fabric
-deprecated==1.2.14
+deprecated==1.2.15
     # via
     #   fabric
     #   pygithub
@@ -82,7 +82,7 @@ platformdirs==4.3.6
     # via pylint
 pluggy==1.5.0
     # via pytest
-plush-fabric==1.0.7
+plush-fabric==1.0.8
     # via -r .\dev-requirements.in
 psycopg[binary]==3.2.3
     # via -r .\requirements.in
@@ -99,9 +99,9 @@ pycparser==2.22
     # via cffi
 pygithub==2.5.0
     # via plush-fabric
-pyjwt[crypto]==2.9.0
+pyjwt[crypto]==2.10.1
     # via pygithub
-pylint==3.3.1
+pylint==3.3.2
     # via
     #   -r .\dev-requirements.in
     #   pylint-django
@@ -116,7 +116,7 @@ pynacl==1.5.0
     #   pygithub
 pyparsing==3.2.0
     # via httplib2
-pytest==8.3.3
+pytest==8.3.4
     # via
     #   -r .\dev-requirements.in
     #   pytest-django
@@ -130,7 +130,7 @@ rsa==4.9
     # via oauth2client
 six==1.16.0
     # via oauth2client
-sqlparse==0.5.1
+sqlparse==0.5.2
     # via django
 tomlkit==0.13.2
     # via pylint
@@ -146,5 +146,5 @@ urllib3==2.2.3
     # via
     #   pygithub
     #   requests
-wrapt==1.16.0
+wrapt==1.17.0
     # via deprecated
