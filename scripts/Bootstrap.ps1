@@ -31,7 +31,7 @@ Write-Status "Updating pip-tools"
 Write-Status "Updating Python requirements"
 & pip-sync .\win64-py312-dev-requirements.txt
 Write-Status "Updating npm"
-. $PSScriptRoot\Invoke-Npm.ps1 @('install', '--location=global', 'npm@10')
+. $PSScriptRoot\Invoke-Npm.ps1 @('install', '--location=global', 'npm@11')
 Write-Status "Updating Angular CLI"
 . $PSScriptRoot\Invoke-Npm.ps1 @('install', '--location=global', '@angular/cli')
 Write-Status "Updating Node requirements"

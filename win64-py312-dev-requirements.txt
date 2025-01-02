@@ -6,17 +6,17 @@
 #
 asgiref==3.8.1
     # via django
-astroid==3.3.5
+astroid==3.3.8
     # via pylint
 bcrypt==4.2.1
     # via paramiko
-certifi==2024.8.30
+certifi==2024.12.14
     # via requests
 cffi==1.17.1
     # via
     #   cryptography
     #   pynacl
-charset-normalizer==3.4.0
+charset-normalizer==3.4.1
     # via requests
 colorama==0.4.6
     # via
@@ -64,7 +64,7 @@ jaraco-context==6.0.1
     # via keyring
 jaraco-functools==4.1.0
     # via keyring
-keyring==25.5.0
+keyring==25.6.0
     # via plush-fabric
 mccabe==0.7.0
     # via pylint
@@ -82,7 +82,7 @@ platformdirs==4.3.6
     # via pylint
 pluggy==1.5.0
     # via pytest
-plush-fabric==1.0.8
+plush-fabric==1.0.9
     # via -r .\dev-requirements.in
 psycopg[binary]==3.2.3
     # via -r .\requirements.in
@@ -101,7 +101,7 @@ pygithub==2.5.0
     # via plush-fabric
 pyjwt[crypto]==2.10.1
     # via pygithub
-pylint==3.3.2
+pylint==3.3.3
     # via
     #   -r .\dev-requirements.in
     #   pylint-django
@@ -114,7 +114,7 @@ pynacl==1.5.0
     # via
     #   paramiko
     #   pygithub
-pyparsing==3.2.0
+pyparsing==3.2.1
     # via httplib2
 pytest==8.3.4
     # via
@@ -130,7 +130,7 @@ rsa==4.9
     # via oauth2client
 six==1.17.0
     # via oauth2client
-sqlparse==0.5.2
+sqlparse==0.5.3
     # via django
 tomlkit==0.13.2
     # via pylint
@@ -142,7 +142,7 @@ tzdata==2024.2
     # via
     #   django
     #   psycopg
-urllib3==2.2.3
+urllib3==2.3.0
     # via
     #   pygithub
     #   requests

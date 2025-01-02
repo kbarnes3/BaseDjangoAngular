@@ -18,7 +18,7 @@ psycopg[binary]==3.2.3
     # via -r requirements.in
 psycopg-binary==3.2.3
     # via psycopg
-sqlparse==0.5.2
+sqlparse==0.5.3
     # via django
 typing-extensions==4.12.2
     # via psycopg
