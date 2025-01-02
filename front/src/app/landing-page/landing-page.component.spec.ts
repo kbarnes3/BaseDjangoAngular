@@ -7,9 +7,7 @@ describe('LandingPageComponent', () => {
   let fixture: ComponentFixture<LandingPageComponent>;
 
   beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ LandingPageComponent ]
-    })
+    TestBed.configureTestingModule({})
     .compileComponents();
   }));
 

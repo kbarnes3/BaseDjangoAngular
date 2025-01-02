@@ -32,7 +32,6 @@ describe('NavBarComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ NavBarComponent ],
       imports: [NgbModule],
       providers: [
         { provide: LoginStatusService, useClass: MockLoginStatusService }

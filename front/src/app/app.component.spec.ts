@@ -2,6 +2,7 @@ import { TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { Component } from '@angular/core';
+import { NavBarComponent } from './nav-bar/nav-bar.component';
 
 @Component({
     selector: 'app-nav-bar',
@@ -17,11 +18,16 @@ describe('AppComponent', () => {
       imports: [
         RouterTestingModule
       ],
-      declarations: [
-        AppComponent,
-        MockNavBarComponent
-      ],
-    }).compileComponents();
+    })
+    .overrideComponent(AppComponent, {
+      remove: {
+        imports: [NavBarComponent]
+      },
+      add: {
+        imports: [MockNavBarComponent]
+      }
+    })
+    .compileComponents();
   }));
 
   it('should create the app', () => {
