@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
 @Component({
     selector: 'app-nav-bar',
     template: '<p>Nav Bar</p>',
-    standalone: false
+    
 })
 class MockNavBarComponent {
 }

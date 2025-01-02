@@ -5,7 +5,7 @@ import {LoginStatus, LoginStatusService} from '../login-status.service';
     selector: 'app-nav-bar',
     templateUrl: './nav-bar.component.html',
     styleUrls: ['./nav-bar.component.scss'],
-    standalone: false
+    
 })
 export class NavBarComponent implements OnInit {
   public isCollapsed: boolean;

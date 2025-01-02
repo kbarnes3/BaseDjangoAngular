@@ -5,7 +5,7 @@ import { versionInfo } from './version-info';
     selector: 'app-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
-    standalone: false
+    
 })
 export class AppComponent {
   title = 'NewDjangoSite';
