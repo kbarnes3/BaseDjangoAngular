@@ -38,9 +38,9 @@ deprecated==1.2.15
     #   pygithub
 dill==0.3.9
     # via pylint
-django==5.1.4
+django==5.1.5
     # via -r .\requirements.in
-django-environ==0.11.2
+django-environ==0.12.0
     # via -r .\requirements.in
 django-widget-tweaks==1.5.0
     # via -r .\requirements.in
@@ -68,7 +68,7 @@ keyring==25.6.0
     # via plush-fabric
 mccabe==0.7.0
     # via pylint
-more-itertools==10.5.0
+more-itertools==10.6.0
     # via
     #   jaraco-classes
     #   jaraco-functools
@@ -84,9 +84,9 @@ pluggy==1.5.0
     # via pytest
 plush-fabric==1.0.9
     # via -r .\dev-requirements.in
-psycopg[binary]==3.2.3
+psycopg[binary]==3.2.4
     # via -r .\requirements.in
-psycopg-binary==3.2.3
+psycopg-binary==3.2.4
     # via psycopg
 pyasn1==0.6.1
     # via
@@ -146,5 +146,5 @@ urllib3==2.3.0
     # via
     #   pygithub
     #   requests
-wrapt==1.17.0
+wrapt==1.17.2
     # via deprecated

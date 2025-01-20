@@ -8,15 +8,15 @@ asgiref==3.8.1
     # via django
 dealer==2.1.0
     # via -r requirements.in
-django==5.1.4
+django==5.1.5
     # via -r requirements.in
-django-environ==0.11.2
+django-environ==0.12.0
     # via -r requirements.in
 django-widget-tweaks==1.5.0
     # via -r requirements.in
-psycopg[binary]==3.2.3
+psycopg[binary]==3.2.4
     # via -r requirements.in
-psycopg-binary==3.2.3
+psycopg-binary==3.2.4
     # via psycopg
 sqlparse==0.5.3
     # via django
