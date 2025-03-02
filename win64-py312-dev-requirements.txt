@@ -8,7 +8,7 @@ asgiref==3.8.1
     # via django
 astroid==3.3.8
     # via pylint
-bcrypt==4.2.1
+bcrypt==4.3.0
     # via paramiko
 certifi==2025.1.31
     # via requests
@@ -24,13 +24,13 @@ colorama==0.4.6
     #   plush-fabric
     #   pylint
     #   pytest
-cryptography==44.0.1
+cryptography==44.0.2
     # via
     #   paramiko
     #   pyjwt
 dealer==2.1.0
     # via -r .\requirements.in
-decorator==5.1.1
+decorator==5.2.1
     # via fabric
 deprecated==1.2.18
     # via
@@ -56,7 +56,7 @@ iniconfig==2.0.0
     # via pytest
 invoke==2.2.0
     # via fabric
-isort==6.0.0
+isort==6.0.1
     # via pylint
 jaraco-classes==3.4.0
     # via keyring
@@ -82,11 +82,11 @@ platformdirs==4.3.6
     # via pylint
 pluggy==1.5.0
     # via pytest
-plush-fabric==1.0.10
+plush-fabric==1.0.11
     # via -r .\dev-requirements.in
-psycopg[binary]==3.2.4
+psycopg[binary]==3.2.5
     # via -r .\requirements.in
-psycopg-binary==3.2.4
+psycopg-binary==3.2.5
     # via psycopg
 pyasn1==0.6.1
     # via
@@ -97,7 +97,7 @@ pyasn1-modules==0.4.1
     # via oauth2client
 pycparser==2.22
     # via cffi
-pygithub==2.6.0
+pygithub==2.6.1
     # via plush-fabric
 pyjwt[crypto]==2.10.1
     # via pygithub
