@@ -6,7 +6,7 @@
 #
 asgiref==3.8.1
     # via django
-astroid==3.3.8
+astroid==3.3.9
     # via pylint
 bcrypt==4.3.0
     # via paramiko
@@ -38,7 +38,7 @@ deprecated==1.2.18
     #   pygithub
 dill==0.3.9
     # via pylint
-django==5.1.6
+django==5.1.7
     # via -r .\requirements.in
 django-environ==0.12.0
     # via -r .\requirements.in
@@ -101,7 +101,7 @@ pygithub==2.6.1
     # via plush-fabric
 pyjwt[crypto]==2.10.1
     # via pygithub
-pylint==3.3.4
+pylint==3.3.5
     # via
     #   -r .\dev-requirements.in
     #   pylint-django
@@ -116,7 +116,7 @@ pynacl==1.5.0
     #   pygithub
 pyparsing==3.2.1
     # via httplib2
-pytest==8.3.4
+pytest==8.3.5
     # via
     #   -r .\dev-requirements.in
     #   pytest-django
