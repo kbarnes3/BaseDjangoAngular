@@ -52,7 +52,7 @@ httplib2==0.22.0
     # via oauth2client
 idna==3.10
     # via requests
-iniconfig==2.0.0
+iniconfig==2.1.0
     # via pytest
 invoke==2.2.0
     # via fabric
@@ -78,22 +78,22 @@ packaging==24.2
     # via pytest
 paramiko==3.5.1
     # via fabric
-platformdirs==4.3.6
+platformdirs==4.3.7
     # via pylint
 pluggy==1.5.0
     # via pytest
 plush-fabric==1.0.11
     # via -r .\dev-requirements.in
-psycopg[binary]==3.2.5
+psycopg[binary]==3.2.6
     # via -r .\requirements.in
-psycopg-binary==3.2.5
+psycopg-binary==3.2.6
     # via psycopg
 pyasn1==0.6.1
     # via
     #   oauth2client
     #   pyasn1-modules
     #   rsa
-pyasn1-modules==0.4.1
+pyasn1-modules==0.4.2
     # via oauth2client
 pycparser==2.22
     # via cffi
@@ -101,7 +101,7 @@ pygithub==2.6.1
     # via plush-fabric
 pyjwt[crypto]==2.10.1
     # via pygithub
-pylint==3.3.5
+pylint==3.3.6
     # via
     #   -r .\dev-requirements.in
     #   pylint-django
@@ -114,13 +114,13 @@ pynacl==1.5.0
     # via
     #   paramiko
     #   pygithub
-pyparsing==3.2.1
+pyparsing==3.2.3
     # via httplib2
 pytest==8.3.5
     # via
     #   -r .\dev-requirements.in
     #   pytest-django
-pytest-django==4.10.0
+pytest-django==4.11.1
     # via -r .\dev-requirements.in
 pywin32-ctypes==0.2.3
     # via keyring
@@ -134,11 +134,11 @@ sqlparse==0.5.3
     # via django
 tomlkit==0.13.2
     # via pylint
-typing-extensions==4.12.2
+typing-extensions==4.13.1
     # via
     #   psycopg
     #   pygithub
-tzdata==2025.1
+tzdata==2025.2
     # via
     #   django
     #   psycopg
