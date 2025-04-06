@@ -8,7 +8,7 @@ asgiref==3.8.1
     # via django
 dealer==2.1.0
     # via -r requirements.in
-django==5.1.7
+django==5.2
     # via -r requirements.in
 django-environ==0.12.0
     # via -r requirements.in
