@@ -134,7 +134,7 @@ sqlparse==0.5.3
     # via django
 tomlkit==0.13.2
     # via pylint
-typing-extensions==4.13.1
+typing-extensions==4.13.2
     # via
     #   psycopg
     #   pygithub
@@ -142,7 +142,7 @@ tzdata==2025.2
     # via
     #   django
     #   psycopg
-urllib3==2.3.0
+urllib3==2.4.0
     # via
     #   pygithub
     #   requests
