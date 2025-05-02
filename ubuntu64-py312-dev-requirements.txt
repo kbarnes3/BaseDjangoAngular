@@ -10,19 +10,19 @@ astroid==3.3.9
     # via pylint
 bcrypt==4.3.0
     # via paramiko
-certifi==2025.1.31
+certifi==2025.4.26
     # via requests
 cffi==1.17.1
     # via
     #   cryptography
     #   pynacl
-charset-normalizer==3.4.1
+charset-normalizer==3.4.2
     # via requests
 colorama==0.4.6
     # via
     #   -r dev-requirements.in
     #   plush-fabric
-cryptography==44.0.2
+cryptography==44.0.3
     # via
     #   paramiko
     #   pyjwt
@@ -87,9 +87,9 @@ pluggy==1.5.0
     # via pytest
 plush-fabric==1.0.11
     # via -r dev-requirements.in
-psycopg[binary]==3.2.6
+psycopg[binary]==3.2.7
     # via -r requirements.in
-psycopg-binary==3.2.6
+psycopg-binary==3.2.7
     # via psycopg
 pyasn1==0.6.1
     # via
