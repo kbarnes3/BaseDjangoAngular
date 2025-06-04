@@ -22,7 +22,7 @@ colorama==0.4.6
     # via
     #   -r dev-requirements.in
     #   plush-fabric
-cryptography==44.0.3
+cryptography==45.0.3
     # via
     #   paramiko
     #   pyjwt
@@ -83,13 +83,13 @@ paramiko==3.5.1
     # via fabric
 platformdirs==4.3.8
     # via pylint
-pluggy==1.5.0
+pluggy==1.6.0
     # via pytest
 plush-fabric==1.0.11
     # via -r dev-requirements.in
-psycopg[binary]==3.2.8
+psycopg[binary]==3.2.9
     # via -r requirements.in
-psycopg-binary==3.2.8
+psycopg-binary==3.2.9
     # via psycopg
 pyasn1==0.6.1
     # via
@@ -102,6 +102,8 @@ pycparser==2.22
     # via cffi
 pygithub==2.6.1
     # via plush-fabric
+pygments==2.19.1
+    # via pytest
 pyjwt[crypto]==2.10.1
     # via pygithub
 pylint==3.3.7
@@ -119,7 +121,7 @@ pynacl==1.5.0
     #   pygithub
 pyparsing==3.2.3
     # via httplib2
-pytest==8.3.5
+pytest==8.4.0
     # via
     #   -r dev-requirements.in
     #   pytest-django
@@ -137,7 +139,7 @@ sqlparse==0.5.3
     # via django
 tomlkit==0.13.2
     # via pylint
-typing-extensions==4.13.2
+typing-extensions==4.14.0
     # via
     #   psycopg
     #   pygithub
