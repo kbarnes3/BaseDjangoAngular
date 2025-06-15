@@ -1,4 +1,4 @@
-Django==5.2.2
+Django==5.2.3
 dealer
 django-environ
 django-widget-tweaks
