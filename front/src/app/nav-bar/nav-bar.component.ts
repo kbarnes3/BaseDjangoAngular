@@ -1,5 +1,5 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {LoginStatus, LoginStatusService} from '../login-status.service';
 
@@ -11,10 +11,10 @@ import {LoginStatus, LoginStatusService} from '../login-status.service';
     
 })
 export class NavBarComponent implements OnInit {
+  private statusService = inject(LoginStatusService);
+
   public isCollapsed: boolean;
   public status: LoginStatus;
-
-  constructor(private statusService: LoginStatusService) { }
 
   ngOnInit() {
     this.isCollapsed = true;
