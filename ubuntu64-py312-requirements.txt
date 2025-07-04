@@ -4,7 +4,7 @@
 #
 #    pip-compile --output-file=ubuntu64-py312-requirements.txt requirements.in
 #
-asgiref==3.8.1
+asgiref==3.9.0
     # via django
 dealer==2.1.0
     # via -r requirements.in
@@ -20,5 +20,5 @@ psycopg-binary==3.2.9
     # via psycopg
 sqlparse==0.5.3
     # via django
-typing-extensions==4.14.0
+typing-extensions==4.14.1
     # via psycopg

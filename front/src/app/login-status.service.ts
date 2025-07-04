@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {catchError} from 'rxjs/operators';
@@ -13,10 +13,8 @@ export class LoginStatus {
   providedIn: 'root'
 })
 export class LoginStatusService {
+  private http = inject(HttpClient);
 
-  constructor(
-      private http: HttpClient
-  ) { }
 
   private apiUrl: string = '/api/account/logged_in/';
 

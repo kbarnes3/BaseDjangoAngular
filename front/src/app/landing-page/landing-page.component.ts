@@ -1,9 +1,9 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, OnInit } from '@angular/core';
 
 @Component({
     selector: 'app-landing-page',
-    imports: [CommonModule],
+    imports: [],
     templateUrl: './landing-page.component.html',
     styleUrls: ['./landing-page.component.scss'],
     

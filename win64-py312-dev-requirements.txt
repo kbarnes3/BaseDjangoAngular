@@ -4,7 +4,7 @@
 #
 #    pip-compile --output-file=win64-py312-dev-requirements.txt '.\dev-requirements.in' '.\requirements.in'
 #
-asgiref==3.8.1
+asgiref==3.9.0
     # via django
 astroid==3.3.10
     # via pylint
@@ -24,7 +24,7 @@ colorama==0.4.6
     #   plush-fabric
     #   pylint
     #   pytest
-cryptography==45.0.4
+cryptography==45.0.5
     # via
     #   paramiko
     #   pyjwt
@@ -62,7 +62,7 @@ jaraco-classes==3.4.0
     # via keyring
 jaraco-context==6.0.1
     # via keyring
-jaraco-functools==4.1.0
+jaraco-functools==4.2.1
     # via keyring
 keyring==25.6.0
     # via plush-fabric
@@ -99,7 +99,7 @@ pycparser==2.22
     # via cffi
 pygithub==2.6.1
     # via plush-fabric
-pygments==2.19.1
+pygments==2.19.2
     # via pytest
 pyjwt[crypto]==2.10.1
     # via pygithub
@@ -110,7 +110,7 @@ pylint==3.3.7
     #   pylint-plugin-utils
 pylint-django==2.6.1
     # via -r .\dev-requirements.in
-pylint-plugin-utils==0.8.2
+pylint-plugin-utils==0.9.0
     # via pylint-django
 pynacl==1.5.0
     # via
@@ -118,7 +118,7 @@ pynacl==1.5.0
     #   pygithub
 pyparsing==3.2.3
     # via httplib2
-pytest==8.4.0
+pytest==8.4.1
     # via
     #   -r .\dev-requirements.in
     #   pytest-django
@@ -136,7 +136,7 @@ sqlparse==0.5.3
     # via django
 tomlkit==0.13.3
     # via pylint
-typing-extensions==4.14.0
+typing-extensions==4.14.1
     # via
     #   psycopg
     #   pygithub
@@ -144,7 +144,7 @@ tzdata==2025.2
     # via
     #   django
     #   psycopg
-urllib3==2.4.0
+urllib3==2.5.0
     # via
     #   pygithub
     #   requests
