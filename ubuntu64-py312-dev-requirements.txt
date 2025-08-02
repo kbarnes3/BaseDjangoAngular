@@ -32,9 +32,7 @@ dealer==2.1.0
 decorator==5.2.1
     # via fabric
 deprecated==1.2.18
-    # via
-    #   fabric
-    #   pygithub
+    # via fabric
 dill==0.4.0
     # via pylint
 django==5.2.4
@@ -85,7 +83,7 @@ platformdirs==4.3.8
     # via pylint
 pluggy==1.6.0
     # via pytest
-plush-fabric==1.0.11
+plush-fabric==1.1.1
     # via -r dev-requirements.in
 psycopg[binary]==3.2.9
     # via -r requirements.in
@@ -100,7 +98,7 @@ pyasn1-modules==0.4.2
     # via oauth2client
 pycparser==2.22
     # via cffi
-pygithub==2.6.1
+pygithub==2.7.0
     # via plush-fabric
 pygments==2.19.2
     # via pytest
