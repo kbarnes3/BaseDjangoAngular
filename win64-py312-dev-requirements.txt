@@ -4,13 +4,13 @@
 #
 #    pip-compile --output-file=win64-py312-dev-requirements.txt '.\dev-requirements.in' '.\requirements.in'
 #
-asgiref==3.10.0
+asgiref==3.11.0
     # via django
 astroid==3.3.11
     # via pylint
 bcrypt==5.0.0
     # via paramiko
-certifi==2025.10.5
+certifi==2025.11.12
     # via requests
 cffi==2.0.0
     # via
@@ -64,7 +64,7 @@ jaraco-context==6.0.1
     # via keyring
 jaraco-functools==4.3.0
     # via keyring
-keyring==25.6.0
+keyring==25.7.0
     # via plush-fabric
 mccabe==0.7.0
     # via pylint
@@ -84,9 +84,9 @@ pluggy==1.6.0
     # via pytest
 plush-fabric==1.1.2
     # via -r dev-requirements.in
-psycopg[binary]==3.2.12
+psycopg[binary]==3.2.13
     # via -r requirements.in
-psycopg-binary==3.2.12
+psycopg-binary==3.2.13
     # via psycopg
 pyasn1==0.6.1
     # via
@@ -112,13 +112,13 @@ pylint-django==2.6.1
     # via -r dev-requirements.in
 pylint-plugin-utils==0.9.0
     # via pylint-django
-pynacl==1.6.0
+pynacl==1.6.1
     # via
     #   paramiko
     #   pygithub
 pyparsing==3.2.5
     # via httplib2
-pytest==8.4.2
+pytest==9.0.1
     # via
     #   -r dev-requirements.in
     #   pytest-django
@@ -148,5 +148,5 @@ urllib3==2.5.0
     # via
     #   pygithub
     #   requests
-wrapt==2.0.0
+wrapt==2.0.1
     # via deprecated
