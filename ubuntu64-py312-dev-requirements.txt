@@ -135,7 +135,7 @@ secretstorage==3.5.0
     # via keyring
 six==1.17.0
     # via oauth2client
-sqlparse==0.5.3
+sqlparse==0.5.4
     # via django
 tomlkit==0.13.3
     # via pylint
