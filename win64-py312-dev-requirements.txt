@@ -140,11 +140,11 @@ typing-extensions==4.15.0
     # via
     #   psycopg
     #   pygithub
-tzdata==2025.2
+tzdata==2025.3
     # via
     #   django
     #   psycopg
-urllib3==2.6.1
+urllib3==2.6.2
     # via
     #   pygithub
     #   requests
