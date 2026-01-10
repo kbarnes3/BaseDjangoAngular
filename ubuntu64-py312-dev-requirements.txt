@@ -145,7 +145,7 @@ typing-extensions==4.15.0
     # via
     #   psycopg
     #   pygithub
-urllib3==2.6.2
+urllib3==2.6.3
     # via
     #   pygithub
     #   requests
