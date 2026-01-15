@@ -48,7 +48,7 @@ fabric==3.2.2
     # via
     #   -r dev-requirements.in
     #   plush-fabric
-httplib2==0.31.0
+httplib2==0.31.1
     # via oauth2client
 idna==3.11
     # via requests
@@ -62,7 +62,7 @@ isort==7.0.0
     # via pylint
 jaraco-classes==3.4.0
     # via keyring
-jaraco-context==6.0.2
+jaraco-context==6.1.0
     # via keyring
 jaraco-functools==4.4.0
     # via keyring
@@ -136,7 +136,7 @@ six==1.17.0
     # via oauth2client
 sqlparse==0.5.5
     # via django
-tomlkit==0.13.3
+tomlkit==0.14.0
     # via pylint
 typing-extensions==4.15.0
     # via
