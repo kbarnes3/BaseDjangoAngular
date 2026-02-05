@@ -4,11 +4,11 @@
 #
 #    pip-compile --output-file=ubuntu64-py312-requirements.txt requirements.in
 #
-asgiref==3.11.0
+asgiref==3.11.1
     # via django
 dealer==2.1.0
     # via -r requirements.in
-django==6.0.1
+django==6.0.2
     # via
     #   -r requirements.in
     #   django-widget-tweaks
