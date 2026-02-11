@@ -6,7 +6,7 @@
 #
 asgiref==3.11.1
     # via django
-astroid==4.0.3
+astroid==4.0.4
     # via pylint
 bcrypt==5.0.0
     # via paramiko
@@ -22,7 +22,7 @@ colorama==0.4.6
     # via
     #   -r dev-requirements.in
     #   plush-fabric
-cryptography==46.0.4
+cryptography==46.0.5
     # via
     #   paramiko
     #   pyjwt
