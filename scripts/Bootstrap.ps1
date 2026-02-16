@@ -24,12 +24,8 @@ if (-Not (Test-Path $venv)) {
 
 $already_activated = . $PSScriptRoot\Ensure-Venv.ps1
 
-Write-Status "Updating pip"
-& python -m pip install --upgrade "pip<26" $quiet
-Write-Status "Updating pip-tools"
-& python -m pip install --upgrade pip-tools $quiet
 Write-Status "Updating Python requirements"
-& pip-sync .\win64-py312-dev-requirements.txt
+& uv pip sync .\requirements-dev.txt
 Write-Status "Updating npm"
 . $PSScriptRoot\Invoke-Npm.ps1 @('install', '--location=global', 'npm@11')
 Write-Status "Updating Angular CLI"
