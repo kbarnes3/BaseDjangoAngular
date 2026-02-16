@@ -124,20 +124,17 @@ def _update_source(conn: Connection, repo_dir: str, branch: str):
 def update_backend_dependencies(conn: Connection, repo_dir: str):
     print(Fore.GREEN + 'update_backend_dependencies')
 
+    print(Fore.GREEN + 'Updating uv')
+    conn.run('uv self update')
+
     venv_dir = f'{repo_dir}/venv'
-    if not exists(conn, venv_dir):
-        print(Fore.GREEN + 'Creating virtualenv')
-        conn.run(f'python3 -m venv --system-site-packages {venv_dir}')
-
     with conn.cd(repo_dir):
-        print(Fore.GREEN + 'Updating pip')
-        conn.run('venv/bin/python -m pip install --upgrade "pip<26"')
-
-        print(Fore.GREEN + 'Updating uv')
-        conn.run('venv/bin/python -m pip install --upgrade uv')
+        if not exists(conn, venv_dir):
+            print(Fore.GREEN + 'Creating virtualenv')
+            conn.run(f'uv venv {venv_dir}')
 
         print(Fore.GREEN + 'Installing dependencies with uv')
-        conn.run('venv/bin/uv pip sync requirements.txt')
+        conn.run(f'uv pip sync --python {venv_dir}/bin/python requirements.txt')
 
 
 def _compile_source(conn: Connection,
