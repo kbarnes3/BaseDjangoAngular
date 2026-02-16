@@ -1,5 +1,0 @@
-Django==6.0.2
-dealer
-django-environ
-django-widget-tweaks
-psycopg[binary]>=3.0.0

@@ -1,0 +1,22 @@
+[project]
+name = "BaseDjangoAngular"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "Django==6.0.2",
+    "dealer",
+    "django-environ",
+    "django-widget-tweaks",
+    "psycopg[binary]>=3.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "Fabric",
+    "plush-fabric",
+    "colorama",
+    "pylint",
+    "pylint-django",
+    "pytest",
+    "pytest-django",
+]
