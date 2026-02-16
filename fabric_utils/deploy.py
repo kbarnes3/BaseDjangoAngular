@@ -133,11 +133,11 @@ def update_backend_dependencies(conn: Connection, repo_dir: str):
         print(Fore.GREEN + 'Updating pip')
         conn.run('venv/bin/python -m pip install --upgrade "pip<26"')
 
-        print(Fore.GREEN + 'Updating pip-tools')
-        conn.run('venv/bin/python -m pip install --upgrade pip-tools')
+        print(Fore.GREEN + 'Updating uv')
+        conn.run('venv/bin/python -m pip install --upgrade uv')
 
-        print(Fore.GREEN + 'Installing dependencies with pip-sync')
-        conn.run('venv/bin/pip-sync ubuntu64-py312-requirements.txt')
+        print(Fore.GREEN + 'Installing dependencies with uv')
+        conn.run('venv/bin/uv pip sync requirements.txt')
 
 
 def _compile_source(conn: Connection,

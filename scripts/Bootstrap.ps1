@@ -16,20 +16,21 @@ $project_root = Split-Path $PSScriptRoot
 
 Push-Location $project_root
 
+if (-Not (Get-Command uv -ErrorAction SilentlyContinue)) {
+    Write-Status "Installing uv"
+    & winget install --id astral-sh.uv -e
+}
+
 $venv = Join-Path $project_root "venv"
 if (-Not (Test-Path $venv)) {
     Write-Status "Creating venv in $venv"
-    . $PSScriptRoot\Invoke-NonVenvPython.ps1 @('-m', 'venv', $venv)
+    & uv venv $venv --python 3.12
 }
 
 $already_activated = . $PSScriptRoot\Ensure-Venv.ps1
 
-Write-Status "Updating pip"
-& python -m pip install --upgrade "pip<26" $quiet
-Write-Status "Updating pip-tools"
-& python -m pip install --upgrade pip-tools $quiet
 Write-Status "Updating Python requirements"
-& pip-sync .\win64-py312-dev-requirements.txt
+& uv pip sync .\requirements-dev.txt
 Write-Status "Updating npm"
 . $PSScriptRoot\Invoke-Npm.ps1 @('install', '--location=global', 'npm@11')
 Write-Status "Updating Angular CLI"

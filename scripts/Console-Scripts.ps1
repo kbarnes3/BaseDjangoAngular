@@ -36,8 +36,9 @@ Set-Item function:global:Update-DevEnvironment {
 
 Set-Item function:global:Upgrade-Requirements {
     Push-Location $PSScriptRoot\..
-    & pip-compile --upgrade --output-file=win64-py312-dev-requirements.txt '.\dev-requirements.in' '.\requirements.in'
+    & uv pip compile --upgrade --universal --output-file=requirements.txt '.\requirements.in'
+    & uv pip compile --upgrade --universal --output-file=requirements-dev.txt '.\dev-requirements.in' '.\requirements.in'
     Pop-Location
-    Write-Host 'win64-py312-dev-requirements.txt updated.'
-    Write-Host 'Run pip-sync win64-py312-dev-requirements.txt to update your environment.'
+    Write-Host 'requirements.txt and requirements-dev.txt updated.'
+    Write-Host 'Run uv pip sync requirements-dev.txt to update your environment.'
 }
