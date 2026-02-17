@@ -110,6 +110,7 @@ ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_ADAPTER = 'users.adapter.UserAdapter'
 ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.SignupForm'
+ACCOUNT_USER_DISPLAY = lambda user: user.get_short_name()  # noqa: E731
 
 HEADLESS_ONLY = True
 HEADLESS_FRONTEND_URLS = {

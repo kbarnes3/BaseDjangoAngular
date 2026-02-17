@@ -18,7 +18,7 @@
         </div>
         <div class="navbar-nav flex-row ml-lg-auto d-block d-lg-flex">
           <a class="nav-item nav-link" routerLink="/password-change">Change Password</a>
-          <a class="nav-item nav-link" (click)="logout()"><span class="d-none d-lg-block">Logout</span><span class="d-lg-none loggedIn">Logout {{ this.status.firstName }}</span></a>
+          <a class="nav-item nav-link" (click)="logout()"><span class="d-none d-lg-block">Logout</span><span class="d-lg-none loggedIn">Logout {{ this.status.displayName }}</span></a>
         </div>
       }
       @if (this.status && this.status.loggedIn === false) {
@@ -29,7 +29,7 @@
       }
     </div><!--/.nav-collapse -->
     @if (this.status && this.status.loggedIn === true) {
-      <span class="nav-text d-none d-lg-block text-light">Hello {{ this.status.firstName }}!</span>
+      <span class="nav-text d-none d-lg-block text-light">Hello {{ this.status.displayName }}!</span>
     }
   </div>
 </nav>

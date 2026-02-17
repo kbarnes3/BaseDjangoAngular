@@ -9,6 +9,5 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
 
-    path('api/account/', include('users.urls')),
     path('_allauth/', include('allauth.headless.urls')),
 ]

@@ -103,16 +103,15 @@ describe('NavBarComponent', () => {
   });
 
   it('should display logged in content when logged in', () => {
-    const firstName: string = 'John';
+    const displayName: string = 'John';
     service.status = {
       loggedIn: true,
-      firstName,
-      lastName: 'Doe'
+      displayName,
     };
     service.returnStatus = true;
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('.loggedIn').textContent).toContain(firstName);
+    expect(compiled.querySelector('.loggedIn').textContent).toContain(displayName);
     expect(compiled.querySelector('.loading')).toBeFalsy();
     expect(compiled.querySelector('.loggedOut')).toBeFalsy();
   });
