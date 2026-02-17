@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService, LoginData } from '../auth.service';
+import { LoginStatusService } from '../../login-status.service';
 
 @Component({
   selector: 'app-login',
@@ -10,6 +11,7 @@ import { AuthService, LoginData } from '../auth.service';
 })
 export class LoginComponent {
   private authService = inject(AuthService);
+  private loginStatusService = inject(LoginStatusService);
   private router = inject(Router);
 
   email = '';
@@ -23,6 +25,7 @@ export class LoginComponent {
     const data: LoginData = { email: this.email, password: this.password };
     this.authService.login(data).subscribe({
       next: () => {
+        this.loginStatusService.refreshStatus();
         this.router.navigate(['/']);
       },
       error: (err) => {

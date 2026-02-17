@@ -22,18 +22,20 @@ export class NavBarComponent implements OnInit {
   ngOnInit() {
     this.isCollapsed = true;
     this.status = null;
-    this.statusService.getLoggedInStatus()
-        .subscribe((status: LoginStatus) => {
-          this.status = status;
-        });
+    this.statusService.status$.subscribe((status: LoginStatus) => {
+      this.status = status;
+    });
+    this.statusService.refreshStatus();
   }
 
   logout(): void {
     this.authService.logout().subscribe({
       next: () => {
+        this.statusService.refreshStatus();
         window.location.href = '/';
       },
       error: () => {
+        this.statusService.refreshStatus();
         window.location.href = '/';
       }
     });

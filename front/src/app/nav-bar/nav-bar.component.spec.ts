@@ -1,5 +1,5 @@
 import { waitForAsync, ComponentFixture, getTestBed, TestBed } from '@angular/core/testing';
-import { NEVER, Observable, of } from 'rxjs';
+import { NEVER, Observable, of, BehaviorSubject } from 'rxjs';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
 
@@ -11,9 +11,18 @@ class MockLoginStatusService {
   status: LoginStatus;
   returnStatus: boolean;
   getLoggedInStatusCalls: number;
+  private statusSubject = new BehaviorSubject<LoginStatus | null>(null);
+  status$ = this.statusSubject.asObservable();
 
   constructor() {
     this.getLoggedInStatusCalls = 0;
+  }
+
+  refreshStatus(): void {
+    this.getLoggedInStatusCalls++;
+    if (this.returnStatus) {
+      this.statusSubject.next(this.status);
+    }
   }
 
   getLoggedInStatus(): Observable<LoginStatus> {
