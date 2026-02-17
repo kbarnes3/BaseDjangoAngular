@@ -88,12 +88,12 @@ export class AuthService {
 
   getPasswordResetInfo(key: string): Observable<AuthResponse> {
     return this.http.get<AuthResponse>(`${BASE_URL}/auth/password/reset`, {
-      params: { key }
+      headers: { 'X-Password-Reset-Key': key }
     });
   }
 
   changePassword(data: PasswordChangeData): Observable<AuthResponse> {
-    return this.http.put<AuthResponse>(`${BASE_URL}/auth/password/change`, data);
+    return this.http.post<AuthResponse>(`${BASE_URL}/account/password/change`, data);
   }
 
   verifyEmail(data: VerifyEmailData): Observable<AuthResponse> {

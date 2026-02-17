@@ -50,6 +50,11 @@ export class PasswordResetConfirmComponent implements OnInit {
       },
       error: (err) => {
         this.loading = false;
+        // 401 means password was reset but user is not auto-logged in
+        if (err.status === 401) {
+          this.successMessage = 'Your password has been reset successfully! Please log in.';
+          return;
+        }
         if (err.error?.errors?.length) {
           this.errorMessage = err.error.errors.map((e: { message: string }) => e.message).join(' ');
         } else {
