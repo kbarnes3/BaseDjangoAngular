@@ -28,13 +28,13 @@
                             <a class="nav-item nav-link" href="/">Another page</a>
                         </div>
                         <div class="navbar-nav flex-row ml-lg-auto d-block d-lg-flex">
-                            <a class="nav-item nav-link" href="{% url 'password_change' %}">Change Password</a>
-                            <form method="post" action="{% url 'logout' %}" class="d-inline">{% csrf_token %}<button type="submit" class="nav-item nav-link btn btn-link border-0 text-decoration-none"><span class="d-none d-lg-block">Logout</span><span class="d-lg-none">Logout {{ user.get_short_name }}</span></button></form>
+                            <a class="nav-item nav-link" href="/password-change">Change Password</a>
+                            <a class="nav-item nav-link" href="/">Logout</a>
                         </div>
                     {% else %}
                         <div class="navbar-nav flex-row ml-lg-auto d-block d-lg-flex">
-                            <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
-                            <a class="nav-item nav-link" href="/account/signup">Sign up</a>
+                            <a class="nav-item nav-link" href="/login">Login</a>
+                            <a class="nav-item nav-link" href="/signup">Sign up</a>
                         </div>
                     {% endif %}
                 </div><!--/.nav-collapse -->

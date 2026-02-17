@@ -31,8 +31,8 @@ describe('LoginStatusService', () => {
   it('should return an Observable<LoginStatus>', () => {
     const sampleStatus: LoginStatus = {
       loggedIn: true,
-      givenName: 'John',
-      surname: 'Doe'
+      firstName: 'John',
+      lastName: 'Doe'
     };
 
     service.getLoggedInStatus().subscribe((status: LoginStatus)  => {

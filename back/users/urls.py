@@ -1,15 +1,7 @@
-from django.urls import include, path
-from django.contrib.auth.views import LogoutView, PasswordResetView
-
-from users.forms import EmailPasswordResetForm
-from users.views import create_user_account
+from django.urls import path
+from users.views import logged_in_api
 
 
 urlpatterns = [
-    path('logout/', LogoutView.as_view(next_page='landing_page'), name='logout'),
-    path('password_reset/',
-         PasswordResetView.as_view(form_class=EmailPasswordResetForm),
-         name='password_reset'),
-    path('', include('django.contrib.auth.urls')),
-    path('signup/', create_user_account, name='create_user_account')
+    path('logged_in/', logged_in_api, name='logged_in_api'),
 ]

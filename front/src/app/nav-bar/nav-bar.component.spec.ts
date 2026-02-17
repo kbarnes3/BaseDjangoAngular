@@ -1,9 +1,11 @@
 import { waitForAsync, ComponentFixture, getTestBed, TestBed } from '@angular/core/testing';
 import { NEVER, Observable, of } from 'rxjs';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { RouterModule } from '@angular/router';
 
 import { NavBarComponent } from './nav-bar.component';
 import { LoginStatus, LoginStatusService } from '../login-status.service';
+import { AuthService } from '../auth/auth.service';
 
 class MockLoginStatusService {
   status: LoginStatus;
@@ -24,6 +26,12 @@ class MockLoginStatusService {
   }
 }
 
+class MockAuthService {
+  logout(): Observable<any> {
+    return of({});
+  }
+}
+
 describe('NavBarComponent', () => {
   let injector: TestBed;
   let component: NavBarComponent;
@@ -32,9 +40,10 @@ describe('NavBarComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NgbModule],
+      imports: [NgbModule, RouterModule.forRoot([])],
       providers: [
-        { provide: LoginStatusService, useClass: MockLoginStatusService }
+        { provide: LoginStatusService, useClass: MockLoginStatusService },
+        { provide: AuthService, useClass: MockAuthService }
       ]
     })
     .compileComponents();
@@ -85,16 +94,16 @@ describe('NavBarComponent', () => {
   });
 
   it('should display logged in content when logged in', () => {
-    const givenName: string = 'John';
+    const firstName: string = 'John';
     service.status = {
       loggedIn: true,
-      givenName,
-      surname: 'Doe'
+      firstName,
+      lastName: 'Doe'
     };
     service.returnStatus = true;
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('.loggedIn').textContent).toContain(givenName);
+    expect(compiled.querySelector('.loggedIn').textContent).toContain(firstName);
     expect(compiled.querySelector('.loading')).toBeFalsy();
     expect(compiled.querySelector('.loggedOut')).toBeFalsy();
   });

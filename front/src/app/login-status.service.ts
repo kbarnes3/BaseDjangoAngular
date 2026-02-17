@@ -5,8 +5,8 @@ import {catchError} from 'rxjs/operators';
 
 export class LoginStatus {
   loggedIn: boolean;
-  givenName?: string;
-  surname?: string;
+  firstName?: string;
+  lastName?: string;
 }
 
 @Injectable({
