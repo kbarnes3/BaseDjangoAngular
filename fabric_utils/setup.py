@@ -29,6 +29,9 @@ def setup_user(conn, user, disable_sudo_passwd=False, set_public_key_file=None):
         no_sudo_passwd=disable_sudo_passwd)
     add_authorized_key(conn, user, set_public_key_file)
 
+    print(Fore.GREEN + 'Installing uv')
+    conn.sudo(f'su - {user} -c "curl -LsSf https://astral.sh/uv/install.sh | sh"', pty=True)
+
     if not exists(conn, '/usr/bin/createuser'):
         plush.fabric_commands.install_packages(conn, ['postgresql'])
 
@@ -79,7 +82,6 @@ def setup_server(conn):
 
     base_packages = [
         'git',
-        'python3-venv',
         'postgresql',
         'nginx',
         'uwsgi',
@@ -107,7 +109,7 @@ def setup_server(conn):
 
 
 def _setup_node(conn: Connection):
-    conn.sudo('curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -', pty=True)
+    conn.sudo('curl -sL https://deb.nodesource.com/setup_24.x | sudo -E bash -', pty=True)
     conn.sudo('apt-get update')
     plush.fabric_commands.install_packages(conn, ['nodejs'])
 
