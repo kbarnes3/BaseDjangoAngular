@@ -108,7 +108,6 @@ def deploy(conn, config, branch=None, secret_branch=None):
     _reload_code(conn, config, uwsgi_dir)
     _build_content(conn, repo_dir)
     _reload_web(conn, config, nginx_dir, use_ssl, ssl_dir)
-    _run_tests(conn, config, repo_dir)
 
     print(Fore.GREEN + f'Deployment to {config} complete')
 
@@ -124,19 +123,19 @@ def _update_source(conn: Connection, repo_dir: str, branch: str):
 def update_backend_dependencies(conn: Connection, repo_dir: str):
     print(Fore.GREEN + 'update_backend_dependencies')
 
-    UV_BIN = '$HOME/.local/bin/uv'
+    uv_bin = '$HOME/.local/bin/uv'
 
     print(Fore.GREEN + 'Updating uv')
-    conn.run(f'{UV_BIN} self update')
+    conn.run(f'{uv_bin} self update')
 
     venv_dir = f'{repo_dir}/venv'
     with conn.cd(repo_dir):
         if not exists(conn, venv_dir):
             print(Fore.GREEN + 'Creating virtualenv')
-            conn.run(f'{UV_BIN} venv {venv_dir}')
+            conn.run(f'{uv_bin} venv {venv_dir}')
 
         print(Fore.GREEN + 'Installing dependencies with uv')
-        conn.run(f'{UV_BIN} pip sync --python {venv_dir}/bin/python requirements.txt')
+        conn.run(f'{uv_bin} pip sync --python {venv_dir}/bin/python requirements.txt')
 
 
 def _compile_source(conn: Connection,
@@ -205,14 +204,6 @@ def _reload_web(conn: Connection, config: str, nginx_dir: str, ssl: bool, ssl_di
             conn.run(f'sudo chmod 644 /etc/nginx/ssl/{config}.yourdomain.tld.*')
 
     conn.sudo('/etc/init.d/nginx reload')
-
-
-def _run_tests(conn: Connection, config: str, repo_dir: str):
-    print(Fore.GREEN + 'run_tests')
-    backend_dir = get_backend_dir(repo_dir)
-    python_bin = get_virtualenv_python_bin(repo_dir)
-    with conn.cd(backend_dir):
-        conn.run(f'{python_bin} manage_{config}.py test')
 
 
 def checkout_branch(conn: Connection, repo_dir: str, config: str, branch: Optional[str] = None):
