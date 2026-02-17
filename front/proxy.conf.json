@@ -1,5 +1,5 @@
 {
-  "/account": {
+  "/admin": {
     "target": "http://127.0.0.1:8000",
     "secure": false
   },
@@ -8,6 +8,10 @@
     "secure": false
   },
   "/static": {
+    "target": "http://127.0.0.1:8000",
+    "secure": false
+  },
+  "/_allauth": {
     "target": "http://127.0.0.1:8000",
     "secure": false
   }

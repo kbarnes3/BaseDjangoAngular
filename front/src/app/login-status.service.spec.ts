@@ -29,19 +29,20 @@ describe('LoginStatusService', () => {
   });
 
   it('should return an Observable<LoginStatus>', () => {
-    const sampleStatus: LoginStatus = {
-      loggedIn: true,
-      givenName: 'John',
-      surname: 'Doe'
+    const sessionResponse = {
+      status: 200,
+      data: { user: { id: 1, display: 'John', email: 'john@example.com' } },
+      meta: { is_authenticated: true }
     };
 
     service.getLoggedInStatus().subscribe((status: LoginStatus)  => {
-      expect(status).toEqual(sampleStatus);
+      expect(status.loggedIn).toBeTrue();
+      expect(status.displayName).toBe('John');
     });
 
-    const req = httpMock.expectOne('/api/account/logged_in/');
+    const req = httpMock.expectOne('/_allauth/browser/v1/auth/session');
     expect(req.request.method).toBe('GET');
-    req.flush(sampleStatus);
+    req.flush(sessionResponse);
   });
 
   it('should return loggedIn = false when a bad response is returned', () => {
@@ -51,7 +52,7 @@ describe('LoginStatusService', () => {
       expect(status.loggedIn).toBeFalsy();
     });
 
-    const req = httpMock.expectOne('/api/account/logged_in/');
+    const req = httpMock.expectOne('/_allauth/browser/v1/auth/session');
     req.flush('BAD', mockErrorResponse);
   });
 });

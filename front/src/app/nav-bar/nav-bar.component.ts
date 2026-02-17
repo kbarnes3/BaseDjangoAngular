@@ -1,18 +1,20 @@
 
-import { Component, OnInit, inject, DOCUMENT } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { RouterModule } from '@angular/router';
 import {LoginStatus, LoginStatusService} from '../login-status.service';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
     selector: 'app-nav-bar',
-    imports: [NgbModule],
+    imports: [NgbModule, RouterModule],
     templateUrl: './nav-bar.component.html',
     styleUrls: ['./nav-bar.component.scss'],
     
 })
 export class NavBarComponent implements OnInit {
   private statusService = inject(LoginStatusService);
-  private document = inject(DOCUMENT);
+  private authService = inject(AuthService);
 
   public isCollapsed: boolean;
   public status: LoginStatus;
@@ -20,26 +22,23 @@ export class NavBarComponent implements OnInit {
   ngOnInit() {
     this.isCollapsed = true;
     this.status = null;
-    this.statusService.getLoggedInStatus()
-        .subscribe((status: LoginStatus) => {
-          this.status = status;
-        });
+    this.statusService.status$.subscribe((status: LoginStatus) => {
+      this.status = status;
+    });
+    this.statusService.refreshStatus();
   }
 
   logout(): void {
-    const form = this.document.createElement('form');
-    form.method = 'POST';
-    form.action = '/account/logout/';
-
-    const csrfInput = this.document.createElement('input');
-    csrfInput.type = 'hidden';
-    csrfInput.name = 'csrfmiddlewaretoken';
-    const match = this.document.cookie.match(/csrftoken=([^;]+)/);
-    csrfInput.value = match ? match[1] : '';
-
-    form.appendChild(csrfInput);
-    this.document.body.appendChild(form);
-    form.submit();
+    this.authService.logout().subscribe({
+      next: () => {
+        this.statusService.refreshStatus();
+        window.location.href = '/';
+      },
+      error: () => {
+        this.statusService.refreshStatus();
+        window.location.href = '/';
+      }
+    });
   }
 
 }

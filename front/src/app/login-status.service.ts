@@ -1,12 +1,11 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {Observable, of} from 'rxjs';
+import {Observable, BehaviorSubject, of} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 
 export class LoginStatus {
   loggedIn: boolean;
-  givenName?: string;
-  surname?: string;
+  displayName?: string;
 }
 
 @Injectable({
@@ -14,20 +13,44 @@ export class LoginStatus {
 })
 export class LoginStatusService {
   private http = inject(HttpClient);
+  private sessionUrl = '/_allauth/browser/v1/auth/session';
 
+  private statusSubject = new BehaviorSubject<LoginStatus | null>(null);
+  public status$ = this.statusSubject.asObservable();
 
-  private apiUrl: string = '/api/account/logged_in/';
+  refreshStatus(): void {
+    this.http.get<any>(this.sessionUrl).pipe(
+        catchError((): Observable<any> => {
+          return of(null);
+        })
+    ).subscribe(resp => {
+      if (resp?.meta?.is_authenticated) {
+        this.statusSubject.next({
+          loggedIn: true,
+          displayName: resp.data?.user?.display || '',
+        });
+      } else {
+        this.statusSubject.next({ loggedIn: false });
+      }
+    });
+  }
 
   getLoggedInStatus(): Observable<LoginStatus> {
-    return this.http.get<LoginStatus>(this.apiUrl).pipe(
-        catchError((): Observable<LoginStatus> => {
-          const errorStatus: LoginStatus = {
-            loggedIn: false
-          };
-
-          return of<LoginStatus>(errorStatus);
-        })
-    );
+    return new Observable(subscriber => {
+      this.http.get<any>(this.sessionUrl).pipe(
+        catchError((): Observable<any> => of(null))
+      ).subscribe(resp => {
+        if (resp?.meta?.is_authenticated) {
+          subscriber.next({
+            loggedIn: true,
+            displayName: resp.data?.user?.display || '',
+          });
+        } else {
+          subscriber.next({ loggedIn: false });
+        }
+        subscriber.complete();
+      });
+    });
   }
 
 }

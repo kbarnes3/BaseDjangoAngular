@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'widget_tweaks',
+    'allauth',
+    'allauth.account',
+    'allauth.headless',
     'common',
     'users',
 ]
@@ -53,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
     'dealer.contrib.django.Middleware',
 ]
 
@@ -93,8 +96,35 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # User model/login
 AUTH_USER_MODEL = 'users.User'
 
-LOGIN_URL = '/users/login'
+LOGIN_URL = '/login'
 LOGIN_REDIRECT_URL = '/'
+
+AUTHENTICATION_BACKENDS = [
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+# django-allauth configuration
+ACCOUNT_LOGIN_METHODS = {'email'}
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'first_name*', 'last_name*', 'password1*', 'password2*']
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_ADAPTER = 'users.adapter.UserAdapter'
+ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.SignupForm'
+def _user_display(user):
+    return user.get_short_name()
+
+
+ACCOUNT_USER_DISPLAY = _user_display  # pylint: disable=invalid-name
+
+HEADLESS_ONLY = True
+HEADLESS_FRONTEND_URLS = {
+    'account_confirm_email': '/verify-email/{key}',
+    'account_reset_password_from_key': '/password-reset/key/{key}',
+    'account_signup': '/signup',
+}
+
+# Email backend (console for development, override in production settings)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
 # Password validation

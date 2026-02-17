@@ -1,0 +1,25 @@
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-4">
+    <h2>Email Verification</h2>
+    @if (loading) {
+      <div class="text-center">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Verifying...</span>
+        </div>
+      </div>
+    }
+    @if (message) {
+      <div class="alert" [class.alert-success]="verified" [class.alert-info]="!verified">
+        {{ message }}
+      </div>
+    }
+    @if (errorMessage) {
+      <div class="alert alert-danger">{{ errorMessage }}</div>
+    }
+    @if (verified || errorMessage) {
+      <div class="text-center mt-3">
+        <a routerLink="/login" class="btn btn-primary">Go to Login</a>
+      </div>
+    }
+  </div>
+</div>
