@@ -124,17 +124,19 @@ def _update_source(conn: Connection, repo_dir: str, branch: str):
 def update_backend_dependencies(conn: Connection, repo_dir: str):
     print(Fore.GREEN + 'update_backend_dependencies')
 
+    UV_BIN = '$HOME/.local/bin/uv'
+
     print(Fore.GREEN + 'Updating uv')
-    conn.run('uv self update')
+    conn.run(f'{UV_BIN} self update')
 
     venv_dir = f'{repo_dir}/venv'
     with conn.cd(repo_dir):
         if not exists(conn, venv_dir):
             print(Fore.GREEN + 'Creating virtualenv')
-            conn.run(f'uv venv {venv_dir}')
+            conn.run(f'{UV_BIN} venv {venv_dir}')
 
         print(Fore.GREEN + 'Installing dependencies with uv')
-        conn.run(f'uv pip sync --python {venv_dir}/bin/python requirements.txt')
+        conn.run(f'{UV_BIN} pip sync --python {venv_dir}/bin/python requirements.txt')
 
 
 def _compile_source(conn: Connection,
