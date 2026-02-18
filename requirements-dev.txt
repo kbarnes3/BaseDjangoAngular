@@ -41,7 +41,7 @@ django==6.0.2
     #   django-allauth
 django-allauth==65.14.3
     # via basedjangoangular (./pyproject.toml)
-django-environ==0.12.1
+django-environ==0.13.0
     # via basedjangoangular (./pyproject.toml)
 fabric==3.2.2
     # via
