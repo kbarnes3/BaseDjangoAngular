@@ -24,7 +24,9 @@
       @if (this.status && this.status.loggedIn === false) {
         <div class="navbar-nav flex-row ml-lg-auto d-block d-lg-flex loggedOut">
           <a class="nav-item nav-link" routerLink="/login">Login</a>
-          <a class="nav-item nav-link" routerLink="/signup">Sign up</a>
+          @if (signupEnabled) {
+            <a class="nav-item nav-link" routerLink="/signup">Sign up</a>
+          }
         </div>
       }
     </div><!--/.nav-collapse -->

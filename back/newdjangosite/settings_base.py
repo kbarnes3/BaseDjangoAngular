@@ -123,6 +123,12 @@ HEADLESS_FRONTEND_URLS = {
     'account_signup': '/signup',
 }
 
+# Account creation mode: "default", "notify", or "disabled"
+# - "default": normal signup behavior
+# - "notify": signup works, but admins (ADMINS setting) are emailed on each new account
+# - "disabled": signup is blocked at the API level (returns 403)
+ACCOUNT_CREATION_MODE = 'default'
+
 # Email backend (console for development, override in production settings)
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 

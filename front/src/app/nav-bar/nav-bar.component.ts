@@ -4,6 +4,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
 import {LoginStatus, LoginStatusService} from '../login-status.service';
 import { AuthService } from '../auth/auth.service';
+import { ConfigService } from '../config.service';
 
 @Component({
     selector: 'app-nav-bar',
@@ -15,9 +16,11 @@ import { AuthService } from '../auth/auth.service';
 export class NavBarComponent implements OnInit {
   private statusService = inject(LoginStatusService);
   private authService = inject(AuthService);
+  private configService = inject(ConfigService);
 
   public isCollapsed: boolean;
   public status: LoginStatus;
+  public signupEnabled = true;
 
   ngOnInit() {
     this.isCollapsed = true;
@@ -26,6 +29,10 @@ export class NavBarComponent implements OnInit {
       this.status = status;
     });
     this.statusService.refreshStatus();
+    this.configService.accountCreationMode$.subscribe(mode => {
+      this.signupEnabled = mode !== 'disabled';
+    });
+    this.configService.refreshConfig();
   }
 
   logout(): void {
