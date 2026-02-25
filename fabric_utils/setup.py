@@ -128,7 +128,7 @@ def setup_deployment(conn, config, branch=None, secret_branch=None):
 
     with conn.cd(repo_dir):
         print(Fore.GREEN + 'Creating database and user')
-        conn.run(f'venv/bin/python back/create_db.py {config}')
+        conn.run(f'.venv/bin/python back/create_db.py {config}')
 
 
     global_dir = f'{repo_dir}/config/ubuntu-24.04/global'
@@ -188,6 +188,6 @@ def setup_superuser(conn, config, email, given_name, surname, password): # pylin
     env = {'DJANGO_SUPERUSER_PASSWORD': password}
 
     with conn.cd(repo_dir):
-        conn.run(f'venv/bin/python back/manage_{config}.py createsuperuser --no-input ' +
+        conn.run(f'.venv/bin/python back/manage_{config}.py createsuperuser --no-input ' +
                   f'--primary_email {email} --given_name {given_name} --surname {surname}',
                   env=env)

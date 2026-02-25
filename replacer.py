@@ -9,7 +9,7 @@ PLACEHOLDER_GITHUB_REPO = 'kbarnes3/BaseDjangoAngular'
 PLACEHOLDER_OWNER = 'DjangoSiteOwner'
 PLACEHOLDER_EMAIL = 'djangositeemail@example.com'
 
-EXCLUDED_DIRECTORIES = ['.git', '.idea', 'venv']
+EXCLUDED_DIRECTORIES = ['.git', '.idea', '.venv']
 EXCLUDED_FILES = ['replacer.py']
 EXCLUDED_EXTENSIONS = ['.pyc']
 
