@@ -2,5 +2,47 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended"
+  ],
+  "packageRules": [
+    {
+      "description": "Group Angular packages together",
+      "matchPackageNames": [
+        "@angular/**",
+        "@angular-devkit/**"
+      ],
+      "groupName": "Angular"
+    },
+    {
+      "description": "Group Angular ESLint packages together",
+      "matchPackageNames": [
+        "@angular-eslint/**"
+      ],
+      "groupName": "Angular ESLint"
+    },
+    {
+      "description": "Group TypeScript ESLint packages together",
+      "matchPackageNames": [
+        "@typescript-eslint/**"
+      ],
+      "groupName": "TypeScript ESLint"
+    },
+    {
+      "description": "Group Bootstrap packages together",
+      "matchPackageNames": [
+        "bootstrap",
+        "bootstrap-icons",
+        "@ng-bootstrap/ng-bootstrap",
+        "@popperjs/core"
+      ],
+      "groupName": "Bootstrap"
+    },
+    {
+      "description": "Group Karma packages together",
+      "matchPackageNames": [
+        "karma",
+        "karma-*"
+      ],
+      "groupName": "Karma"
+    }
   ]
 }
