@@ -60,7 +60,7 @@ def get_frontend_dir(repo_dir: str) -> str:
 
 
 def get_virtualenv_python_bin(repo_dir: str) -> str:
-    return f'{repo_dir}/venv/bin/python'
+    return f'{repo_dir}/.venv/bin/python'
 
 
 def get_secret_repo_dir(config: str) -> str:
@@ -128,14 +128,9 @@ def update_backend_dependencies(conn: Connection, repo_dir: str):
     print(Fore.GREEN + 'Updating uv')
     conn.run(f'{uv_bin} self update')
 
-    venv_dir = f'{repo_dir}/venv'
     with conn.cd(repo_dir):
-        if not exists(conn, venv_dir):
-            print(Fore.GREEN + 'Creating virtualenv')
-            conn.run(f'{uv_bin} venv {venv_dir}')
-
         print(Fore.GREEN + 'Installing dependencies with uv')
-        conn.run(f'{uv_bin} pip sync --python {venv_dir}/bin/python requirements.txt')
+        conn.run(f'{uv_bin} sync --no-dev')
 
 
 def _compile_source(conn: Connection,

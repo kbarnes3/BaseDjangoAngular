@@ -21,16 +21,10 @@ if (-Not (Get-Command uv -ErrorAction SilentlyContinue)) {
     & winget install --id astral-sh.uv -e
 }
 
-$venv = Join-Path $project_root "venv"
-if (-Not (Test-Path $venv)) {
-    Write-Status "Creating venv in $venv"
-    & uv venv $venv --python 3.12
-}
+Write-Status "Updating Python requirements"
+& uv sync
 
 $already_activated = . $PSScriptRoot\Ensure-Venv.ps1
-
-Write-Status "Updating Python requirements"
-& uv pip sync .\requirements-dev.txt
 Write-Status "Updating npm"
 . $PSScriptRoot\Invoke-Npm.ps1 @('install', '--location=global', 'npm@11')
 Write-Status "Updating Angular CLI"

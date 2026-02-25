@@ -36,9 +36,8 @@ Set-Item function:global:Update-DevEnvironment {
 
 Set-Item function:global:Upgrade-Requirements {
     Push-Location $PSScriptRoot\..
-    & uv pip compile --upgrade --universal --output-file=requirements.txt '.\pyproject.toml'
-    & uv pip compile --upgrade --universal --output-file=requirements-dev.txt --extra=dev '.\pyproject.toml'
+    & uv lock --upgrade
+    & uv sync
     Pop-Location
-    Write-Host 'requirements.txt and requirements-dev.txt updated.'
-    Write-Host 'Run uv pip sync requirements-dev.txt to update your environment.'
+    Write-Host 'uv.lock updated and environment synced.'
 }

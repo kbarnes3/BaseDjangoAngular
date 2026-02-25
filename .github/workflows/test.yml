@@ -26,22 +26,22 @@ jobs:
       uses: astral-sh/setup-uv@v5
     - name: Install Python dependencies
       run: |
-        uv pip sync --system requirements-dev.txt
+        uv sync
     - name: Running pylint back
       run: |
-        pylint back
+        uv run pylint back
     - name: Running pylint fabric_utils
       run: |
-        pylint fabric_utils
+        uv run pylint fabric_utils
     - name: Running pylint fabfile.py
       run: |
-        pylint fabfile.py
+        uv run pylint fabfile.py
     - name: Run pytest back
       run: |
-        pytest back
+        uv run pytest back
     - name: Running fab -l
       run: |
-        fab -l
+        uv run fab -l
     - name: Install Node dependencies
       run: |
         cd front
