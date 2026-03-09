@@ -103,7 +103,7 @@ describe('NavBarComponent', () => {
   });
 
   it('should display logged in content when logged in', () => {
-    const displayName: string = 'John';
+    const displayName = 'John';
     service.status = {
       loggedIn: true,
       displayName,

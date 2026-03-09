@@ -14,15 +14,15 @@ export interface AuthResponse {
       first_name?: string;
       last_name?: string;
     };
-    methods?: Array<{ method: string; at: number; email?: string }>;
-    flows?: Array<{ id: string; [key: string]: unknown }>;
+    methods?: { method: string; at: number; email?: string }[];
+    flows?: { id: string; [key: string]: unknown }[];
   };
   meta?: {
     is_authenticated: boolean;
     session_token?: string;
     access_token?: string;
   };
-  errors?: Array<{ message: string; code: string; param?: string }>;
+  errors?: { message: string; code: string; param?: string }[];
 }
 
 export interface SignupData {
