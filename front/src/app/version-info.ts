@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 export const versionInfo = (() => {
   try {
     return require('../../git-version.json');
