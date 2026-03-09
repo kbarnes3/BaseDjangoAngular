@@ -36,7 +36,7 @@ class MockLoginStatusService {
 }
 
 class MockAuthService {
-  logout(): Observable<any> {
+  logout(): Observable<Record<string, never>> {
     return of({});
   }
 }
@@ -61,7 +61,7 @@ describe('NavBarComponent', () => {
   beforeEach(() => {
     injector = getTestBed();
     fixture = TestBed.createComponent(NavBarComponent);
-    service = injector.inject(LoginStatusService) as any as MockLoginStatusService;
+    service = injector.inject(LoginStatusService) as unknown as MockLoginStatusService;
     component = fixture.componentInstance;
   });
 
@@ -103,7 +103,7 @@ describe('NavBarComponent', () => {
   });
 
   it('should display logged in content when logged in', () => {
-    const displayName: string = 'John';
+    const displayName = 'John';
     service.status = {
       loggedIn: true,
       displayName,
