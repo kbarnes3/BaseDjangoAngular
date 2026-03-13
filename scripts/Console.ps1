@@ -14,6 +14,7 @@ $Global:console_functions = $true
 $venv = Join-Path $project_root ".venv\scripts\Activate.ps1"
 if (Test-Path $venv) {
     if (-Not($Quick)) {
+        Push-Location $PSScriptRoot
         $currentBranch = & git rev-parse --abbrev-ref HEAD 2>$null
         if ($currentBranch -eq "trunk") {
             $localSha = & git rev-parse HEAD 2>$null
