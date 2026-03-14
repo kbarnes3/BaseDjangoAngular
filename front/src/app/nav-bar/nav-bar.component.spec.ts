@@ -46,7 +46,9 @@ class MockConfigService {
   private modeSubject = new BehaviorSubject<AccountCreationMode>('default');
   accountCreationMode$ = this.modeSubject.asObservable();
 
-  refreshConfig(): void {}
+  refreshConfig(): void {
+    // no-op for test mock
+  }
 
   getAccountCreationMode(): Observable<AccountCreationMode> {
     return of('default');
