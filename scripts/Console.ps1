@@ -18,7 +18,7 @@ if (Test-Path $venv) {
         $currentBranch = & git rev-parse --abbrev-ref HEAD 2>$null
         if ($currentBranch -eq "trunk") {
             $localSha = & git rev-parse HEAD 2>$null
-            $originSha = & git rev-parse origin/main 2>$null
+            $originSha = & git rev-parse origin/trunk 2>$null
             if ($localSha -eq $originSha) {
                 Write-Status "Fetching latest changes..."
                 & git fetch --all --quiet
