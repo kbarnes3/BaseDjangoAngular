@@ -486,7 +486,7 @@ wheels = [
 
 [[package]]
 name = "plush-fabric"
-version = "1.1.3"
+version = "1.1.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "colorama" },
@@ -495,9 +495,9 @@ dependencies = [
     { name = "oauth2client" },
     { name = "pygithub" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/2f/91/5f0103f2fd1a9675164dc55dbf9ef0f28ae3a71e69920ce6afa35ec53a78/plush_fabric-1.1.3.tar.gz", hash = "sha256:8bceeacaf76335fc939e4becb57101bebb7b13060e11cd068f73f46d5794ae5f", size = 12779, upload-time = "2025-12-02T18:55:19.911Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/7f/83/652a12eba456dfc79071c8814b0335940d9c4f0d2129a1586a91545e596f/plush_fabric-1.1.4.tar.gz", hash = "sha256:2405d623b72cbbe8d763c0bbb29170b7a144278cc98f367f13f310e55376b250", size = 12766, upload-time = "2026-03-23T05:26:07.6Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/42/95/4c1078b7b3553a6f34fcb48cc285e1492279c14330df96fd28a25240a0d3/plush_fabric-1.1.3-py3-none-any.whl", hash = "sha256:8632f538c1ec817ed8e25fe5b723e56dec4167212ae45ee14721fb6de881bf28", size = 14204, upload-time = "2025-12-02T18:55:18.556Z" },
+    { url = "https://files.pythonhosted.org/packages/3b/fd/91f75666449b04499b2ab03c504c18632fc7386cbd208abeb3917b3ad1a6/plush_fabric-1.1.4-py3-none-any.whl", hash = "sha256:96f68193fd4a3077207ad64132f5e10272c75e75e6b27e14ca9626959cf78d9d", size = 14203, upload-time = "2026-03-23T05:26:06.443Z" },
 ]
 
 [[package]]
