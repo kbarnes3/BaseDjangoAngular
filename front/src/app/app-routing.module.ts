@@ -8,6 +8,7 @@ import { PasswordResetComponent } from './auth/password-reset/password-reset.com
 import { PasswordResetConfirmComponent } from './auth/password-reset-confirm/password-reset-confirm.component';
 import { PasswordChangeComponent } from './auth/password-change/password-change.component';
 import { authGuard } from './auth/auth.guard';
+import { signupGuard } from './auth/signup.guard';
 
 
 const routes: Routes = [
@@ -15,7 +16,7 @@ const routes: Routes = [
     pathMatch: 'full',
     component: LandingPageComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'signup', component: SignupComponent },
+  { path: 'signup', component: SignupComponent, canActivate: [signupGuard] },
   { path: 'verify-email', component: VerifyEmailComponent },
   { path: 'verify-email/:key', component: VerifyEmailComponent },
   { path: 'password-reset', component: PasswordResetComponent },

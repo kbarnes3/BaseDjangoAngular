@@ -1,5 +1,6 @@
 """Tests for users app and allauth headless API."""
-from django.test import TestCase
+from django.core import mail
+from django.test import TestCase, override_settings
 
 from users.models import User
 
@@ -32,3 +33,115 @@ class AllAuthHeadlessApi(TestCase):
         user = User.objects.get(email='test@example.com')
         self.assertEqual(user.first_name, 'Test')
         self.assertEqual(user.last_name, 'User')
+
+
+class SiteConfigEndpoint(TestCase):
+    """Tests for the /api/config/ endpoint."""
+
+    def test_returns_default_mode(self):
+        response = self.client.get('/api/config/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['account_creation_mode'], 'default')
+
+    @override_settings(ACCOUNT_CREATION_MODE='notify')
+    def test_returns_notify_mode(self):
+        response = self.client.get('/api/config/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['account_creation_mode'], 'notify')
+
+    @override_settings(ACCOUNT_CREATION_MODE='disabled')
+    def test_returns_disabled_mode(self):
+        response = self.client.get('/api/config/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['account_creation_mode'], 'disabled')
+
+
+class AccountCreationModeDefault(TestCase):
+    """Tests for ACCOUNT_CREATION_MODE = 'default'."""
+    SIGNUP_URL = '/_allauth/browser/v1/auth/signup'
+
+    def test_signup_works(self):
+        response = self.client.post(
+            self.SIGNUP_URL,
+            data={
+                'email': 'default@example.com',
+                'first_name': 'Default',
+                'last_name': 'User',
+                'password': 'ComplexPass123!',
+            },
+            content_type='application/json',
+        )
+        self.assertIn(response.status_code, [200, 401])  # 401 = email verification pending
+        self.assertTrue(User.objects.filter(email='default@example.com').exists())
+
+    def test_no_admin_email_sent(self):
+        mail.outbox.clear()
+        self.client.post(
+            self.SIGNUP_URL,
+            data={
+                'email': 'default2@example.com',
+                'first_name': 'Default',
+                'last_name': 'User',
+                'password': 'ComplexPass123!',
+            },
+            content_type='application/json',
+        )
+        # Only the email verification email should be sent, not an admin notification
+        admin_emails = [m for m in mail.outbox if 'New account created' in m.subject]
+        self.assertEqual(len(admin_emails), 0)
+
+
+@override_settings(ACCOUNT_CREATION_MODE='notify')
+class AccountCreationModeNotify(TestCase):
+    """Tests for ACCOUNT_CREATION_MODE = 'notify'."""
+    SIGNUP_URL = '/_allauth/browser/v1/auth/signup'
+
+    def test_signup_works(self):
+        response = self.client.post(
+            self.SIGNUP_URL,
+            data={
+                'email': 'notify@example.com',
+                'first_name': 'Notify',
+                'last_name': 'User',
+                'password': 'ComplexPass123!',
+            },
+            content_type='application/json',
+        )
+        self.assertIn(response.status_code, [200, 401])
+        self.assertTrue(User.objects.filter(email='notify@example.com').exists())
+
+    def test_admin_email_sent(self):
+        mail.outbox.clear()
+        self.client.post(
+            self.SIGNUP_URL,
+            data={
+                'email': 'notify2@example.com',
+                'first_name': 'Notify',
+                'last_name': 'User',
+                'password': 'ComplexPass123!',
+            },
+            content_type='application/json',
+        )
+        admin_emails = [m for m in mail.outbox if 'New account created' in m.subject]
+        self.assertEqual(len(admin_emails), 1)
+        self.assertIn('notify2@example.com', admin_emails[0].body)
+
+
+@override_settings(ACCOUNT_CREATION_MODE='disabled')
+class AccountCreationModeDisabled(TestCase):
+    """Tests for ACCOUNT_CREATION_MODE = 'disabled'."""
+    SIGNUP_URL = '/_allauth/browser/v1/auth/signup'
+
+    def test_signup_blocked(self):
+        response = self.client.post(
+            self.SIGNUP_URL,
+            data={
+                'email': 'disabled@example.com',
+                'first_name': 'Disabled',
+                'last_name': 'User',
+                'password': 'ComplexPass123!',
+            },
+            content_type='application/json',
+        )
+        self.assertEqual(response.status_code, 403)
+        self.assertFalse(User.objects.filter(email='disabled@example.com').exists())

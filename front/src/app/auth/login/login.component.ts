@@ -1,23 +1,32 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService, LoginData } from '../auth.service';
 import { LoginStatusService } from '../../login-status.service';
+import { ConfigService } from '../../config.service';
 
 @Component({
   selector: 'app-login',
   imports: [FormsModule, RouterModule],
   templateUrl: './login.component.html',
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   private authService = inject(AuthService);
   private loginStatusService = inject(LoginStatusService);
+  private configService = inject(ConfigService);
   private router = inject(Router);
 
   email = '';
   password = '';
   errorMessage = '';
   loading = false;
+  signupEnabled = true;
+
+  ngOnInit(): void {
+    this.configService.getAccountCreationMode().subscribe(mode => {
+      this.signupEnabled = mode !== 'disabled';
+    });
+  }
 
   onSubmit(): void {
     this.loading = true;

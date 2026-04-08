@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { NavBarComponent } from './nav-bar.component';
 import { LoginStatus, LoginStatusService } from '../login-status.service';
 import { AuthService } from '../auth/auth.service';
+import { ConfigService, AccountCreationMode } from '../config.service';
 
 class MockLoginStatusService {
   status: LoginStatus;
@@ -41,6 +42,27 @@ class MockAuthService {
   }
 }
 
+class MockConfigService {
+  private modeSubject = new BehaviorSubject<AccountCreationMode>('default');
+  accountCreationMode$ = this.modeSubject.asObservable();
+
+  refreshConfig(): void {
+    // no-op for test mock
+  }
+
+  getAccountCreationMode(): Observable<AccountCreationMode> {
+    return of('default');
+  }
+
+  get signupEnabled(): boolean {
+    return this.modeSubject.value !== 'disabled';
+  }
+
+  setMode(mode: AccountCreationMode): void {
+    this.modeSubject.next(mode);
+  }
+}
+
 describe('NavBarComponent', () => {
   let injector: TestBed;
   let component: NavBarComponent;
@@ -52,7 +74,8 @@ describe('NavBarComponent', () => {
       imports: [NgbModule, RouterModule.forRoot([])],
       providers: [
         { provide: LoginStatusService, useClass: MockLoginStatusService },
-        { provide: AuthService, useClass: MockAuthService }
+        { provide: AuthService, useClass: MockAuthService },
+        { provide: ConfigService, useClass: MockConfigService },
       ]
     })
     .compileComponents();
