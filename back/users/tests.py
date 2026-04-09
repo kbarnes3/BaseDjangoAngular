@@ -1,4 +1,5 @@
 """Tests for users app and allauth headless API."""
+from allauth.account.models import EmailAddress
 from django.core import mail
 from django.test import TestCase, override_settings
 
@@ -145,3 +146,31 @@ class AccountCreationModeDisabled(TestCase):
         )
         self.assertEqual(response.status_code, 403)
         self.assertFalse(User.objects.filter(email='disabled@example.com').exists())
+
+
+class ManagementCommandUserCreation(TestCase):
+    """Tests that users created via management commands have verified emails."""
+
+    def test_create_superuser_has_verified_email(self):
+        user = User.objects.create_superuser(
+            email='admin@example.com',
+            first_name='Admin',
+            last_name='User',
+            password='ComplexPass123!',
+        )
+        email_address = EmailAddress.objects.get(user=user)
+        self.assertTrue(email_address.verified)
+        self.assertTrue(email_address.primary)
+        self.assertEqual(email_address.email, 'admin@example.com')
+
+    def test_create_user_has_verified_email(self):
+        user = User.objects.create_user(
+            email='regular@example.com',
+            first_name='Regular',
+            last_name='User',
+            password='ComplexPass123!',
+        )
+        email_address = EmailAddress.objects.get(user=user)
+        self.assertTrue(email_address.verified)
+        self.assertTrue(email_address.primary)
+        self.assertEqual(email_address.email, 'regular@example.com')
