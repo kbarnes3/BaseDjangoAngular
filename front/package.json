@@ -44,7 +44,7 @@
     "@jsonjoy.com/fs-snapshot": "4.57.2",
     "@types/jasmine": "6.0.0",
     "@types/jasminewd2": "2.0.13",
-    "@types/node": "25.8.0",
+    "@types/node": "25.9.0",
     "angular-eslint": "21.4.0",
     "eslint": "10.4.0",
     "jasmine-core": "6.2.0",
