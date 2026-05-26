@@ -20,13 +20,13 @@ CONFIGURATIONS = {
         'secret_repo_branch': 'trunk',
     },
     'prod': {
-        'branch': 'prod',
+        'branch': 'trunk',
         'ssl': True,
         'secret_repo_name': 'kbarnes3/BaseDjangoAngularSecrets',
         'secret_repo_branch': 'trunk',
     },
     'staging': {
-        'branch': 'prod',
+        'branch': 'trunk',
         'ssl': True,
         'secret_repo_name': 'kbarnes3/BaseDjangoAngularSecrets',
         'secret_repo_branch': 'trunk',
