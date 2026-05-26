@@ -163,9 +163,9 @@ Set-Item function:global:Fabric-SetupSuperuser {
         [Parameter(Mandatory=$true)]
         [string]$Email,
         [Parameter(Mandatory=$true)]
-        [string]$GivenName,
+        [string]$FirstName,
         [Parameter(Mandatory=$true)]
-        [string]$Surname,
+        [string]$LastName,
         [switch]$PromptForPassphrase,
         [switch]$PromptForLoginPassword,
         [switch]$PromptForSudoPassword
@@ -177,8 +177,8 @@ Set-Item function:global:Fabric-SetupSuperuser {
     Invoke-Fabric $Hosts setup-superuser `
         $Config.ToLower() `
         --email $Email `
-        --given-name $GivenName `
-        --surname $Surname `
+        --first-name $FirstName `
+        --last-name $LastName `
         --password $password `
         -PromptForPassphrase:$PromptForPassphrase `
         -PromptForLoginPassword:$PromptForLoginPassword `

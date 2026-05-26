@@ -181,7 +181,7 @@ def _setup_repo(conn: Connection, repo_dir: str, repo_name: str):
 
 
 @Task
-def setup_superuser(conn, config, email, given_name, surname, password): # pylint: disable=R0913,R0917
+def setup_superuser(conn, config, email, first_name, last_name, password): # pylint: disable=R0913,R0917
     print(Fore.GREEN + f'Setting up new superuser for {config} deployment')
     repo_dir = get_repo_dir(config)
 
@@ -189,5 +189,5 @@ def setup_superuser(conn, config, email, given_name, surname, password): # pylin
 
     with conn.cd(repo_dir):
         conn.run(f'.venv/bin/python back/manage_{config}.py createsuperuser --no-input ' +
-                  f'--primary_email {email} --given_name {given_name} --surname {surname}',
+                  f'--email {email} --first_name {first_name} --last_name {last_name}',
                   env=env)
