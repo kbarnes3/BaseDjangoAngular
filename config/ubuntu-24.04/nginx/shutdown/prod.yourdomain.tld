@@ -1,32 +1,32 @@
 # Redirect HTTP to HTTPS
 server {
 	listen   80;
-	server_name  yourdomain.tld www.yourdomain.tld;
+	server_name  base.kbarnes3.com;
 
 	access_log  /var/log/nginx/localhost.access.log;
 
 	location / {
-		rewrite ^(.*) https://yourdomain.tld$1;
+		rewrite ^(.*) https://base.kbarnes3.com$1;
 	}
 }
 
 # Redirect www to base
-server {
-	listen   443 ssl;
-	server_name  www.yourdomain.tld;
-	ssl_certificate /etc/nginx/ssl/prod.yourdomain.tld.crt;
-	ssl_certificate_key /etc/nginx/ssl/prod.yourdomain.tld.key;
-
-	access_log  /var/log/nginx/localhost.access.log;
-
-	location / {
-		rewrite ^(.*) https://yourdomain.tld$1;
-	}
-}
+#server {
+#	listen   443 ssl;
+#	server_name  www.yourdomain.tld;
+#	ssl_certificate /etc/nginx/ssl/prod.yourdomain.tld.crt;
+#	ssl_certificate_key /etc/nginx/ssl/prod.yourdomain.tld.key;
+#
+#	access_log  /var/log/nginx/localhost.access.log;
+#
+#	location / {
+#		rewrite ^(.*) https://yourdomain.tld$1;
+#	}
+#}
 
 server {
 	listen 443 ssl;
-	server_name  yourdomain.tld;
+	server_name  base.kbarnes3.com;
 	ssl_certificate /etc/nginx/ssl/prod.yourdomain.tld.crt;
 	ssl_certificate_key /etc/nginx/ssl/prod.yourdomain.tld.key;
 

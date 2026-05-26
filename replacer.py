@@ -5,6 +5,7 @@ from os.path import join, splitext
 PLACEHOLDER_VARIABLE = 'newdjangosite'
 PLACEHOLDER_TITLE = 'NewDjangoSite'
 PLACEHOLDER_DOMAIN = 'yourdomain.tld'
+PLACEHOLDER_PROD_HOSTNAME = 'base.kbarnes3.com'
 PLACEHOLDER_GITHUB_REPO = 'kbarnes3/BaseDjangoAngular'
 PLACEHOLDER_OWNER = 'DjangoSiteOwner'
 PLACEHOLDER_EMAIL = 'djangositeemail@example.com'
@@ -30,6 +31,10 @@ def replace(file_path, site_variable, site_title, site_domain, github_repo, owne
 
     if bytearray(PLACEHOLDER_DOMAIN, 'utf-8') in contents:
         contents = contents.replace(bytearray(PLACEHOLDER_DOMAIN, 'utf-8'), bytearray(site_domain, 'utf-8'))
+        modified = True
+
+    if bytearray(PLACEHOLDER_PROD_HOSTNAME, 'utf-8') in contents:
+        contents = contents.replace(bytearray(PLACEHOLDER_PROD_HOSTNAME, 'utf-8'), bytearray(site_domain, 'utf-8'))
         modified = True
 
     if bytearray(PLACEHOLDER_GITHUB_REPO, 'utf-8') in contents:

@@ -21,6 +21,6 @@ DATABASES = {
 
 EMAIL_SUBJECT_PREFIX = '[newdjangosite-prod] '
 
-ALLOWED_HOSTS = ['yourdomain.tld']
+ALLOWED_HOSTS = ['base.kbarnes3.com']
 
 STATIC_ROOT = '/var/www/newdjangosite-prod/static'
