@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LandingPageComponent } from './landing-page/landing-page.component';
+import { AboutComponent } from './about/about.component';
 import { LoginComponent } from './auth/login/login.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { VerifyEmailComponent } from './auth/verify-email/verify-email.component';
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: '',
     pathMatch: 'full',
     component: LandingPageComponent },
+  { path: 'about', component: AboutComponent },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent, canActivate: [signupGuard] },
   { path: 'verify-email', component: VerifyEmailComponent },
