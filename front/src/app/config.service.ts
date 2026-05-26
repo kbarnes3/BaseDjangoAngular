@@ -15,13 +15,13 @@ interface SiteConfig {
 export class ConfigService {
   private http = inject(HttpClient);
 
-  private modeSubject = new BehaviorSubject<AccountCreationMode>('default');
+  private modeSubject = new BehaviorSubject<AccountCreationMode>('disabled');
   public accountCreationMode$ = this.modeSubject.asObservable();
 
   refreshConfig(): void {
     this.http.get<SiteConfig>('/api/config/').pipe(
       catchError(() => {
-        return [{ account_creation_mode: 'default' as AccountCreationMode }];
+        return [{ account_creation_mode: 'disabled' as AccountCreationMode }];
       })
     ).subscribe(config => {
       this.modeSubject.next(config.account_creation_mode);
@@ -31,7 +31,7 @@ export class ConfigService {
   getAccountCreationMode(): Observable<AccountCreationMode> {
     return this.http.get<SiteConfig>('/api/config/').pipe(
       map(config => config.account_creation_mode),
-      catchError(() => ['default' as AccountCreationMode])
+      catchError(() => ['disabled' as AccountCreationMode])
     );
   }
 
