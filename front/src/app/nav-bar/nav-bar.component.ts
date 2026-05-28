@@ -5,10 +5,11 @@ import { RouterModule } from '@angular/router';
 import {LoginStatus, LoginStatusService} from '../login-status.service';
 import { AuthService } from '../auth/auth.service';
 import { ConfigService } from '../config.service';
+import { ThemeSwitcherComponent } from '../theme-switcher/theme-switcher.component';
 
 @Component({
     selector: 'app-nav-bar',
-    imports: [NgbModule, RouterModule],
+    imports: [NgbModule, RouterModule, ThemeSwitcherComponent],
     templateUrl: './nav-bar.component.html',
     styleUrls: ['./nav-bar.component.scss'],
     

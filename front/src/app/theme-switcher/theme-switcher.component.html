@@ -1,0 +1,16 @@
+<div ngbDropdown class="d-inline-block">
+  <button type="button" class="btn btn-outline-light" id="themeDropdown" ngbDropdownToggle>
+    <i [class]="getThemeIcon()"></i>
+  </button>
+  <div ngbDropdownMenu aria-labelledby="themeDropdown">
+    <button ngbDropdownItem (click)="setTheme('light')" [class.active]="currentTheme === 'light'">
+      <i class="bi bi-sun-fill"></i> Light
+    </button>
+    <button ngbDropdownItem (click)="setTheme('dark')" [class.active]="currentTheme === 'dark'">
+      <i class="bi bi-moon-fill"></i> Dark
+    </button>
+    <button ngbDropdownItem (click)="setTheme('auto')" [class.active]="currentTheme === 'auto'">
+      <i class="bi bi-circle-half"></i> Auto
+    </button>
+  </div>
+</div>
