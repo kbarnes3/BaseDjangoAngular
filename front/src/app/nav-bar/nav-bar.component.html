@@ -13,7 +13,7 @@
       </div>
       @if (this.status === null) {
         <div class="spinner-border text-light loading navbar-nav flex-row ml-lg-auto d-block d-lg-flex" role="status">
-          <span class="sr-only">Loading...</span>
+          <span class="visually-hidden">Loading...</span>
         </div>
       }
       @if (this.status && this.status.loggedIn === true) {
