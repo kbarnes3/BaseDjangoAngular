@@ -12,27 +12,28 @@
         <a class="nav-item nav-link" routerLink="/about" routerLinkActive="active">About</a>
       </div>
       @if (this.status === null) {
-        <div class="spinner-border text-light loading navbar-nav flex-row ml-lg-auto d-block d-lg-flex" role="status">
+        <div class="spinner-border text-light loading navbar-nav flex-row ms-lg-auto d-block d-lg-flex" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
       }
       @if (this.status && this.status.loggedIn === true) {
-        <div class="navbar-nav flex-row ml-lg-auto d-block d-lg-flex">
+        <div class="navbar-nav flex-row ms-lg-auto d-block d-lg-flex">
           <a class="nav-item nav-link" routerLink="/password-change">Change Password</a>
           <a class="nav-item nav-link" role="button" tabindex="0" (click)="logout()" (keydown.enter)="logout()"><span class="d-none d-lg-block">Logout</span><span class="d-lg-none loggedIn">Logout {{ this.status.displayName }}</span></a>
         </div>
       }
       @if (this.status && this.status.loggedIn === false) {
-        <div class="navbar-nav flex-row ml-lg-auto d-block d-lg-flex loggedOut">
+        <div class="navbar-nav flex-row ms-lg-auto d-block d-lg-flex loggedOut">
           <a class="nav-item nav-link" routerLink="/login">Login</a>
           @if (signupEnabled) {
             <a class="nav-item nav-link" routerLink="/signup">Sign up</a>
           }
         </div>
       }
+      @if (this.status && this.status.loggedIn === true) {
+        <span class="nav-text d-none d-lg-block text-light">Hello {{ this.status.displayName }}!</span>
+      }
+      <app-theme-switcher class="ms-lg-3"></app-theme-switcher>
     </div><!--/.nav-collapse -->
-    @if (this.status && this.status.loggedIn === true) {
-      <span class="nav-text d-none d-lg-block text-light">Hello {{ this.status.displayName }}!</span>
-    }
   </div>
 </nav>
