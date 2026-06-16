@@ -1,12 +1,18 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-password-reset-confirm',
-  imports: [FormsModule, RouterModule],
+  imports: [FormsModule, RouterModule, MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatProgressSpinnerModule],
   templateUrl: './password-reset-confirm.component.html',
+  styleUrls: ['../auth-form.scss'],
 })
 export class PasswordResetConfirmComponent implements OnInit {
   private authService = inject(AuthService);

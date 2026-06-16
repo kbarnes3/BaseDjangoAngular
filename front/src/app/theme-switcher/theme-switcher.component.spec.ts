@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ThemeSwitcherComponent } from './theme-switcher.component';
 import { ThemeService } from './theme.service';
 
@@ -9,7 +10,7 @@ describe('ThemeSwitcherComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ThemeSwitcherComponent]
+      imports: [ThemeSwitcherComponent, NoopAnimationsModule]
     }).compileComponents();
 
     fixture = TestBed.createComponent(ThemeSwitcherComponent);
@@ -30,16 +31,16 @@ describe('ThemeSwitcherComponent', () => {
 
   it('should return correct icon for light theme', () => {
     component.currentTheme = 'light';
-    expect(component.getThemeIcon()).toBe('bi bi-sun-fill');
+    expect(component.getThemeIcon()).toBe('light_mode');
   });
 
   it('should return correct icon for dark theme', () => {
     component.currentTheme = 'dark';
-    expect(component.getThemeIcon()).toBe('bi bi-moon-fill');
+    expect(component.getThemeIcon()).toBe('dark_mode');
   });
 
   it('should return correct icon for auto theme', () => {
     component.currentTheme = 'auto';
-    expect(component.getThemeIcon()).toBe('bi bi-circle-half');
+    expect(component.getThemeIcon()).toBe('contrast');
   });
 });

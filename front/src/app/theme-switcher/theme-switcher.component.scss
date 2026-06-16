@@ -1,18 +1,14 @@
-@import 'bootstrap/scss/functions';
-@import 'bootstrap/scss/variables';
-@import 'bootstrap/scss/mixins/breakpoints';
-
-.theme-icon {
+:host {
   display: inline-block;
-  width: 1.2em;
-  text-align: center;
+  color: inherit;
+
+  .mat-mdc-icon-button,
+  .mat-mdc-icon-button .mat-icon {
+    color: inherit;
+  }
 }
 
-.btn-outline-light:focus {
-  box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
-}
-
-::ng-deep .dropdown-item.active {
-  background-color: var(--bs-primary);
-  color: white;
+::ng-deep .mat-mdc-menu-item.active {
+  background-color: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
 }

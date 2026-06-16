@@ -3,8 +3,8 @@ import { enableProdMode, importProvidersFrom, provideZoneChangeDetection } from 
 import { environment } from './environments/environment';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
+import { provideAnimations } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app/app-routing.module';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app/app.component';
 import { csrfInterceptor } from './app/auth/csrf.interceptor';
 
@@ -14,7 +14,8 @@ if (environment.production) {
 
 bootstrapApplication(AppComponent, {
     providers: [
-        provideZoneChangeDetection(),importProvidersFrom(BrowserModule, AppRoutingModule, NgbModule),
+        provideZoneChangeDetection(),importProvidersFrom(BrowserModule, AppRoutingModule),
+        provideAnimations(),
         provideHttpClient(withInterceptors([csrfInterceptor]))
     ]
 })

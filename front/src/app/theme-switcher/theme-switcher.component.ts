@@ -1,13 +1,15 @@
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { ThemeService, Theme } from './theme.service';
 import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-theme-switcher',
   standalone: true,
-  imports: [CommonModule, NgbDropdownModule],
+  imports: [CommonModule, MatMenuModule, MatButtonModule, MatIconModule],
   templateUrl: './theme-switcher.component.html',
   styleUrls: ['./theme-switcher.component.scss']
 })
@@ -35,12 +37,12 @@ export class ThemeSwitcherComponent implements OnInit, OnDestroy {
   getThemeIcon(): string {
     switch (this.currentTheme) {
       case 'light':
-        return 'bi bi-sun-fill';
+        return 'light_mode';
       case 'dark':
-        return 'bi bi-moon-fill';
+        return 'dark_mode';
       case 'auto':
       default:
-        return 'bi bi-circle-half';
+        return 'contrast';
     }
   }
 }

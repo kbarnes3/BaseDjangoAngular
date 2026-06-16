@@ -1,16 +1,17 @@
-<div ngbDropdown class="d-inline-block">
-  <button type="button" class="btn btn-outline-light" id="themeDropdown" ngbDropdownToggle>
-    <i [class]="getThemeIcon()"></i>
+<button mat-icon-button [matMenuTriggerFor]="themeMenu" aria-label="Choose theme">
+  <mat-icon>{{ getThemeIcon() }}</mat-icon>
+</button>
+<mat-menu #themeMenu="matMenu">
+  <button mat-menu-item (click)="setTheme('light')" [class.active]="currentTheme === 'light'">
+    <mat-icon>light_mode</mat-icon>
+    <span>Light</span>
   </button>
-  <div ngbDropdownMenu aria-labelledby="themeDropdown">
-    <button ngbDropdownItem (click)="setTheme('light')" [class.active]="currentTheme === 'light'">
-      <i class="bi bi-sun-fill"></i> Light
-    </button>
-    <button ngbDropdownItem (click)="setTheme('dark')" [class.active]="currentTheme === 'dark'">
-      <i class="bi bi-moon-fill"></i> Dark
-    </button>
-    <button ngbDropdownItem (click)="setTheme('auto')" [class.active]="currentTheme === 'auto'">
-      <i class="bi bi-circle-half"></i> Auto
-    </button>
-  </div>
-</div>
+  <button mat-menu-item (click)="setTheme('dark')" [class.active]="currentTheme === 'dark'">
+    <mat-icon>dark_mode</mat-icon>
+    <span>Dark</span>
+  </button>
+  <button mat-menu-item (click)="setTheme('auto')" [class.active]="currentTheme === 'auto'">
+    <mat-icon>contrast</mat-icon>
+    <span>Auto</span>
+  </button>
+</mat-menu>
