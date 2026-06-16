@@ -1,39 +1,70 @@
-<!-- Fixed navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
-  <div class="container">
-    <a class="navbar-brand" routerLink="/">NewDjangoSite</a>
+<mat-sidenav-container class="app-shell">
+  <mat-sidenav #sidenav mode="over" position="end" autoFocus="dialog">
+    <mat-nav-list>
+      <a mat-list-item routerLink="/" routerLinkActive #homeRla="routerLinkActive" [activated]="homeRla.isActive" [routerLinkActiveOptions]="{exact: true}" (click)="sidenav.close()">Home</a>
+      <a mat-list-item routerLink="/about" routerLinkActive #aboutRla="routerLinkActive" [activated]="aboutRla.isActive" (click)="sidenav.close()">About</a>
 
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="navbarSupportedContent" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="navbar-collapse collapse" [ngbCollapse]="isCollapsed" id="navbarSupportedContent">
-      <div class="navbar-nav flex-row d-block d-lg-flex">
-        <a class="nav-item nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
-        <a class="nav-item nav-link" routerLink="/about" routerLinkActive="active">About</a>
-      </div>
-      @if (this.status === null) {
-        <div class="spinner-border text-light loading navbar-nav flex-row ms-lg-auto d-block d-lg-flex" role="status">
-          <span class="visually-hidden">Loading...</span>
+      @if (status === null) {
+        <div class="loading" role="status">
+          <mat-spinner diameter="24"></mat-spinner>
+          <span class="cdk-visually-hidden">Loading...</span>
         </div>
       }
-      @if (this.status && this.status.loggedIn === true) {
-        <div class="navbar-nav flex-row ms-lg-auto d-block d-lg-flex">
-          <a class="nav-item nav-link" routerLink="/password-change">Change Password</a>
-          <a class="nav-item nav-link" role="button" tabindex="0" (click)="logout()" (keydown.enter)="logout()"><span class="d-none d-lg-block">Logout</span><span class="d-lg-none loggedIn">Logout {{ this.status.displayName }}</span></a>
-        </div>
+      @if (status && status.loggedIn === true) {
+        <a mat-list-item routerLink="/password-change" routerLinkActive #pwRla="routerLinkActive" [activated]="pwRla.isActive" (click)="sidenav.close()">Change Password</a>
+        <a mat-list-item class="loggedIn" role="button" tabindex="0" (click)="logout(); sidenav.close()" (keydown.enter)="logout(); sidenav.close()">Logout {{ status.displayName }}</a>
       }
-      @if (this.status && this.status.loggedIn === false) {
-        <div class="navbar-nav flex-row ms-lg-auto d-block d-lg-flex loggedOut">
-          <a class="nav-item nav-link" routerLink="/login">Login</a>
+      @if (status && status.loggedIn === false) {
+        <a mat-list-item class="loggedOut" routerLink="/login" routerLinkActive #loginRla="routerLinkActive" [activated]="loginRla.isActive" (click)="sidenav.close()">Login</a>
+        @if (signupEnabled) {
+          <a mat-list-item class="loggedOut" routerLink="/signup" routerLinkActive #signupRla="routerLinkActive" [activated]="signupRla.isActive" (click)="sidenav.close()">Sign up</a>
+        }
+      }
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-toolbar class="app-toolbar">
+      <a routerLink="/" class="app-brand">NewDjangoSite</a>
+
+      @if (!isHandset()) {
+        <nav class="toolbar-nav">
+          <a mat-button routerLink="/" routerLinkActive="route-active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+          <a mat-button routerLink="/about" routerLinkActive="route-active">About</a>
+        </nav>
+      }
+
+      <span class="toolbar-spacer"></span>
+
+      @if (!isHandset()) {
+        @if (status === null) {
+          <div class="loading" role="status">
+            <mat-spinner diameter="24"></mat-spinner>
+            <span class="cdk-visually-hidden">Loading...</span>
+          </div>
+        }
+        @if (status && status.loggedIn === true) {
+          <a mat-button routerLink="/password-change" routerLinkActive="route-active">Change Password</a>
+          <a mat-button class="loggedIn" role="button" tabindex="0" (click)="logout()" (keydown.enter)="logout()">Logout</a>
+          <span class="nav-text loggedIn">Hello {{ status.displayName }}!</span>
+        }
+        @if (status && status.loggedIn === false) {
+          <a mat-button class="loggedOut" routerLink="/login" routerLinkActive="route-active">Login</a>
           @if (signupEnabled) {
-            <a class="nav-item nav-link" routerLink="/signup">Sign up</a>
+            <a mat-button class="loggedOut" routerLink="/signup" routerLinkActive="route-active">Sign up</a>
           }
-        </div>
+        }
       }
-      @if (this.status && this.status.loggedIn === true) {
-        <span class="nav-text d-none d-lg-block text-light">Hello {{ this.status.displayName }}!</span>
+
+      <app-theme-switcher></app-theme-switcher>
+
+      @if (isHandset()) {
+        <button mat-icon-button (click)="sidenav.toggle()" aria-label="Toggle navigation">
+          <mat-icon>menu</mat-icon>
+        </button>
       }
-      <app-theme-switcher class="ms-lg-3"></app-theme-switcher>
-    </div><!--/.nav-collapse -->
-  </div>
-</nav>
+    </mat-toolbar>
+
+    <ng-content></ng-content>
+  </mat-sidenav-content>
+</mat-sidenav-container>

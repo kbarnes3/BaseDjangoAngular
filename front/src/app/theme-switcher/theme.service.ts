@@ -34,7 +34,13 @@ export class ThemeService {
 
   private applyTheme(theme: Theme): void {
     const effectiveTheme = theme === 'auto' ? this.getSystemTheme() : theme;
-    document.documentElement.setAttribute('data-bs-theme', effectiveTheme);
+    const root = document.documentElement;
+    if (effectiveTheme === 'dark') {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+    }
+    root.style.colorScheme = effectiveTheme;
   }
 
   private getSystemTheme(): 'light' | 'dark' {

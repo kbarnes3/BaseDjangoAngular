@@ -1,12 +1,12 @@
-<app-nav-bar></app-nav-bar>
-
-<div class="container main-container">
-  <router-outlet></router-outlet>
-</div> <!-- /container -->
-
-<footer class="footer" role="contentinfo">
-  <div class="container">
-    <p>&copy; 2013-2026 DjangoSiteOwner</p>
-    <p>Built from version {{ gitVersion }}</p>
+<app-nav-bar>
+  <div class="main-container">
+    <router-outlet></router-outlet>
   </div>
-</footer>
+
+  <footer class="footer" role="contentinfo">
+    <div class="footer-inner">
+      <p>&copy; 2013-2026 DjangoSiteOwner</p>
+      <p>Built from version {{ gitVersion }}</p>
+    </div>
+  </footer>
+</app-nav-bar>
