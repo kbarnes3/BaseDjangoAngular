@@ -1,5 +1,5 @@
 
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { RouterModule } from '@angular/router';
@@ -28,6 +28,7 @@ import { ThemeSwitcherComponent } from '../theme-switcher/theme-switcher.compone
         ThemeSwitcherComponent,
     ],
     templateUrl: './nav-bar.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./nav-bar.component.scss'],
 
 })

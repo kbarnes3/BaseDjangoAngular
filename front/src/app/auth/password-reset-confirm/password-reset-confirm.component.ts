@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
@@ -12,6 +12,7 @@ import { AuthService } from '../auth.service';
   selector: 'app-password-reset-confirm',
   imports: [FormsModule, RouterModule, MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatProgressSpinnerModule],
   templateUrl: './password-reset-confirm.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['../auth-form.scss'],
 })
 export class PasswordResetConfirmComponent implements OnInit {

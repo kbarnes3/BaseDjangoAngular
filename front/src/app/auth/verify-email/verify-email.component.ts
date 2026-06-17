@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,6 +9,7 @@ import { AuthService } from '../auth.service';
   selector: 'app-verify-email',
   imports: [RouterModule, MatCardModule, MatButtonModule, MatProgressSpinnerModule],
   templateUrl: './verify-email.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['../auth-form.scss'],
 })
 export class VerifyEmailComponent implements OnInit {
