@@ -7,7 +7,7 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
     selector: 'app-root',
     imports: [RouterModule, NavBarComponent],
     templateUrl: './app.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrls: ['./app.component.scss'],
     
 })

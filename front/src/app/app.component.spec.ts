@@ -6,7 +6,7 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 
 @Component({
     selector: 'app-nav-bar',
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     template: '<p>Nav Bar</p>',
     
 })

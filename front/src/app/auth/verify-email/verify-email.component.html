@@ -4,21 +4,21 @@
       <mat-card-title>Email Verification</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      @if (loading) {
+      @if (loading()) {
         <div class="auth-spinner" role="status">
           <mat-spinner diameter="40"></mat-spinner>
           <span class="cdk-visually-hidden">Verifying...</span>
         </div>
       }
-      @if (message) {
-        <div class="auth-alert" [class.auth-alert-success]="verified" [class.auth-alert-info]="!verified" role="status">
-          {{ message }}
+      @if (message()) {
+        <div class="auth-alert" [class.auth-alert-success]="verified()" [class.auth-alert-info]="!verified()" role="status">
+          {{ message() }}
         </div>
       }
-      @if (errorMessage) {
-        <div class="auth-alert auth-alert-error" role="alert">{{ errorMessage }}</div>
+      @if (errorMessage()) {
+        <div class="auth-alert auth-alert-error" role="alert">{{ errorMessage() }}</div>
       }
-      @if (verified || errorMessage) {
+      @if (verified() || errorMessage()) {
         <div class="auth-center">
           <a mat-flat-button color="primary" routerLink="/login">Go to Login</a>
         </div>

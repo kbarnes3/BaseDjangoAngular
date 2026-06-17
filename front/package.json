@@ -10,8 +10,7 @@
     "build": "node git-version.js && ng build --configuration production",
     "test": "ng test",
     "test-headless": "ng test --watch=false --browsers=ChromeHeadless --reporters junit",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
+    "lint": "ng lint"
   },
   "private": true,
   "dependencies": {
@@ -33,29 +32,26 @@
     "zone.js": "^0.16.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^22.0.2",
     "@angular-eslint/builder": "^22.0.0",
     "@angular-eslint/schematics": "^22.0.0",
+    "@angular/build": "^22.0.2",
     "@angular/cli": "^22.0.2",
     "@angular/compiler-cli": "^22.0.1",
     "@angular/language-service": "^22.0.1",
     "@eslint/js": "^10.0.1",
     "@jsonjoy.com/fs-snapshot": "^4.57.3",
     "@types/jasmine": "^6.0.0",
-    "@types/jasminewd2": "^2.0.13",
     "@types/node": "^25.9.1",
     "angular-eslint": "^22.0.0",
     "eslint": "^10.4.1",
     "istanbul-lib-instrument": "^6.0.3",
     "jasmine-core": "^6.2.0",
-    "jasmine-spec-reporter": "^7.0.0",
     "karma": "^6.4.4",
     "karma-chrome-launcher": "^3.2.0",
     "karma-coverage-istanbul-reporter": "^3.0.3",
     "karma-jasmine": "^5.1.0",
     "karma-jasmine-html-reporter": "^2.2.0",
     "karma-junit-reporter": "^2.0.1",
-    "ts-node": "^10.9.2",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.60.0"
   }

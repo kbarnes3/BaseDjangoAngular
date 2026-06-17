@@ -5,7 +5,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
     selector: 'app-about',
     imports: [],
     templateUrl: './about.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrls: ['./about.component.scss'],
     
 })

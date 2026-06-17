@@ -4,8 +4,8 @@
       <mat-card-title>Sign Up</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      @if (errorMessage) {
-        <div class="auth-alert auth-alert-error" role="alert">{{ errorMessage }}</div>
+      @if (errorMessage()) {
+        <div class="auth-alert auth-alert-error" role="alert">{{ errorMessage() }}</div>
       }
       <form (ngSubmit)="onSubmit()">
         <mat-form-field appearance="outline" class="full-width">
@@ -24,8 +24,8 @@
           <mat-label>Password</mat-label>
           <input matInput type="password" [(ngModel)]="password" name="password" required>
         </mat-form-field>
-        <button mat-flat-button color="primary" type="submit" class="full-width" [disabled]="loading">
-          {{ loading ? 'Creating account...' : 'Sign Up' }}
+        <button mat-flat-button color="primary" type="submit" class="full-width" [disabled]="loading()">
+          {{ loading() ? 'Creating account...' : 'Sign Up' }}
         </button>
       </form>
       <div class="auth-links">

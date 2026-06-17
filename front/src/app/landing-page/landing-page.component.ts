@@ -5,7 +5,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
     selector: 'app-landing-page',
     imports: [],
     templateUrl: './landing-page.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrls: ['./landing-page.component.scss'],
     
 })

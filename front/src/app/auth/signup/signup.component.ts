@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
@@ -11,7 +11,7 @@ import { AuthService, SignupData } from '../auth.service';
   selector: 'app-signup',
   imports: [FormsModule, RouterModule, MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule],
   templateUrl: './signup.component.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['../auth-form.scss'],
 })
 export class SignupComponent {
@@ -22,12 +22,12 @@ export class SignupComponent {
   firstName = '';
   lastName = '';
   password = '';
-  errorMessage = '';
-  loading = false;
+  errorMessage = signal('');
+  loading = signal(false);
 
   onSubmit(): void {
-    this.loading = true;
-    this.errorMessage = '';
+    this.loading.set(true);
+    this.errorMessage.set('');
     const data: SignupData = {
       email: this.email,
       first_name: this.firstName,
@@ -39,7 +39,7 @@ export class SignupComponent {
         this.router.navigate(['/']);
       },
       error: (err) => {
-        this.loading = false;
+        this.loading.set(false);
         if (err.status === 401 && err.error?.data?.flows) {
           const flows = err.error.data.flows;
           if (flows.some((f: { id: string }) => f.id === 'verify_email')) {
@@ -48,9 +48,9 @@ export class SignupComponent {
           }
         }
         if (err.error?.errors?.length) {
-          this.errorMessage = err.error.errors.map((e: { message: string }) => e.message).join(' ');
+          this.errorMessage.set(err.error.errors.map((e: { message: string }) => e.message).join(' '));
         } else {
-          this.errorMessage = 'Signup failed. Please try again.';
+          this.errorMessage.set('Signup failed. Please try again.');
         }
       }
     });

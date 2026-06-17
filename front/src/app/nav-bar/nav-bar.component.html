@@ -4,19 +4,19 @@
       <a mat-list-item routerLink="/" routerLinkActive #homeRla="routerLinkActive" [activated]="homeRla.isActive" [routerLinkActiveOptions]="{exact: true}" (click)="sidenav.close()">Home</a>
       <a mat-list-item routerLink="/about" routerLinkActive #aboutRla="routerLinkActive" [activated]="aboutRla.isActive" (click)="sidenav.close()">About</a>
 
-      @if (status === null) {
+      @if (status() === null) {
         <div class="loading" role="status">
           <mat-spinner diameter="24"></mat-spinner>
           <span class="cdk-visually-hidden">Loading...</span>
         </div>
       }
-      @if (status && status.loggedIn === true) {
+      @if (status() && status()!.loggedIn === true) {
         <a mat-list-item routerLink="/password-change" routerLinkActive #pwRla="routerLinkActive" [activated]="pwRla.isActive" (click)="sidenav.close()">Change Password</a>
-        <a mat-list-item class="loggedIn" role="button" tabindex="0" (click)="logout(); sidenav.close()" (keydown.enter)="logout(); sidenav.close()">Logout {{ status.displayName }}</a>
+        <a mat-list-item class="loggedIn" role="button" tabindex="0" (click)="logout(); sidenav.close()" (keydown.enter)="logout(); sidenav.close()">Logout {{ status()!.displayName }}</a>
       }
-      @if (status && status.loggedIn === false) {
+      @if (status() && status()!.loggedIn === false) {
         <a mat-list-item class="loggedOut" routerLink="/login" routerLinkActive #loginRla="routerLinkActive" [activated]="loginRla.isActive" (click)="sidenav.close()">Login</a>
-        @if (signupEnabled) {
+        @if (signupEnabled()) {
           <a mat-list-item class="loggedOut" routerLink="/signup" routerLinkActive #signupRla="routerLinkActive" [activated]="signupRla.isActive" (click)="sidenav.close()">Sign up</a>
         }
       }
@@ -37,20 +37,20 @@
       <span class="toolbar-spacer"></span>
 
       @if (!isHandset()) {
-        @if (status === null) {
+        @if (status() === null) {
           <div class="loading" role="status">
             <mat-spinner diameter="24"></mat-spinner>
             <span class="cdk-visually-hidden">Loading...</span>
           </div>
         }
-        @if (status && status.loggedIn === true) {
+        @if (status() && status()!.loggedIn === true) {
           <a mat-button routerLink="/password-change" routerLinkActive="route-active">Change Password</a>
           <a mat-button class="loggedIn" role="button" tabindex="0" (click)="logout()" (keydown.enter)="logout()">Logout</a>
-          <span class="nav-text loggedIn">Hello {{ status.displayName }}!</span>
+          <span class="nav-text loggedIn">Hello {{ status()!.displayName }}!</span>
         }
-        @if (status && status.loggedIn === false) {
+        @if (status() && status()!.loggedIn === false) {
           <a mat-button class="loggedOut" routerLink="/login" routerLinkActive="route-active">Login</a>
-          @if (signupEnabled) {
+          @if (signupEnabled()) {
             <a mat-button class="loggedOut" routerLink="/signup" routerLinkActive="route-active">Sign up</a>
           }
         }

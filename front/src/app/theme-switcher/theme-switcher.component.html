@@ -2,15 +2,15 @@
   <mat-icon>{{ getThemeIcon() }}</mat-icon>
 </button>
 <mat-menu #themeMenu="matMenu">
-  <button mat-menu-item (click)="setTheme('light')" [class.active]="currentTheme === 'light'">
+  <button mat-menu-item (click)="setTheme('light')" [class.active]="currentTheme() === 'light'">
     <mat-icon>light_mode</mat-icon>
     <span>Light</span>
   </button>
-  <button mat-menu-item (click)="setTheme('dark')" [class.active]="currentTheme === 'dark'">
+  <button mat-menu-item (click)="setTheme('dark')" [class.active]="currentTheme() === 'dark'">
     <mat-icon>dark_mode</mat-icon>
     <span>Dark</span>
   </button>
-  <button mat-menu-item (click)="setTheme('auto')" [class.active]="currentTheme === 'auto'">
+  <button mat-menu-item (click)="setTheme('auto')" [class.active]="currentTheme() === 'auto'">
     <mat-icon>contrast</mat-icon>
     <span>Auto</span>
   </button>
