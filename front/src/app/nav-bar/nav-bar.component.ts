@@ -1,5 +1,5 @@
 
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { RouterModule } from '@angular/router';
@@ -10,7 +10,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { map } from 'rxjs/operators';
-import {LoginStatus, LoginStatusService} from '../login-status.service';
+import {LoginStatusService} from '../login-status.service';
 import { AuthService } from '../auth/auth.service';
 import { ConfigService } from '../config.service';
 import { ThemeSwitcherComponent } from '../theme-switcher/theme-switcher.component';
@@ -28,6 +28,7 @@ import { ThemeSwitcherComponent } from '../theme-switcher/theme-switcher.compone
         ThemeSwitcherComponent,
     ],
     templateUrl: './nav-bar.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrls: ['./nav-bar.component.scss'],
 
 })
@@ -37,8 +38,11 @@ export class NavBarComponent implements OnInit {
   private authService = inject(AuthService);
   private configService = inject(ConfigService);
 
-  public status: LoginStatus;
-  public signupEnabled = true;
+  status = toSignal(this.statusService.status$, { initialValue: null });
+  signupEnabled = toSignal(
+    this.configService.accountCreationMode$.pipe(map(mode => mode !== 'disabled')),
+    { initialValue: true }
+  );
 
   // True on narrow viewports where the inline nav collapses into a hamburger menu.
   isHandset = toSignal(
@@ -49,14 +53,7 @@ export class NavBarComponent implements OnInit {
   );
 
   ngOnInit() {
-    this.status = null;
-    this.statusService.status$.subscribe((status: LoginStatus) => {
-      this.status = status;
-    });
     this.statusService.refreshStatus();
-    this.configService.accountCreationMode$.subscribe(mode => {
-      this.signupEnabled = mode !== 'disabled';
-    });
     this.configService.refreshConfig();
   }
 

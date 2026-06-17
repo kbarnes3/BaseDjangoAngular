@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
@@ -11,33 +11,34 @@ import { AuthService } from '../auth.service';
   selector: 'app-password-reset',
   imports: [FormsModule, RouterModule, MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule],
   templateUrl: './password-reset.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['../auth-form.scss'],
 })
 export class PasswordResetComponent {
   private authService = inject(AuthService);
 
   email = '';
-  successMessage = '';
-  errorMessage = '';
-  loading = false;
+  successMessage = signal('');
+  errorMessage = signal('');
+  loading = signal(false);
 
   onSubmit(): void {
-    this.loading = true;
-    this.errorMessage = '';
-    this.successMessage = '';
+    this.loading.set(true);
+    this.errorMessage.set('');
+    this.successMessage.set('');
     this.authService.requestPasswordReset({ email: this.email }).subscribe({
       next: () => {
-        this.loading = false;
-        this.successMessage = 'If an account exists with that email, a password reset link has been sent.';
+        this.loading.set(false);
+        this.successMessage.set('If an account exists with that email, a password reset link has been sent.');
       },
       error: (err) => {
-        this.loading = false;
+        this.loading.set(false);
         // allauth returns 200 even for non-existent emails to prevent enumeration
         // but handle errors just in case
         if (err.error?.errors?.length) {
-          this.errorMessage = err.error.errors.map((e: { message: string }) => e.message).join(' ');
+          this.errorMessage.set(err.error.errors.map((e: { message: string }) => e.message).join(' '));
         } else {
-          this.successMessage = 'If an account exists with that email, a password reset link has been sent.';
+          this.successMessage.set('If an account exists with that email, a password reset link has been sent.');
         }
       }
     });

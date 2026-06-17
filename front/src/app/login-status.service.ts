@@ -4,7 +4,7 @@ import {Observable, BehaviorSubject, of} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import { AuthResponse } from './auth/auth.service';
 
-export class LoginStatus {
+export interface LoginStatus {
   loggedIn: boolean;
   displayName?: string;
 }

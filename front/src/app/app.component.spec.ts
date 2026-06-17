@@ -1,11 +1,12 @@
 import { TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 
 @Component({
     selector: 'app-nav-bar',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     template: '<p>Nav Bar</p>',
     
 })

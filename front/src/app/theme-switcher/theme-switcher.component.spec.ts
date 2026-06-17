@@ -30,17 +30,17 @@ describe('ThemeSwitcherComponent', () => {
   });
 
   it('should return correct icon for light theme', () => {
-    component.currentTheme = 'light';
+    themeService.setTheme('light');
     expect(component.getThemeIcon()).toBe('light_mode');
   });
 
   it('should return correct icon for dark theme', () => {
-    component.currentTheme = 'dark';
+    themeService.setTheme('dark');
     expect(component.getThemeIcon()).toBe('dark_mode');
   });
 
   it('should return correct icon for auto theme', () => {
-    component.currentTheme = 'auto';
+    themeService.setTheme('auto');
     expect(component.getThemeIcon()).toBe('contrast');
   });
 });

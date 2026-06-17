@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
@@ -13,6 +13,7 @@ import { ConfigService } from '../../config.service';
   selector: 'app-login',
   imports: [FormsModule, RouterModule, MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule],
   templateUrl: './login.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['../auth-form.scss'],
 })
 export class LoginComponent implements OnInit {
@@ -23,19 +24,19 @@ export class LoginComponent implements OnInit {
 
   email = '';
   password = '';
-  errorMessage = '';
-  loading = false;
-  signupEnabled = true;
+  errorMessage = signal('');
+  loading = signal(false);
+  signupEnabled = signal(true);
 
   ngOnInit(): void {
     this.configService.getAccountCreationMode().subscribe(mode => {
-      this.signupEnabled = mode !== 'disabled';
+      this.signupEnabled.set(mode !== 'disabled');
     });
   }
 
   onSubmit(): void {
-    this.loading = true;
-    this.errorMessage = '';
+    this.loading.set(true);
+    this.errorMessage.set('');
     const data: LoginData = { email: this.email, password: this.password };
     this.authService.login(data).subscribe({
       next: () => {
@@ -43,18 +44,18 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/']);
       },
       error: (err) => {
-        this.loading = false;
+        this.loading.set(false);
         if (err.status === 401 && err.error?.data?.flows) {
           const flows = err.error.data.flows;
           if (flows.some((f: { id: string }) => f.id === 'verify_email')) {
-            this.errorMessage = 'Please verify your email address before logging in.';
+            this.errorMessage.set('Please verify your email address before logging in.');
             return;
           }
         }
         if (err.error?.errors?.length) {
-          this.errorMessage = err.error.errors.map((e: { message: string }) => e.message).join(' ');
+          this.errorMessage.set(err.error.errors.map((e: { message: string }) => e.message).join(' '));
         } else {
-          this.errorMessage = 'Login failed. Please check your credentials.';
+          this.errorMessage.set('Login failed. Please check your credentials.');
         }
       }
     });

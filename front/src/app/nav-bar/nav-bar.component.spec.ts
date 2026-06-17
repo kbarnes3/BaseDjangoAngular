@@ -9,8 +9,8 @@ import { AuthService } from '../auth/auth.service';
 import { ConfigService, AccountCreationMode } from '../config.service';
 
 class MockLoginStatusService {
-  status: LoginStatus;
-  returnStatus: boolean;
+  status!: LoginStatus;
+  returnStatus = false;
   getLoggedInStatusCalls: number;
   private statusSubject = new BehaviorSubject<LoginStatus | null>(null);
   status$ = this.statusSubject.asObservable();
@@ -134,7 +134,9 @@ describe('NavBarComponent', () => {
     service.returnStatus = true;
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('.loggedIn').textContent).toContain(displayName);
+    const loggedInEls = Array.from(compiled.querySelectorAll('.loggedIn')) as HTMLElement[];
+    expect(loggedInEls.length).toBeGreaterThan(0);
+    expect(loggedInEls.some(el => el.textContent?.includes(displayName))).toBe(true);
     expect(compiled.querySelector('.loading')).toBeFalsy();
     expect(compiled.querySelector('.loggedOut')).toBeFalsy();
   });

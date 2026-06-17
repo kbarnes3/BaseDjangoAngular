@@ -1,7 +1,7 @@
 import { enableProdMode, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
 
 import { environment } from './environments/environment';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideHttpClient, withInterceptors, withXhr } from '@angular/common/http';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app/app-routing.module';
@@ -16,7 +16,7 @@ bootstrapApplication(AppComponent, {
     providers: [
         provideZoneChangeDetection(),importProvidersFrom(BrowserModule, AppRoutingModule),
         provideAnimations(),
-        provideHttpClient(withInterceptors([csrfInterceptor]))
+        provideHttpClient(withXhr(), withInterceptors([csrfInterceptor]))
     ]
 })
   .catch(err => console.error(err));
