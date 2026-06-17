@@ -1,6 +1,5 @@
 import { waitForAsync, ComponentFixture, getTestBed, TestBed } from '@angular/core/testing';
 import { NEVER, Observable, of, BehaviorSubject } from 'rxjs';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 
 import { NavBarComponent } from './nav-bar.component';
@@ -71,7 +70,7 @@ describe('NavBarComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, RouterModule.forRoot([])],
+      imports: [RouterModule.forRoot([])],
       providers: [
         { provide: LoginStatusService, useClass: MockLoginStatusService },
         { provide: AuthService, useClass: MockAuthService },

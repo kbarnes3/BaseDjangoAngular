@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ThemeSwitcherComponent } from './theme-switcher.component';
 import { ThemeService } from './theme.service';
 
@@ -10,7 +9,7 @@ describe('ThemeSwitcherComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ThemeSwitcherComponent, NoopAnimationsModule]
+      imports: [ThemeSwitcherComponent]
     }).compileComponents();
 
     fixture = TestBed.createComponent(ThemeSwitcherComponent);
