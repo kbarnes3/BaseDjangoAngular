@@ -25,7 +25,6 @@ name = "basedjangoangular"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
-    { name = "dealer" },
     { name = "django" },
     { name = "django-allauth", extra = ["headless"] },
     { name = "django-environ" },
@@ -45,7 +44,6 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "dealer" },
     { name = "django", specifier = "==6.0.6" },
     { name = "django-allauth", extras = ["headless"] },
     { name = "django-environ" },
@@ -202,15 +200,6 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/6c/a0/db537264e234f7273a73ec020873d6d6b39dfd8a53db78b550ca8320440e/cryptography-49.0.0-cp39-abi3-musllinux_1_2_aarch64.whl", hash = "sha256:67e1d20ad9ef3a563c59ef22e7a8a0b8210bd26604369ea4a30a7c66aefe504e", size = 4834820, upload-time = "2026-06-12T20:01:51.847Z" },
     { url = "https://files.pythonhosted.org/packages/93/77/8df9eb486495979bccecd1062e2eaf435250e84437040295b57d09048b0b/cryptography-49.0.0-cp39-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:42b0684e0e40cf26122427802486f6d93aea593612603a94fbf260c7eb1e9c1b", size = 4967968, upload-time = "2026-06-12T20:02:12.524Z" },
     { url = "https://files.pythonhosted.org/packages/c2/e6/f60198ea8d9dfa15fff9ed4ca02ce362f6eadd9ba757dcc50634c4257b63/cryptography-49.0.0-cp39-abi3-win_amd64.whl", hash = "sha256:026ac7423e6fa66872d3bf889be5974507da3944f866f704fa200eadacd00001", size = 3785547, upload-time = "2026-06-12T20:02:26.847Z" },
-]
-
-[[package]]
-name = "dealer"
-version = "2.1.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/ea/de/f086b2a5041bb268c1cc4b292265de901940210a4d4d65702eeb0b764b2f/dealer-2.1.0.tar.gz", hash = "sha256:1929ebb09449b576d4488b1322fabca2ba75c82f602e64c9f0b5ad58bff020c4", size = 10441, upload-time = "2018-11-09T15:54:57.903Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/3f/ce/a25b0b3a50e86d3049d517d7f327013ebe89437409aef048fe5563bdae19/dealer-2.1.0-py2.py3-none-any.whl", hash = "sha256:0956771907702bf84c39513c5343cca1268ee9858a9fe3635303173114347dcf", size = 12045, upload-time = "2018-11-09T15:54:56.067Z" },
 ]
 
 [[package]]
@@ -484,7 +473,7 @@ wheels = [
 
 [[package]]
 name = "plush-fabric"
-version = "1.1.5"
+version = "1.2.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "colorama" },
@@ -493,9 +482,9 @@ dependencies = [
     { name = "oauth2client" },
     { name = "pygithub" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d8/02/9b1aa9e95116d5e243079fed014d76343c12e8f0f5791f387618525db576/plush_fabric-1.1.5.tar.gz", hash = "sha256:744129fbf995e7800abbc0af4b948798aa88306efaaffac2e74b4e82d26b6f06", size = 12752, upload-time = "2026-05-04T02:21:27.013Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/cb/2a/458f09d438ca14fc4258ec71d9b91906a735c6fc425514b204399fdeb48d/plush_fabric-1.2.0.tar.gz", hash = "sha256:5277657258a3b89206b67e329637026aee8e54238769762458b77eeb465a46e3", size = 12806, upload-time = "2026-06-30T01:48:02.478Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/03/31/055f013863433eb5f405395a9163827200b2e8aff34d7c52c88c2c7adda2/plush_fabric-1.1.5-py3-none-any.whl", hash = "sha256:dbf217127c5d11a0ab6aed9821b5557bfe5d03532a0f1731a78e0ed6bf067e24", size = 14207, upload-time = "2026-05-04T02:21:25.302Z" },
+    { url = "https://files.pythonhosted.org/packages/29/10/277a88a73363b5bcded58675fc55451c5635628681dcced4dc1a78ddafdb/plush_fabric-1.2.0-py3-none-any.whl", hash = "sha256:43bb5756a033e6fb6da0763e9f49bb9e1ff5163b2d6082a472c9879023778a01", size = 14216, upload-time = "2026-06-30T01:48:01.345Z" },
 ]
 
 [[package]]
