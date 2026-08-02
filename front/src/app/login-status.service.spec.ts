@@ -36,7 +36,7 @@ describe('LoginStatusService', () => {
     };
 
     service.getLoggedInStatus().subscribe((status: LoginStatus)  => {
-      expect(status.loggedIn).toBeTrue();
+      expect(status.loggedIn).toBe(true);
       expect(status.displayName).toBe('John');
     });
 

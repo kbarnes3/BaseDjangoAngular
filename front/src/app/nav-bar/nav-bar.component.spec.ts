@@ -1,4 +1,4 @@
-import { waitForAsync, ComponentFixture, getTestBed, TestBed } from '@angular/core/testing';
+import { ComponentFixture, getTestBed, TestBed } from '@angular/core/testing';
 import { NEVER, Observable, of, BehaviorSubject } from 'rxjs';
 import { RouterModule } from '@angular/router';
 
@@ -68,8 +68,8 @@ describe('NavBarComponent', () => {
   let fixture: ComponentFixture<NavBarComponent>;
   let service: MockLoginStatusService;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
       imports: [RouterModule.forRoot([])],
       providers: [
         { provide: LoginStatusService, useClass: MockLoginStatusService },
@@ -78,9 +78,7 @@ describe('NavBarComponent', () => {
       ]
     })
     .compileComponents();
-  }));
 
-  beforeEach(() => {
     injector = getTestBed();
     fixture = TestBed.createComponent(NavBarComponent);
     service = injector.inject(LoginStatusService) as unknown as MockLoginStatusService;

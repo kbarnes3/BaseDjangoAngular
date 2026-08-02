@@ -1,5 +1,5 @@
-import { TestBed, waitForAsync } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { AppComponent } from './app.component';
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
@@ -14,10 +14,10 @@ class MockNavBarComponent {
 }
 
 describe('AppComponent', () => {
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      providers: [
+        provideRouter([])
       ],
     })
     .overrideComponent(AppComponent, {
@@ -29,7 +29,7 @@ describe('AppComponent', () => {
       }
     })
     .compileComponents();
-  }));
+  });
 
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);

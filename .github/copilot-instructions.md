@@ -31,7 +31,7 @@ uv run fab -l
 cd front
 npm ci
 npm run lint
-npm run test-headless   # ng test --watch=false --browsers=ChromeHeadless
+npm run test-headless   # ng test --watch=false --reporters=junit --output-file=junit/TESTS.xml
 npm run build           # production build
 ```
 

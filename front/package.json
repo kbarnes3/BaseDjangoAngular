@@ -9,7 +9,7 @@
     "start": "node git-version.js && ng serve",
     "build": "node git-version.js && ng build --configuration production",
     "test": "ng test",
-    "test-headless": "ng test --watch=false --browsers=ChromeHeadless --reporters junit",
+    "test-headless": "ng test --watch=false --reporters=junit --output-file=junit/TESTS.xml",
     "lint": "ng lint"
   },
   "private": true,
@@ -37,20 +37,12 @@
     "@angular/compiler-cli": "^22.0.1",
     "@angular/language-service": "^22.1.0",
     "@eslint/js": "^10.0.1",
-    "@jsonjoy.com/fs-snapshot": "^4.64.0",
-    "@types/jasmine": "^6.0.0",
     "@types/node": "^26.1.2",
     "angular-eslint": "^22.1.0",
     "eslint": "^10.8.0",
-    "istanbul-lib-instrument": "^6.0.3",
-    "jasmine-core": "^6.3.0",
-    "karma": "^6.4.4",
-    "karma-chrome-launcher": "^3.2.0",
-    "karma-coverage-istanbul-reporter": "^3.0.3",
-    "karma-jasmine": "^5.1.0",
-    "karma-jasmine-html-reporter": "^2.2.0",
-    "karma-junit-reporter": "^2.0.1",
+    "jsdom": "^30.0.1",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.65.0"
+    "typescript-eslint": "^8.65.0",
+    "vitest": "^4.1.10"
   }
 }

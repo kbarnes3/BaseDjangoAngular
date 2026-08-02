@@ -23,7 +23,7 @@ describe('ThemeSwitcherComponent', () => {
   });
 
   it('should set theme when setTheme is called', () => {
-    spyOn(themeService, 'setTheme');
+    vi.spyOn(themeService, 'setTheme');
     component.setTheme('dark');
     expect(themeService.setTheme).toHaveBeenCalledWith('dark');
   });
