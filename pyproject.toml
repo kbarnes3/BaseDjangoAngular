@@ -3,7 +3,7 @@ name = "BaseDjangoAngular"
 version = "0.1.0"
 requires-python = ">=3.12,<3.13"
 dependencies = [
-    "Django==6.0.8",
+    "Django==6.1",
     "django-allauth[headless]",
     "django-environ",
     "psycopg[binary]>=3.0.0",
