@@ -21,6 +21,26 @@ DATABASES = {
 
 EMAIL_SUBJECT_PREFIX = '[newdjangosite-prod] '
 
+# Real outbound email over SMTP. Credentials come from the prod secrets env file.
+MAILERS = {
+    'default': {
+        'BACKEND': 'django.core.mail.backends.smtp.EmailBackend',
+        'OPTIONS': {
+            'host': ENV('EMAIL_HOST'),
+            'port': ENV.int('EMAIL_PORT'),
+            'username': ENV('EMAIL_HOST_USER'),
+            'password': ENV('EMAIL_HOST_PASSWORD'),
+            'use_ssl': ENV.bool('EMAIL_USE_SSL'),
+            # Bound the SMTP handshake so a slow relay can't tie up a uwsgi worker.
+            'timeout': 10,
+        },
+    },
+}
+
+# Sender addresses. Must be verified with the SMTP provider or mail is rejected.
+DEFAULT_FROM_EMAIL = ENV('DEFAULT_FROM_EMAIL')
+SERVER_EMAIL = DEFAULT_FROM_EMAIL
+
 ALLOWED_HOSTS = ['base.kbarnes3.com']
 
 STATIC_ROOT = '/var/www/newdjangosite-prod/static'
