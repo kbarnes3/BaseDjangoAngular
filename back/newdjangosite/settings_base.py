@@ -25,9 +25,9 @@ SECRET_KEY = 'ThisIsABadSecret'
 
 ALLOWED_HOSTS = []
 
-ADMINS = (
-    ('DjangoSiteOwner', 'djangositeemail@example.com'),
-)
+ADMINS = [
+    'djangositeemail@example.com',
+]
 
 # Application definition
 
@@ -128,7 +128,11 @@ HEADLESS_FRONTEND_URLS = {
 ACCOUNT_CREATION_MODE = 'default'
 
 # Email backend (console for development, override in production settings)
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+MAILERS = {
+    'default': {
+        'BACKEND': 'django.core.mail.backends.console.EmailBackend',
+    },
+}
 
 
 # Password validation
