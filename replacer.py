@@ -114,7 +114,7 @@ if __name__ == "__main__":
     print('\nEnter the email address for the owner. Django will email failures to this address, but it won''t be visible on the site)')
     email = input('Email: ')
 
-    print('\nRenaming web/{0} to web/{1}'.format(PLACEHOLDER_VARIABLE, site_variable))
-    rename('web/{0}'.format(PLACEHOLDER_VARIABLE), 'web/{0}'.format(site_variable))
+    print('\nRenaming back/{0} to back/{1}'.format(PLACEHOLDER_VARIABLE, site_variable))
+    rename('back/{0}'.format(PLACEHOLDER_VARIABLE), 'back/{0}'.format(site_variable))
     replace_in_files(site_variable, site_title, site_domain, github_repo, owner, email)
 

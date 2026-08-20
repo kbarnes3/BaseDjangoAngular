@@ -1,6 +1,20 @@
+# Redirect HTTP to HTTPS
 server {
 	listen   80;
 	server_name  daily.yourdomain.tld;
+
+	access_log  /var/log/nginx/localhost.access.log;
+
+	location / {
+		rewrite ^(.*) https://daily.yourdomain.tld$1;
+	}
+}
+
+server {
+	listen 443 ssl;
+	server_name  daily.yourdomain.tld;
+	ssl_certificate /etc/nginx/ssl/daily.yourdomain.tld.crt;
+	ssl_certificate_key /etc/nginx/ssl/daily.yourdomain.tld.key;
 
 	access_log  /var/log/nginx/localhost.access.log;
 
@@ -10,20 +24,3 @@ server {
 
 	error_page 404 /index.html;
 }
-
-#server {
-#	listen 443;
-#	server_name  daily.yourdomain.tld;
-#	ssl on;
-#	ssl_certificate /etc/nginx/ssl/daily.yourdomain.tld.crt;
-#	ssl_certificate_key /etc/nginx/ssl/daily.yourdomain.tld.key;
-#
-#	access_log  /var/log/nginx/localhost.access.log;
-#
-#	location / {
-#		root /var/www/python/newdjangosite-daily/config/shutdown;
-#	}
-#
-#	error_page 404 /index.html;
-#}
-
