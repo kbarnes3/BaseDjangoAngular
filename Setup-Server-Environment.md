@@ -72,6 +72,11 @@ Deployments require a separate repo to contain secrets like database passwords a
 This separate repo allows secrets to be restricted to a smaller set of people, while still allowing for versioning of important configuration information.
 An example of the expected structure for the secrets repo is in this repo's ```secrets-example``` directory.
 
+Every deployment config (prod, staging, daily, dev) uses the same layout, and all four of them read their secrets the same way:
+
+- ```$deployment$/$deployment$.env``` is read by ```back/newdjangosite/settings_$deployment$.py``` using [django-environ](https://django-environ.readthedocs.io/). It must define ```SECRET_KEY```, ```DATABASE_PASSWORD```, ```EMAIL_HOST```, ```EMAIL_PORT```, ```EMAIL_HOST_USER```, ```EMAIL_HOST_PASSWORD```, ```EMAIL_USE_SSL```, and ```DEFAULT_FROM_EMAIL```. Generate a unique ```SECRET_KEY``` per deployment with ```uv run python secret_key.py```. If this file is missing or incomplete, Django will fail to start with an ```ImproperlyConfigured``` error.
+- ```$deployment$/ssl/``` must contain ```$deployment$.yourdomain.tld.crt``` and ```$deployment$.yourdomain.tld.key```. All four configs terminate TLS, so a certificate is required before a config can be deployed. If you want to serve a config over plain HTTP instead, set ```ssl``` to ```False``` for it in the ```CONFIGURATIONS``` dict in ```fabric_utils/deploy.py``` and remove the SSL server block from ```config/ubuntu-24.04/nginx/$deployment$.yourdomain.tld```.
+
 1. Copy ```secrets-example``` to a new Git repo and fill in the needed information.
 Note that each deployment config can use a separate secrets repo to better control access.
 In this case, files for other configs can be removed.
@@ -82,7 +87,7 @@ Make sure the `secret_repo_name` matches the GitHub name of the newly created se
 
 After the needed configuration is committed and pushed, deployments can be added to a server with the following steps.
 
-1. Consider updating the database username and password found in ```web/newdjangosite/settings_$deployment$.py``` file. If you update it, commit and push your changes before continuing. Note that the Fabric script won't work with passwords containing shell escape characters.
+1. Consider updating the database username in the ```back/newdjangosite/settings_$deployment$.py``` file, along with the matching ```DATABASE_PASSWORD``` in the secrets repo's ```$deployment$/$deployment$.env``` file. If you update either, commit and push both repos before continuing. Note that the Fabric script won't work with passwords containing shell escape characters. The password is applied to the Postgres role by ```back/create_db.py```, which ```setup-deployment``` runs, so changing it later requires re-running that script to rotate the role's password.
 1. Run ```auth``` and follow the prompts in the browser, logging into GitHub with an account that can set deploy keys on this repo.
 1. Run ```fab --hosts $user$@$a.b.c.d$ setup-deployment $deployment$``` (or `Fabric-SetupDeployment` in PowerShell).
 1. The OAuth token stored by ```auth``` is no longer needed unless you intend to setup more deployments. It isn't used to updated a deployment in the steady state. Optionally, you can remove the token by running ```auth delete```.
@@ -90,7 +95,7 @@ After the needed configuration is committed and pushed, deployments can be added
 
 Finishing up global server deployment
 -------------------------------------
-The files in config/ubuntu-18.04/global can impact all the Django sites running on the server, so they aren't routinely deployed. After your first deployment, or after updating these files, they need to be explicitly deployed. They can be deployed with:  
+The files in config/ubuntu-24.04/global can impact all the Django sites running on the server, so they aren't routinely deployed. After your first deployment, or after updating these files, they need to be explicitly deployed. They can be deployed with:  
 ```fab --hosts $user$@$a.b.c.d$ deploy_global_config $deployment$```  
 Note that no changes are made to ```$deployment$```, the files are just copied from that deployment at its current state. You may need to deploy to ```$deployment$``` to ensure recent updates to the global files are in the deployment's repo first. See the next section for details on deploying.
 
