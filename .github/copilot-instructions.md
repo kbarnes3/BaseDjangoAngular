@@ -1,6 +1,6 @@
 # BaseDjangoAngular
 
-A template repo combining a Django 6 (Python 3.12) backend (`back/`) with an Angular 21 frontend (`front/`). Intended to be copied into a new repo and personalized with `replacer.py` before becoming a real project.
+A template repo combining a Django 6 (Python 3.14) backend (`back/`) with an Angular 21 frontend (`front/`). Intended to be copied into a new repo and personalized with `replacer.py` before becoming a real project.
 
 ## Layout
 
@@ -9,14 +9,14 @@ A template repo combining a Django 6 (Python 3.12) backend (`back/`) with an Ang
 - `front/` — Angular CLI workspace (standard `ng` layout under `src/app/`).
 - `scripts/` — PowerShell "Scripts To Rule Them All" entry points (`Bootstrap.ps1`, `Setup.ps1`, `Update.ps1`, `Console.ps1`, `Invoke-Manage.ps1`, `Invoke-Ng.ps1`, etc.). These are the canonical dev workflow on Windows.
 - `fabric_utils/` + `fabfile.py` — Fabric tasks for server provisioning/deploy.
-- `config/`, `server_scripts/` — Ubuntu 24.04 server config templates.
+- `config/`, `server_scripts/` — Ubuntu server config templates. There is one directory per supported OS (`config/ubuntu-24.04/`, `config/ubuntu-26.04/`); the two trees are near-identical copies, so shared changes must be applied to **both**.
 - `replacer.py`, `secret_key.py` — One-time setup helpers used when forking the template; not part of normal dev.
 
 > ⚠️ **Do not run `replacer.py`** unless the user explicitly asks you to. It rewrites and renames files across the repo in place (personalizing the template with a new project name, domain, email, etc.) and is destructive / not idempotent. Treat any task touching this file as read-only by default.
 
 ## Build / test / lint
 
-Python deps are managed with **uv** (`pyproject.toml` + `uv.lock`); Python is pinned to `>=3.12,<3.13`. Node is `>=20` (CI uses 24).
+Python deps are managed with **uv** (`pyproject.toml` + `uv.lock`); Python is pinned to `>=3.12,<3.15`, with `.python-version` on 3.14 for local dev and CI testing both 3.12 and 3.14. Node is `>=20` (CI uses 24).
 
 Match what CI (`.github/workflows/test.yml`) runs:
 
@@ -59,5 +59,6 @@ The expected entry point is `scripts\Console.ps1`, which sets up / refreshes the
 - **Pylint config (`pylintrc`)** pushes `back/` onto `sys.path` via `init-hook` and loads `pylint_django` with `django-settings-module=back.newdjangosite.settings`. Max line length is 100; `missing-*-docstring` and `duplicate-code` are disabled. Match snake_case for funcs/vars, PascalCase for classes.
 - **Auth:** `users.User` uses `email` as `USERNAME_FIELD` with no username field. Signup/login flows go through allauth headless endpoints under `/_allauth/`; custom adapter is `users.adapter.UserAdapter` and signup form is `users.forms.SignupForm`. The `ACCOUNT_CREATION_MODE` setting (`default` / `notify` / `disabled`) gates new account creation.
 - **Git revision exposure:** the backend uses `dealer` (middleware + context processor) and the frontend generates `front/git-version.json` via `git-version.js` as part of `npm start` / `npm build`. Don't hand-edit `git-version.json`.
-- **Deployment scope:** `Fabric-Deploy <Config>` (Fabric task `deploy`) is the standard deploy and is sufficient for almost everything in the repo — it pulls source, updates backend deps, builds the frontend, runs migrations, reloads uwsgi, and copies the per-env nginx file (`config/ubuntu-24.04/nginx/<config>.yourdomain.tld`) into `/etc/nginx/sites-enabled/` and reloads nginx. `Fabric-DeployGlobalConfig <Config>` (task `deploy_global_config`) is **only** for host-wide config: `/etc/nginx/nginx.conf` and global scripts under `config/ubuntu-24.04/global/`. Editing a per-env nginx template does **not** require `Fabric-DeployGlobalConfig`.
+- **Deployment scope:** `Fabric-Deploy <Config>` (Fabric task `deploy`) is the standard deploy and is sufficient for almost everything in the repo — it pulls source, updates backend deps, builds the frontend, runs migrations, reloads uwsgi, and copies the per-env nginx file (`config/<os>/nginx/<config>.yourdomain.tld`) into `/etc/nginx/sites-enabled/` and reloads nginx. `Fabric-DeployGlobalConfig <Config>` (task `deploy_global_config`) is **only** for host-wide config: `/etc/nginx/nginx.conf` and global scripts under `config/<os>/global/`. Editing a per-env nginx template does **not** require `Fabric-DeployGlobalConfig`.
+- **Per-deployment OS:** each entry in the `CONFIGURATIONS` dict in `fabric_utils/deploy.py` has an `os` key (`dev` → `ubuntu-26.04`, `daily`/`staging`/`prod` → `ubuntu-24.04`) that selects the `config/<os>/` tree via `get_config_dir()`. It also selects the deployment's Python version via `OS_PYTHON_VERSIONS` (24.04 → 3.12, 26.04 → 3.14), which is passed to `uv sync --python`. That mapping is **not** arbitrary: it must match the CPython the distro's `uwsgi-plugin-python3` was built against, or uWSGI won't find the venv's `site-packages`.
 - **CI uses pinned action SHAs** (see `test.yml`); preserve that pattern when adding workflow steps. Renovate (`renovate.json`) manages updates.

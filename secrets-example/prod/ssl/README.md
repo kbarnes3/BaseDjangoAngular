@@ -4,7 +4,7 @@ SSL certificate for the prod deployment
 `fab deploy prod` copies every file matching `prod.yourdomain.tld.*` from this
 directory into `/etc/nginx/ssl` on the server, then chowns them to root with mode 644.
 
-`config/ubuntu-24.04/nginx/prod.yourdomain.tld` expects exactly two files here:
+`config/$os$/nginx/prod.yourdomain.tld` expects exactly two files here:
 
 - `prod.yourdomain.tld.crt` - the full certificate chain
 - `prod.yourdomain.tld.key` - the matching private key

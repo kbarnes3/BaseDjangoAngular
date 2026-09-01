@@ -1,0 +1,26 @@
+# Redirect HTTP to HTTPS
+server {
+	listen   80;
+	server_name  staging.yourdomain.tld;
+
+	access_log  /var/log/nginx/localhost.access.log;
+
+	location / {
+		rewrite ^(.*) https://staging.yourdomain.tld$1;
+	}
+}
+
+server {
+	listen 443 ssl;
+	server_name  staging.yourdomain.tld;
+	ssl_certificate /etc/nginx/ssl/staging.yourdomain.tld.crt;
+	ssl_certificate_key /etc/nginx/ssl/staging.yourdomain.tld.key;
+
+	access_log  /var/log/nginx/localhost.access.log;
+
+	location / {
+		root /var/www/python/newdjangosite-staging/config/shutdown;
+	}
+
+	error_page 404 /index.html;
+}

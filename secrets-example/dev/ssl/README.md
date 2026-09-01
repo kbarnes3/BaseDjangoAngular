@@ -4,7 +4,7 @@ SSL certificate for the dev deployment
 `fab deploy dev` copies every file matching `dev.yourdomain.tld.*` from this
 directory into `/etc/nginx/ssl` on the server, then chowns them to root with mode 644.
 
-`config/ubuntu-24.04/nginx/dev.yourdomain.tld` expects exactly two files here:
+`config/$os$/nginx/dev.yourdomain.tld` expects exactly two files here:
 
 - `dev.yourdomain.tld.crt` - the full certificate chain
 - `dev.yourdomain.tld.key` - the matching private key

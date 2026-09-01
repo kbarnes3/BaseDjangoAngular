@@ -9,7 +9,7 @@ To setup your dev environment
 -----------------------------
 
 1. Install all the required tools. This includes:  
-    a. The latest release of [Python 3.12](https://www.python.org/). For best results, only use releases of Python 3.12 as that will be the version used by the server.  
+    a. The latest release of [Python 3.14](https://www.python.org/). For best results, only use releases of Python 3.14 as that is the version used by Ubuntu 26.04 servers. Deployments targeting Ubuntu 24.04 run Python 3.12, which is why the project supports ```>=3.12,<3.15``` and CI tests both versions.  
     b. The latest LTS release of [Node.js](https://nodejs.org/).
     c. The latest release of [Git](http://git-scm.com/downloads).
 1. Clone the repo locally and open a PowerShell prompt in the root folder.

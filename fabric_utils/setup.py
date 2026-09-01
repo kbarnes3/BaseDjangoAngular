@@ -11,6 +11,7 @@ from plush.oauth_flow import verify_access_token
 from plush.repo_keys import add_repo_key
 
 from .deploy import checkout_branch, deploy, exists, get_secret_repo_branch
+from .deploy import detect_os_version, ensure_os_version_matches, get_config_dir
 from .deploy import get_secret_repo_dir, get_secret_repo_name, get_repo_dir
 from .deploy import update_backend_dependencies, WEBADMIN_GROUP
 
@@ -75,6 +76,9 @@ def disable_ssh_passwords(conn):
 @Task
 def setup_server(conn):
     print(Fore.GREEN + 'Starting server setup')
+    os_version = detect_os_version(conn)
+    print(Fore.GREEN + f'Detected {os_version}')
+
     conn.sudo('add-apt-repository universe')
     conn.sudo('apt-get update')
 
@@ -117,6 +121,9 @@ def _setup_node(conn: Connection):
 @Task
 def setup_deployment(conn, config, branch=None, secret_branch=None):
     print(Fore.GREEN + f'Starting setup deployment for {config}')
+    os_version = ensure_os_version_matches(conn, config)
+    print(Fore.GREEN + f'Deploying {config} to {os_version}')
+
     repo_dir = get_repo_dir(config)
 
     print(Fore.GREEN + 'Cloning main repo')
@@ -124,14 +131,14 @@ def setup_deployment(conn, config, branch=None, secret_branch=None):
     print(Fore.GREEN + 'Cloning secret repo')
     _setup_secret_repo(conn, config, secret_branch)
 
-    update_backend_dependencies(conn, repo_dir)
+    update_backend_dependencies(conn, repo_dir, config)
 
     with conn.cd(repo_dir):
         print(Fore.GREEN + 'Creating database and user')
         conn.run(f'.venv/bin/python back/create_db.py {config}')
 
 
-    global_dir = f'{repo_dir}/config/ubuntu-24.04/global'
+    global_dir = f'{get_config_dir(repo_dir, config)}/global'
     uwsgi_socket_source = f'{global_dir}/uwsgi-app@.socket'
     uwsgi_service_source = f'{global_dir}/uwsgi-app@.service'
 
