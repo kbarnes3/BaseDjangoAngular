@@ -44,6 +44,7 @@ jobs:
         uv run fab -l
     - name: Install Node dependencies
       run: |
+        npm install --location=global npm@12
         cd front
         npm ci
     - name: Run ng lint

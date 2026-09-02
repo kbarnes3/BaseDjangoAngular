@@ -2,7 +2,7 @@
   "name": "front",
   "version": "0.0.0",
   "engines": {
-    "node": ">=20.0.0"
+    "node": "^24.15.0 || >=26.0.0"
   },
   "scripts": {
     "ng": "ng",
@@ -44,5 +44,11 @@
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.65.0",
     "vitest": "^4.1.10"
+  },
+  "allowScripts": {
+    "esbuild": true,
+    "@parcel/watcher": false,
+    "lmdb": false,
+    "msgpackr-extract": false
   }
 }

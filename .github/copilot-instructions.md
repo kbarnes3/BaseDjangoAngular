@@ -16,7 +16,7 @@ A template repo combining a Django 6 (Python 3.12) backend (`back/`) with an Ang
 
 ## Build / test / lint
 
-Python deps are managed with **uv** (`pyproject.toml` + `uv.lock`); Python is pinned to `>=3.12,<3.13`. Node is `>=20` (CI uses 24).
+Python deps are managed with **uv** (`pyproject.toml` + `uv.lock`); Python is pinned to `>=3.12,<3.13`. Node is `^24.15.0 || >=26` and npm is pinned to v12 (CI uses Node 24).
 
 Match what CI (`.github/workflows/test.yml`) runs:
 
