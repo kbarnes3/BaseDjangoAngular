@@ -5,7 +5,7 @@ These directions will set up a new server.
 They are the same directions for setting up a test server stack or a full production environment.
 For consistency, the only OSes supported for a server are Ubuntu Server 24.04 and Ubuntu Server 26.04.
 Each deployment config targets exactly one of them via the ```os``` entry in the ```CONFIGURATIONS``` dict in ```fabric_utils/deploy.py```.
-Currently ```dev``` targets ```ubuntu-26.04``` and ```daily```, ```staging``` and ```prod``` target ```ubuntu-24.04```.
+Currently ```dev``` and ```prod``` target ```ubuntu-26.04``` and ```daily``` and ```staging``` target ```ubuntu-24.04```.
 Wherever these directions refer to ```config/$os$/```, ```$os$``` is the value of that entry for the deployment being worked on.
 Most server operations should be done through Fabric, which is already installed if you followed the steps in Setup-Dev-Environment.md.
 Fabric can be run by running ```fab``` in a virtualenv while in the root directory.
