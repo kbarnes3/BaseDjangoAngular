@@ -26,7 +26,7 @@ Write-Status "Updating Python requirements"
 
 $already_activated = . $PSScriptRoot\Ensure-Venv.ps1
 Write-Status "Updating npm"
-. $PSScriptRoot\Invoke-Npm.ps1 @('install', '--location=global', 'npm@11')
+. $PSScriptRoot\Invoke-Npm.ps1 @('install', '--location=global', 'npm@12')
 Write-Status "Updating Angular CLI"
 . $PSScriptRoot\Invoke-Npm.ps1 @('install', '--location=global', '@angular/cli')
 Write-Status "Updating Node requirements"
