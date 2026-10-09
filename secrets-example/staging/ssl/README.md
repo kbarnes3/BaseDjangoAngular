@@ -4,7 +4,7 @@ SSL certificate for the staging deployment
 `fab deploy staging` copies every file matching `staging.yourdomain.tld.*` from this
 directory into `/etc/nginx/ssl` on the server, then chowns them to root with mode 644.
 
-`config/ubuntu-24.04/nginx/staging.yourdomain.tld` expects exactly two files here:
+`config/$os$/nginx/staging.yourdomain.tld` expects exactly two files here:
 
 - `staging.yourdomain.tld.crt` - the full certificate chain
 - `staging.yourdomain.tld.key` - the matching private key

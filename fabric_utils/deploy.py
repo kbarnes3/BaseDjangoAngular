@@ -9,28 +9,45 @@ from plush.fabric_commands.permissions import ensure_directory, set_permissions_
 CONFIGURATIONS = {
     'daily': {
         'branch': 'trunk',
+        'os': 'ubuntu-24.04',
         'ssl': True,
         'secret_repo_name': 'kbarnes3/BaseDjangoAngularSecrets',
         'secret_repo_branch': 'trunk',
     },
     'dev': {
         'branch': 'trunk',
+        'os': 'ubuntu-26.04',
         'ssl': True,
         'secret_repo_name': 'kbarnes3/BaseDjangoAngularSecrets',
         'secret_repo_branch': 'trunk',
     },
     'prod': {
         'branch': 'trunk',
+        'os': 'ubuntu-24.04',
         'ssl': True,
         'secret_repo_name': 'kbarnes3/BaseDjangoAngularSecrets',
         'secret_repo_branch': 'trunk',
     },
     'staging': {
         'branch': 'trunk',
+        'os': 'ubuntu-24.04',
         'ssl': True,
         'secret_repo_name': 'kbarnes3/BaseDjangoAngularSecrets',
         'secret_repo_branch': 'trunk',
     },
+}
+
+SUPPORTED_OS_VERSIONS = (
+    'ubuntu-24.04',
+    'ubuntu-26.04',
+)
+
+# The virtualenv Python must match the minor version that the distro's
+# uwsgi-plugin-python3 package was built against. uWSGI embeds that interpreter and
+# looks for packages in <venv>/lib/pythonX.Y/site-packages, so a mismatch breaks the site.
+OS_PYTHON_VERSIONS = {
+    'ubuntu-24.04': '3.12',
+    'ubuntu-26.04': '3.14',
 }
 
 PYTHON_DIR = '/var/www/python'
@@ -49,6 +66,51 @@ def exists(conn: Connection, path: str) -> bool:
 
 def get_repo_dir(config: str) -> str:
     return f'{PYTHON_DIR}/newdjangosite-{config}'
+
+
+def get_os_version(config: str) -> str:
+    configuration = CONFIGURATIONS[config]
+    os_version = configuration.get('os')
+    if os_version not in SUPPORTED_OS_VERSIONS:
+        supported = ', '.join(SUPPORTED_OS_VERSIONS)
+        raise AllowedException(
+            f"The '{config}' configuration targets OS '{os_version}', "
+            f'which is not one of the supported versions: {supported}')
+    return os_version
+
+
+def get_config_dir(repo_dir: str, config: str) -> str:
+    return f'{repo_dir}/config/{get_os_version(config)}'
+
+
+def get_python_version(config: str) -> str:
+    return OS_PYTHON_VERSIONS[get_os_version(config)]
+
+
+def detect_os_version(conn: Connection) -> str:
+    result = conn.run('. /etc/os-release && echo "$ID-$VERSION_ID"', hide=True)
+    os_version = result.stdout.strip()
+
+    if os_version not in SUPPORTED_OS_VERSIONS:
+        supported = ', '.join(SUPPORTED_OS_VERSIONS)
+        raise AllowedException(
+            f"This server reports '{os_version}', which isn't one of the supported "
+            f'OS versions: {supported}')
+
+    return os_version
+
+
+def ensure_os_version_matches(conn: Connection, config: str) -> str:
+    expected_os_version = get_os_version(config)
+    server_os_version = detect_os_version(conn)
+
+    if server_os_version != expected_os_version:
+        raise AllowedException(
+            f"The '{config}' configuration targets {expected_os_version}, but this server "
+            f"is running {server_os_version}. Update the 'os' entry for {config} in "
+            'fabric_utils/deploy.py or use a matching server.')
+
+    return server_os_version
 
 
 def get_backend_dir(repo_dir: str) -> str:
@@ -87,12 +149,13 @@ def deploy(conn, config, branch=None, secret_branch=None):
         branch = configuration['branch']
     secret_branch = get_secret_repo_branch(config, secret_branch)
     use_ssl = configuration['ssl']
+    os_version = ensure_os_version_matches(conn, config)
 
-    print(Fore.GREEN + f'Deploying {config} from branch {branch} with ' +
+    print(Fore.GREEN + f'Deploying {config} to {os_version} from branch {branch} with ' +
                         f'secret repo from branch {secret_branch}')
 
     repo_dir = get_repo_dir(config)
-    config_dir = f'{repo_dir}/config/ubuntu-24.04'
+    config_dir = get_config_dir(repo_dir, config)
     daily_scripts_dir = f'{config_dir}/cron.daily'
     uwsgi_dir = f'{config_dir}/uwsgi'
     nginx_dir = f'{config_dir}/nginx'
@@ -101,7 +164,7 @@ def deploy(conn, config, branch=None, secret_branch=None):
 
     _update_source(conn, repo_dir, branch)
     _update_source(conn, secret_repo_dir, secret_branch)
-    update_backend_dependencies(conn, repo_dir)
+    update_backend_dependencies(conn, repo_dir, config)
     _compile_source(conn, config, repo_dir)
     _update_scripts(conn, config, daily_scripts_dir)
     _update_database(conn, config, repo_dir)
@@ -120,17 +183,34 @@ def _update_source(conn: Connection, repo_dir: str, branch: str):
         conn.run(f'sudo git reset --hard origin/{branch}')
 
 
-def update_backend_dependencies(conn: Connection, repo_dir: str):
+def update_backend_dependencies(conn: Connection, repo_dir: str, config: str):
     print(Fore.GREEN + 'update_backend_dependencies')
 
     uv_bin = '$HOME/.local/bin/uv'
+    python_version = get_python_version(config)
 
     print(Fore.GREEN + 'Updating uv')
     conn.run(f'{uv_bin} self update')
 
+    _ensure_virtualenv_python(conn, repo_dir, python_version)
+
     with conn.cd(repo_dir):
-        print(Fore.GREEN + 'Installing dependencies with uv')
-        conn.run(f'{uv_bin} sync --no-dev')
+        print(Fore.GREEN + f'Installing dependencies with uv using Python {python_version}')
+        conn.run(f'{uv_bin} sync --no-dev --python {python_version}')
+
+
+def _ensure_virtualenv_python(conn: Connection, repo_dir: str, python_version: str):
+    # uv won't rebuild an existing virtualenv that was created with a different Python,
+    # so remove it when the minor version doesn't match what this OS requires.
+    venv_dir = f'{repo_dir}/.venv'
+    if not exists(conn, venv_dir):
+        return
+
+    if exists(conn, f'{venv_dir}/lib/python{python_version}'):
+        return
+
+    print(Fore.GREEN + f'Removing {venv_dir} so it can be recreated with Python {python_version}')
+    conn.run(f'sudo rm -rf {venv_dir}')
 
 
 def _compile_source(conn: Connection,
@@ -213,7 +293,7 @@ def checkout_branch(conn: Connection, repo_dir: str, config: str, branch: Option
 def deploy_global_config(conn, config):
     print(Fore.GREEN + 'deploy_global_config')
     repo_dir = get_repo_dir(config)
-    global_dir = f'{repo_dir}/config/ubuntu-24.04/global'
+    global_dir = f'{get_config_dir(repo_dir, config)}/global'
     nginx_conf = '/etc/nginx/nginx.conf'
     uwsgi_socket = '/etc/systemd/system/uwsgi-app@.socket'
     uwsgi_service = '/etc/systemd/system/uwsgi-app@.service'
@@ -244,7 +324,7 @@ def shutdown(conn, config, branch=None, secret_branch=None):
                             config, branch, secret_branch))
 
     repo_dir = get_repo_dir(config)
-    nginx_dir = f'{repo_dir}/config/ubuntu-24.04/nginx/shutdown'
+    nginx_dir = f'{get_config_dir(repo_dir, config)}/nginx/shutdown'
     secret_repo_dir = get_secret_repo_dir(config)
     ssl_dir = f'{secret_repo_dir}/{config}/ssl'
 

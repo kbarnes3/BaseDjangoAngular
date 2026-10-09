@@ -4,7 +4,7 @@ SSL certificate for the daily deployment
 `fab deploy daily` copies every file matching `daily.yourdomain.tld.*` from this
 directory into `/etc/nginx/ssl` on the server, then chowns them to root with mode 644.
 
-`config/ubuntu-24.04/nginx/daily.yourdomain.tld` expects exactly two files here:
+`config/$os$/nginx/daily.yourdomain.tld` expects exactly two files here:
 
 - `daily.yourdomain.tld.crt` - the full certificate chain
 - `daily.yourdomain.tld.key` - the matching private key

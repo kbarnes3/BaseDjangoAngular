@@ -3,7 +3,10 @@ Setup Your Server Environment
 
 These directions will set up a new server.
 They are the same directions for setting up a test server stack or a full production environment.
-For consistency, the only OS supported for a server is Ubuntu Server 24.04.
+For consistency, the only OSes supported for a server are Ubuntu Server 24.04 and Ubuntu Server 26.04.
+Each deployment config targets exactly one of them via the ```os``` entry in the ```CONFIGURATIONS``` dict in ```fabric_utils/deploy.py```.
+Currently ```dev``` targets ```ubuntu-26.04``` and ```daily```, ```staging``` and ```prod``` target ```ubuntu-24.04```.
+Wherever these directions refer to ```config/$os$/```, ```$os$``` is the value of that entry for the deployment being worked on.
 Most server operations should be done through Fabric, which is already installed if you followed the steps in Setup-Dev-Environment.md.
 Fabric can be run by running ```fab``` in a virtualenv while in the root directory.
 To simplify this, \scripts\Invoke-Fabric.ps1 or the ```Invoke-Fabric``` function can be used from PowerShell.
@@ -13,7 +16,7 @@ Prep for Fabric
 
 Some steps need to be performed manually before Fabric can be used.
 
-1. Set up a new Ubuntu Server 24.04 install, following the official documentation
+1. Set up a new Ubuntu Server 24.04 or Ubuntu Server 26.04 install, following the official documentation. The version you pick must match the ```os``` entry for every deployment you intend to host on this server.
 1. Once you can log in, do an initial update:  
 ```sudo apt-get update```  
 ```sudo apt-get dist-upgrade```  
@@ -75,7 +78,7 @@ An example of the expected structure for the secrets repo is in this repo's ```s
 Every deployment config (prod, staging, daily, dev) uses the same layout, and all four of them read their secrets the same way:
 
 - ```$deployment$/$deployment$.env``` is read by ```back/newdjangosite/settings_$deployment$.py``` using [django-environ](https://django-environ.readthedocs.io/). It must define ```SECRET_KEY```, ```DATABASE_PASSWORD```, ```EMAIL_HOST```, ```EMAIL_PORT```, ```EMAIL_HOST_USER```, ```EMAIL_HOST_PASSWORD```, ```EMAIL_USE_SSL```, and ```DEFAULT_FROM_EMAIL```. Generate a unique ```SECRET_KEY``` per deployment with ```uv run python secret_key.py```. If this file is missing or incomplete, Django will fail to start with an ```ImproperlyConfigured``` error.
-- ```$deployment$/ssl/``` must contain ```$deployment$.yourdomain.tld.crt``` and ```$deployment$.yourdomain.tld.key```. All four configs terminate TLS, so a certificate is required before a config can be deployed. If you want to serve a config over plain HTTP instead, set ```ssl``` to ```False``` for it in the ```CONFIGURATIONS``` dict in ```fabric_utils/deploy.py``` and remove the SSL server block from ```config/ubuntu-24.04/nginx/$deployment$.yourdomain.tld```.
+- ```$deployment$/ssl/``` must contain ```$deployment$.yourdomain.tld.crt``` and ```$deployment$.yourdomain.tld.key```. All four configs terminate TLS, so a certificate is required before a config can be deployed. If you want to serve a config over plain HTTP instead, set ```ssl``` to ```False``` for it in the ```CONFIGURATIONS``` dict in ```fabric_utils/deploy.py``` and remove the SSL server block from ```config/$os$/nginx/$deployment$.yourdomain.tld```.
 
 1. Copy ```secrets-example``` to a new Git repo and fill in the needed information.
 Note that each deployment config can use a separate secrets repo to better control access.
@@ -95,7 +98,7 @@ After the needed configuration is committed and pushed, deployments can be added
 
 Finishing up global server deployment
 -------------------------------------
-The files in config/ubuntu-24.04/global can impact all the Django sites running on the server, so they aren't routinely deployed. After your first deployment, or after updating these files, they need to be explicitly deployed. They can be deployed with:  
+The files in config/$os$/global can impact all the Django sites running on the server, so they aren't routinely deployed. After your first deployment, or after updating these files, they need to be explicitly deployed. They can be deployed with:  
 ```fab --hosts $user$@$a.b.c.d$ deploy_global_config $deployment$```  
 Note that no changes are made to ```$deployment$```, the files are just copied from that deployment at its current state. You may need to deploy to ```$deployment$``` to ensure recent updates to the global files are in the deployment's repo first. See the next section for details on deploying.
 
@@ -118,3 +121,37 @@ Settings include the default branch and whether or not SSL related files are exp
 
 This command also takes optional ```--branch``` and ```--secret-branch``` parameters 
 to override the default branch for the main and secret repos.
+
+Server OS versions
+------------------
+
+Each deployment config declares the Ubuntu version it targets with the ```os``` entry in the ```CONFIGURATIONS``` dict in ```fabric_utils/deploy.py```.
+That value selects which ```config/$os$/``` directory is deployed, and it also selects the Python version used to build the deployment's virtualenv.
+```setup-server``` reads ```/etc/os-release``` and refuses to run on an unsupported version, and ```setup-deployment``` and ```deploy``` refuse to run when the server's OS doesn't match the config's ```os``` entry.
+
+### Python versions are tied to the OS
+
+The uwsgi ini files use the distro's ```uwsgi-plugin-python3``` package (```plugin = python3```) together with the deployment's virtualenv (```home = .../.venv```).
+That plugin embeds one specific CPython interpreter and looks for packages in ```<venv>/lib/python$X.Y$/site-packages```, so **the virtualenv's Python minor version has to match the version the plugin was built against**:
+
+| Ubuntu | ```uwsgi-plugin-python3``` built against | Virtualenv Python |
+| --- | --- | --- |
+| 24.04 | python3.12 | 3.12 |
+| 26.04 | python3.14 | 3.14 |
+
+This mapping lives in ```OS_PYTHON_VERSIONS``` in ```fabric_utils/deploy.py```, and the deploy scripts pass it to ```uv sync --python``` so it takes priority over the repo's ```.python-version``` (which targets local development).
+```pyproject.toml``` allows ```>=3.12,<3.15``` and CI tests both 3.12 and 3.14 so that all deployments stay covered.
+
+### Moving a deployment to a different OS version
+
+1. Stand up a server running the new Ubuntu version and run ```setup-server``` against it.
+1. Change the ```os``` entry for the deployment in ```fabric_utils/deploy.py```, then commit and push.
+1. Run ```setup-deployment``` on the new server (or ```deploy``` if the deployment already exists there).
+The virtualenv is rebuilt automatically when the required Python minor version changes.
+1. Run ```deploy-global-config``` afterwards so the host-wide files come from the matching ```config/$os$/global``` directory.
+
+### PostgreSQL versions
+
+Ubuntu 24.04 ships PostgreSQL 16 and Ubuntu 26.04 ships PostgreSQL 18; the setup scripts install whichever version the distro provides.
+This matters when copying a database between servers running different Ubuntu versions, including via ```server_scripts/clone_database.sh```.
+```pg_restore``` can read dumps from older versions but not newer ones, so always produce the dump with the ```pg_dump``` from the **newer** of the two servers.

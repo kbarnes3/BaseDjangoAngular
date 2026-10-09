@@ -1,0 +1,26 @@
+# Redirect HTTP to HTTPS
+server {
+	listen   80;
+	server_name  dev.yourdomain.tld;
+
+	access_log  /var/log/nginx/localhost.access.log;
+
+	location / {
+		rewrite ^(.*) https://dev.yourdomain.tld$1;
+	}
+}
+
+server {
+	listen 443 ssl;
+	server_name  dev.yourdomain.tld;
+	ssl_certificate /etc/nginx/ssl/dev.yourdomain.tld.crt;
+	ssl_certificate_key /etc/nginx/ssl/dev.yourdomain.tld.key;
+
+	access_log  /var/log/nginx/localhost.access.log;
+
+	location / {
+		root /var/www/python/newdjangosite-dev/config/shutdown;
+	}
+
+	error_page 404 /index.html;
+}
