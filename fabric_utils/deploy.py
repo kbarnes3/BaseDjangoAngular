@@ -9,7 +9,7 @@ from plush.fabric_commands.permissions import ensure_directory, set_permissions_
 CONFIGURATIONS = {
     'daily': {
         'branch': 'trunk',
-        'os': 'ubuntu-24.04',
+        'os': 'ubuntu-26.04',
         'ssl': True,
         'secret_repo_name': 'kbarnes3/BaseDjangoAngularSecrets',
         'secret_repo_branch': 'trunk',
@@ -30,7 +30,7 @@ CONFIGURATIONS = {
     },
     'staging': {
         'branch': 'trunk',
-        'os': 'ubuntu-24.04',
+        'os': 'ubuntu-26.04',
         'ssl': True,
         'secret_repo_name': 'kbarnes3/BaseDjangoAngularSecrets',
         'secret_repo_branch': 'trunk',
@@ -38,7 +38,6 @@ CONFIGURATIONS = {
 }
 
 SUPPORTED_OS_VERSIONS = (
-    'ubuntu-24.04',
     'ubuntu-26.04',
 )
 
@@ -46,7 +45,6 @@ SUPPORTED_OS_VERSIONS = (
 # uwsgi-plugin-python3 package was built against. uWSGI embeds that interpreter and
 # looks for packages in <venv>/lib/pythonX.Y/site-packages, so a mismatch breaks the site.
 OS_PYTHON_VERSIONS = {
-    'ubuntu-24.04': '3.12',
     'ubuntu-26.04': '3.14',
 }
 
