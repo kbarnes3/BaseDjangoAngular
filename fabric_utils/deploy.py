@@ -23,7 +23,7 @@ CONFIGURATIONS = {
     },
     'prod': {
         'branch': 'trunk',
-        'os': 'ubuntu-24.04',
+        'os': 'ubuntu-26.04',
         'ssl': True,
         'secret_repo_name': 'kbarnes3/BaseDjangoAngularSecrets',
         'secret_repo_branch': 'trunk',
