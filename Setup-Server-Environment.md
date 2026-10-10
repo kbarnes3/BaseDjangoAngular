@@ -3,9 +3,9 @@ Setup Your Server Environment
 
 These directions will set up a new server.
 They are the same directions for setting up a test server stack or a full production environment.
-For consistency, the only OSes supported for a server are Ubuntu Server 24.04 and Ubuntu Server 26.04.
+For consistency, the only OS supported for a server is Ubuntu Server 26.04.
 Each deployment config targets exactly one of them via the ```os``` entry in the ```CONFIGURATIONS``` dict in ```fabric_utils/deploy.py```.
-Currently ```dev``` and ```prod``` target ```ubuntu-26.04``` and ```daily``` and ```staging``` target ```ubuntu-24.04```.
+Currently every deployment (```daily```, ```dev```, ```prod```, and ```staging```) targets ```ubuntu-26.04```.
 Wherever these directions refer to ```config/$os$/```, ```$os$``` is the value of that entry for the deployment being worked on.
 Most server operations should be done through Fabric, which is already installed if you followed the steps in Setup-Dev-Environment.md.
 Fabric can be run by running ```fab``` in a virtualenv while in the root directory.
@@ -16,7 +16,7 @@ Prep for Fabric
 
 Some steps need to be performed manually before Fabric can be used.
 
-1. Set up a new Ubuntu Server 24.04 or Ubuntu Server 26.04 install, following the official documentation. The version you pick must match the ```os``` entry for every deployment you intend to host on this server.
+1. Set up a new Ubuntu Server 26.04 install, following the official documentation. The version must match the ```os``` entry for every deployment you intend to host on this server.
 1. Once you can log in, do an initial update:  
 ```sudo apt-get update```  
 ```sudo apt-get dist-upgrade```  
@@ -136,11 +136,11 @@ That plugin embeds one specific CPython interpreter and looks for packages in ``
 
 | Ubuntu | ```uwsgi-plugin-python3``` built against | Virtualenv Python |
 | --- | --- | --- |
-| 24.04 | python3.12 | 3.12 |
 | 26.04 | python3.14 | 3.14 |
 
 This mapping lives in ```OS_PYTHON_VERSIONS``` in ```fabric_utils/deploy.py```, and the deploy scripts pass it to ```uv sync --python``` so it takes priority over the repo's ```.python-version``` (which targets local development).
-```pyproject.toml``` allows ```>=3.12,<3.15``` and CI tests both 3.12 and 3.14 so that all deployments stay covered.
+```pyproject.toml``` allows ```>=3.14,<3.15``` and CI tests 3.14 to match.
+If a newer OS version is added, widen ```requires-python``` and the CI matrix to cover every deployment's Python version.
 
 ### Moving a deployment to a different OS version
 
@@ -152,6 +152,6 @@ The virtualenv is rebuilt automatically when the required Python minor version c
 
 ### PostgreSQL versions
 
-Ubuntu 24.04 ships PostgreSQL 16 and Ubuntu 26.04 ships PostgreSQL 18; the setup scripts install whichever version the distro provides.
-This matters when copying a database between servers running different Ubuntu versions, including via ```server_scripts/clone_database.sh```.
+Ubuntu 26.04 ships PostgreSQL 18; the setup scripts install whichever version the distro provides.
+This matters when copying a database between servers running different Ubuntu versions (for example, while moving a deployment to a new OS version), including via ```server_scripts/clone_database.sh```.
 ```pg_restore``` can read dumps from older versions but not newer ones, so always produce the dump with the ```pg_dump``` from the **newer** of the two servers.
