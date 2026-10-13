@@ -55,6 +55,16 @@
         "docker"
       ],
       "enabled": false
+    },
+    {
+      "description": "Keep Python pinned to 3.14 for now",
+      "matchManagers": [
+        "pyenv"
+      ],
+      "matchPackageNames": [
+        "python"
+      ],
+      "allowedVersions": "<3.15"
     }
   ]
 }
