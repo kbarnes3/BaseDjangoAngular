@@ -113,7 +113,7 @@ def setup_server(conn):
 
 
 def _setup_node(conn: Connection):
-    conn.sudo('curl -sL https://deb.nodesource.com/setup_24.x | sudo -E bash -', pty=True)
+    conn.sudo('curl -sL https://deb.nodesource.com/setup_26.x | sudo -E bash -', pty=True)
     conn.sudo('apt-get update')
     plush.fabric_commands.install_packages(conn, ['nodejs'])
 
